@@ -1,0 +1,55 @@
+E 476
+
+new application (ignore the topology now)
+Gossip App:
+
+node -o has value x
+
+stop = false
+Routine Gossip(x):
+	n <- chooseRandomNeighbor()
+	send(n,x)
+
+GossipProcess()
+	every t=1ms:
+		if not stop:
+			call Gossip(x)
+
+HandleAck()
+	while(1):
+		listen on all ports
+		if ACK(x) receive:
+			stop <- true
+Receive side:
+	while1:
+		listen on all port:
+			m <- listen new message
+			if m.contain() == x:
+				send ACK(x) to message src 
+			else:
+				x = m*x( update the x in the receiver side)
+
+	Soliciate():
+		every t=5s:
+			n <- choose random neighbor
+			create solicitation msg(s)	
+			send(n,s)
+
+	HandleSoliciate(m):
+		n <- receive m from n
+		m is a solic
+		send(n,x)
+
+behavior:
+Server
+	listen on all ports receive m from n
+	if m type == solicit
+		handle_solicit
+	if m type == data
+		handle_data ( message generate maybe)
+	if m type == ack
+		handle_ack
+
+ICMP package from ping 
+
+
