@@ -33,12 +33,11 @@ idea_temp{
 
 Ptr< NetDevice >
 findOneNeighbor(Node node_number){
-	Ptr< NetDevice > deviceList = node_number.GetNDevices();
-	Ptr< NetDevice >device  = deviceList[rand() % sizeOf(deviceList)];	
-	if (device != device.GetChannel()[0]){
-		return device.GetChannel()[0];
-	}else:
-		return device.GetChannel()[1];
+	Ptr< NetDevice >device = node_number.GetDevice(rand() % node_number.GetNDevices());
+	if (device != device->GetChannel()->GetDevice(0)){
+		return device->GetChannel()->GetDevice(0);
+	}else{
+		return device->GetChannel()->GetDevice(1);
 	}
 	
 //need to find who connect the device	
