@@ -33,11 +33,12 @@ public:
   static TypeId GetTypeId (void);
   GossipGenerator ();
   virtual ~GossipGenerator ();
+  void SetCurrentValue (int val);
+  int GetCurrentValue ( void);
 
 protected:
   virtual void DoDispose (void);
-  int currentValue;
-  void setCurrentValue (int val);
+  int CurrentValue;
 
 private:
   virtual void StartApplication (void);

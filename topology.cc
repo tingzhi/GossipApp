@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <typeinfo> // For std::bad_cast
 
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
@@ -16,6 +17,9 @@
 #include "ns3/assert.h"
 #include "ns3/ipv4-global-routing-helper.h"
 
+#include "ns3/gossip-generator.h"
+#include "ns3/gossip-generator-helper.h"
+
 using namespace std;
 using namespace ns3;
 
@@ -23,14 +27,17 @@ NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
 
 int main (int argc, char *argv[])
 {
+
+
+
 	Time::SetResolution (Time::NS);
 	LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
   	LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
+        LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
 
-	std::string LinkRate ("10Mbps");
+	std::string LinkRate ("100Mbps");
   	std::string LinkDelay ("2ms");
   	int n_nodes = 3;
-
 
 	NS_LOG_INFO ("Create Nodes.");
 
@@ -75,7 +82,7 @@ int main (int argc, char *argv[])
 
 	UdpEchoServerHelper echoServer (9);
 
-	ApplicationContainer serverApps = echoServer.Install (nodes.Get (0));
+	ApplicationContainer serverApps = echoServer.Install ( nodes.Get (0) );
 	serverApps.Start (Seconds (1.0));
 	serverApps.Stop (Seconds (10.0));
 
@@ -87,6 +94,22 @@ int main (int argc, char *argv[])
 	ApplicationContainer clientApps = echoClient.Install (nodes.Get (2));
 	clientApps.Start (Seconds (2.0));
 	clientApps.Stop (Seconds (10.0));
+
+        /*
+        NodeContainer nodes2;
+        nodes2.Create(1);
+
+        GossipGeneratorHelper ggh ;
+        ApplicationContainer nodeApp = ggh.Install(nodes2.Get(0));
+
+        Ptr<Application> oneApplication = nodeApp.Get(0);
+        Ptr<Application> *testApplication =&oneApplication;
+
+        Ptr<GossipGenerator>*  oneGossipApp =(Ptr<GossipGenerator>*) testApplication;//->SetCurrentValue;
+        // nodeApp.Get(0)->GetCurrentValue;
+        // oneApplication.SetCurrentValue( 1 );
+        oneGossipApp->GetTypeId( );
+        */
 
 	Simulator::Run ();
 	Simulator::Destroy ();

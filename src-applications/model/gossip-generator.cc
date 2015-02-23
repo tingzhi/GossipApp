@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string>
+
 #include "ns3/log.h"
 
 #include "gossip-generator.h"
@@ -52,10 +54,17 @@ GossipGenerator::DoDispose ( void )
 }
 
 void
-GossipGenerator::setCurrentValue ( int val )
+GossipGenerator::SetCurrentValue ( int val )
 {
   NS_LOG_FUNCTION (this << val);
-  currentValue = val;
+  CurrentValue = val;
+}
+
+int
+GossipGenerator::GetCurrentValue ( void )
+{
+  NS_LOG_FUNCTION (this);
+  return CurrentValue;
 }
 
 void

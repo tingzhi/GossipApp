@@ -42,11 +42,15 @@ public:
 
   /**
    *
+   * \param address The address the generator will be assigned
    * \param port The port the generator will wait on for incoming packets
    */
-//  GossipGeneratorHelper (uint16_t port);
+  GossipGeneratorHelper (Address address, uint16_t port);
+  GossipGeneratorHelper (Ipv4Address address, uint16_t port);
+  GossipGeneratorHelper (Ipv6Address address, uint16_t port);
 
   /**
+   * Record an attribute to be set in each Application after it is is created.
    *
    * \param name the name of the attribute to set
    * \param value the value of the attribute to set
@@ -54,11 +58,12 @@ public:
   void SetAttribute (std::string name, const AttributeValue &value);
 
   /**
+   * Create a GossipGeneratorApplication on the specified Node.
    *
-   * \param c The nodes on which to create the Applications.  The nodes
+   * \param c The nodes on which to create the Applications.
    * \returns The applications created, one Application per Node in the
    */
-  ApplicationContainer Install (NodeContainer c);
+  const ApplicationContainer Install (NodeContainer c);
 
   /**
    * \brief Return the last created generator.

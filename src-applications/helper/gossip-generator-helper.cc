@@ -33,7 +33,7 @@ GossipGeneratorHelper::SetAttribute (std::string name, const AttributeValue &val
   m_factory.Set (name, value);
 }
 
-ApplicationContainer
+const ApplicationContainer
 GossipGeneratorHelper::Install (NodeContainer c)
 {
   ApplicationContainer apps;
@@ -54,7 +54,7 @@ GossipGeneratorHelper::GetGenerator (void)
 {
   return m_generator;
 }
-/*
+
 GossipGeneratorHelper::GossipGeneratorHelper (Address address, uint16_t port)
 {
   m_factory.SetTypeId (GossipGenerator::GetTypeId ());
@@ -75,5 +75,5 @@ GossipGeneratorHelper::GossipGeneratorHelper (Ipv6Address address, uint16_t port
   SetAttribute ("RemoteAddress", AddressValue (Address(address)));
   SetAttribute ("RemotePort", UintegerValue (port));
 }
-*/
+
 } // namespace ns3
