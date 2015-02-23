@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
-#include <typeinfo> // For std::bad_cast
+#include <typeinfo>
 
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
@@ -27,9 +27,6 @@ NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
 
 int main (int argc, char *argv[])
 {
-
-
-
 	Time::SetResolution (Time::NS);
 	LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
   	LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
@@ -76,7 +73,6 @@ int main (int argc, char *argv[])
 	ipv4_n.NewNetwork ();
 	//linkCount++;
 
-
   	NS_LOG_INFO ("Initialize Global Routing.");
   	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
@@ -95,24 +91,27 @@ int main (int argc, char *argv[])
 	clientApps.Start (Seconds (2.0));
 	clientApps.Stop (Seconds (10.0));
 
-        /*
+        /* */
+        NS_LOG_INFO ("Create another node to test GossipGenerator");
         NodeContainer nodes2;
         nodes2.Create(1);
 
         GossipGeneratorHelper ggh ;
+        /* * /
         ApplicationContainer nodeApp = ggh.Install(nodes2.Get(0));
 
         Ptr<Application> oneApplication = nodeApp.Get(0);
         Ptr<Application> *testApplication =&oneApplication;
 
-        Ptr<GossipGenerator>*  oneGossipApp =(Ptr<GossipGenerator>*) testApplication;//->SetCurrentValue;
+        Ptr<GossipGenerator>*  PtrOneGossipApp =(Ptr<GossipGenerator>*) testApplication;
+        GossipGenerator OneGossipApp = PtrOneGossipApp->operator*();//->SetCurrentValue;
         // nodeApp.Get(0)->GetCurrentValue;
         // oneApplication.SetCurrentValue( 1 );
-        oneGossipApp->GetTypeId( );
-        */
+        OneGossipApp.SetCurrentValue( 1 );
+        NS_LOG_INFO ("Value of first node set to " << OneGossipApp.GetCurrentValue( ));
+        / * */
 
-	Simulator::Run ();
-	Simulator::Destroy ();
+        Simulator::Run ();
+        Simulator::Destroy ();
 	return 0;
-
 }
