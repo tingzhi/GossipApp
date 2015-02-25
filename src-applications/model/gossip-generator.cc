@@ -54,6 +54,21 @@ GossipGenerator::DoDispose ( void )
 }
 
 void
+GossipGenerator::SendMessage(Ipv4Address dest, int type)
+{
+  // TODO error handling?
+  // assert type in {TYPE_SOLICIT  TYPE_PAYLOAD  TYPE_ACK}
+  NS_LOG_FUNCTION (this << dest << type);
+  // send_icmp(src=this.address, dest, type)
+}
+
+void
+GossipGenerator::SendPayload(Ipv4Address dest)
+{
+  NS_LOG_FUNCTION (this << dest << TYPE_PAYLOAD );
+}
+
+void
 GossipGenerator::SetCurrentValue ( int val )
 {
   NS_LOG_FUNCTION (this << val);

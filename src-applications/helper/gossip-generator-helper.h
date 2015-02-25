@@ -24,34 +24,35 @@
 #include "ns3/node-container.h"
 #include "ns3/object-factory.h"
 #include "ns3/ipv4-address.h"
-#include "ns3/ipv6-address.h"
 #include "ns3/gossip-generator.h"
 
 namespace ns3 {
 /**
  * \ingroup 
- * \brief ...
- *        ...
+ * \class GossipGeneratorHelper
+ *
+ * \brief The helper class for GossipGenerator
  */
 class GossipGeneratorHelper
 {
 public:
   /**
+   * \brief Constructor
    *
+   * \param 
    */
   GossipGeneratorHelper ();
 
   /**
+   * \brief constructor
    *
    * \param address The address the generator will be assigned
    * \param port The port the generator will wait on for incoming packets
    */
-  GossipGeneratorHelper (Address address, uint16_t port);
   GossipGeneratorHelper (Ipv4Address address, uint16_t port);
-  GossipGeneratorHelper (Ipv6Address address, uint16_t port);
 
   /**
-   * Record an attribute to be set in each Application after it is is created.
+   * \brief Record an attribute to be set in each Application after it is is created.
    *
    * \param name the name of the attribute to set
    * \param value the value of the attribute to set
@@ -59,7 +60,7 @@ public:
   void SetAttribute (std::string name, const AttributeValue &value);
 
   /**
-   * Create a GossipGeneratorApplication on the specified Node.
+   * \brief Create a GossipGeneratorApplication on the specified Node.
    *
    * \param c The nodes on which to create the Applications.
    * \returns The applications created, one Application per Node in the
@@ -68,7 +69,6 @@ public:
 
   /**
    * \brief Return the last created generator.
-   *
    *
    * \returns a Ptr to the last created generator application
    */

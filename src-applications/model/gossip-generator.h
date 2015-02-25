@@ -23,6 +23,16 @@
 
 namespace ns3 {
 
+  const int TYPE_SOLICIT = 21; //!< constant used to indicate type of msg 
+  const int TYPE_PAYLOAD = 22; //!< constant used to indicate type of msg
+  const int TYPE_ACK     = 23; //!< constant used to indicate type of msg
+
+/**
+ * \ingroup 
+ * \class GossipGenerator
+ *
+ * \brief An application implementing the gossip protocol to communicate
+ */
 class GossipGenerator : public Application
 {
 public:
@@ -31,18 +41,59 @@ public:
    * \return the object TypeId
    */
   static TypeId GetTypeId (void);
+
+  /**
+   * \brief Constructor.
+   */
   GossipGenerator ();
+
+  /**
+   * \brief Constructor.
+   */
   virtual ~GossipGenerator ();
+
+  /**
+   * \brief Seed the internal value of a node to initiate the gossip.
+   * \param The internal value.
+   */
   void SetCurrentValue (int val);
+
+  /**
+   * \brief Return the current internal value.
+   * \return The value
+   */
   int GetCurrentValue ( void);
 
 protected:
+  /**
+   * \brief Dispose method.
+   */
   virtual void DoDispose (void);
-  int CurrentValue;
+
+  /**
+   * \brief Send a message to the given destination indicating the type
+   * \param the destination
+   * \param the message type
+   */
+  void SendMessage(Ipv4Address dest, int type);
+
+  /**
+   * \brief Send the current value to the given destination
+   * \param the destination
+   */
+  void SendPayload(Ipv4Address dest);
+  int CurrentValue; //!< The current Value
 
 private:
-  virtual void StartApplication (void);
-  virtual void StopApplication (void);
+  /**
+   * \brief Start the application.
+   */
+  virtual void StartApplication ();
+
+  /**
+   * \brief Stop the application.
+   */
+  virtual void StopApplication ();
 
 };
 
