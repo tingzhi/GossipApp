@@ -25,6 +25,7 @@ namespace ns3 {
 
 GossipGeneratorHelper::GossipGeneratorHelper ()
 {
+  m_factory.SetTypeId (GossipGenerator::GetTypeId ());
 }
 
 void

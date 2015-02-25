@@ -97,21 +97,20 @@ int main (int argc, char *argv[])
         nodes2.Create(1);
 
         GossipGeneratorHelper ggh ;
-        /* * /
+
         ApplicationContainer nodeApp = ggh.Install(nodes2.Get(0));
 
         Ptr<Application> oneApplication = nodeApp.Get(0);
         Ptr<Application> *testApplication =&oneApplication;
 
         Ptr<GossipGenerator>*  PtrOneGossipApp =(Ptr<GossipGenerator>*) testApplication;
-        GossipGenerator OneGossipApp = PtrOneGossipApp->operator*();//->SetCurrentValue;
-        // nodeApp.Get(0)->GetCurrentValue;
-        // oneApplication.SetCurrentValue( 1 );
+        GossipGenerator OneGossipApp = PtrOneGossipApp->operator*();
         OneGossipApp.SetCurrentValue( 1 );
         NS_LOG_INFO ("Value of first node set to " << OneGossipApp.GetCurrentValue( ));
-        / * */
+        /* */
 
         Simulator::Run ();
         Simulator::Destroy ();
+
 	return 0;
 }
