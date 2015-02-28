@@ -497,18 +497,18 @@ Icmpv4TimeExceeded::Print (std::ostream &os) const
     }
 }
 
-/***************************************/
-/*        Icmpv4Ack
-/***************************************/
+/***************************************
+*        Icmpv4Ack
+****************************************/
 
 NS_OBJECT_ENSURE_REGISTERED (Icmpv4Ack);
 
 TypeId
-Imcpv4Ack::GetTypeId (void)
+Icmpv4Ack::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::Icmpv4Ack")
-  .setParent<Header> ()
-  .AddConstructor<Imcpv4Ack> ()
+  .SetParent<Header> ()
+  .AddConstructor<Icmpv4Ack> ()
   ;
   return tid;
 }
@@ -603,18 +603,18 @@ Icmpv4Ack::Print (std::ostream &os) const
     }
 }
 
-/***************************************/
-/*        Icmpv4Request
-/***************************************/
+/***************************************
+*      Icmpv4Request
+***************************************/
 
 NS_OBJECT_ENSURE_REGISTERED (Icmpv4Request);
 
 TypeId
-Imcpv4Request::GetTypeId (void)
+Icmpv4Request::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::Icmpv4Request")
-  .setParent<Header> ()
-  .AddConstructor<Imcpv4Ack> ()
+  .SetParent<Header> ()
+  .AddConstructor<Icmpv4Ack> ()
   ;
   return tid;
 }
@@ -709,18 +709,18 @@ Icmpv4Request::Print (std::ostream &os) const
     }
 }
 
-/***************************************/
-/*        Icmpv4Data
-/***************************************/
+/***************************************
+*        Icmpv4Data
+***************************************/
 
 NS_OBJECT_ENSURE_REGISTERED (Icmpv4Data);
 
 TypeId
-Imcpv4Data::GetTypeId (void)
+Icmpv4Data::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::Icmpv4Data")
-  .setParent<Header> ()
-  .AddConstructor<Imcpv4Data> ()
+  .SetParent<Header> ()
+  .AddConstructor<Icmpv4Data> ()
   ;
   return tid;
 }
