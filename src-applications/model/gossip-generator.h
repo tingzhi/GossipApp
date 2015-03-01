@@ -92,6 +92,24 @@ protected:
    * \param the destination
    */
   void SendPayload(Ipv4Address dest);
+
+  /**
+   * \brief Send a message to the given destination indicating the type
+   * \param the device to use
+   * \param the message type
+   */
+  void SendMessage(Ptr<NetDevice> device, int type);
+
+  /**
+   * \brief Send the current value to the given destination
+   * \param the device to use
+   */
+  void SendPayload(Ptr<NetDevice> device);
+
+  /**
+   * \brief Find a random neigbor
+   */
+  Ptr< NetDevice > ChooseRandomNeighbor();
   int CurrentValue; //!< The current Value
 
 private:

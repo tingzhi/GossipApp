@@ -57,6 +57,7 @@ GossipGenerator::DoDispose ( void )
 void
 GossipGenerator::Receive (Ptr<Socket> socket)
 {
+  NS_LOG_INFO ("Packet received");
   NS_LOG_FUNCTION (this << socket);
   while (m_socket->GetRxAvailable () > 0)
     {
@@ -125,6 +126,18 @@ GossipGenerator::SendMessage_public(Ipv4Address src, Ipv4Address dest, int type)
   SendMessage( src,  dest,  type);
 }
 
+Ptr< NetDevice >
+GossipGenerator::ChooseRandomNeighbor(){
+  Ptr< Node > node = this->GetNode();
+  Ptr< NetDevice >device = node->GetDevice(rand() % node->GetNDevices());
+  if (device != device->GetChannel()->GetDevice(0)){
+    return device->GetChannel()->GetDevice(0);
+  }else{
+    return device->GetChannel()->GetDevice(1);
+  }
+  //need to find who connect the device
+}
+
 void
 GossipGenerator::SendMessage(Ipv4Address src, Ipv4Address dest, int type)
 {
@@ -154,10 +167,46 @@ GossipGenerator::SendPayload(Ipv4Address dest)
 }
 
 void
+GossipGenerator::SendMessage(Ptr<NetDevice> target, int type)
+{
+  NS_LOG_FUNCTION (this << target << type);
+
+  Ptr<NetDevice> source;
+  if (target != target->GetChannel()->GetDevice(0)){
+    source = target->GetChannel()->GetDevice(0);
+  }else{
+    source = target->GetChannel()->GetDevice(1);
+  }
+
+  Ipv4Header header = Ipv4Header ();
+  // header.SetDestination (target->GetAddress()); //TODO
+  header.SetPayloadSize (0);
+  // header.SetSource (source->GetAddress()); //TODO
+  
+  Ptr<Icmpv4L4Protocol> icmp = this->GetNode()->GetObject<Icmpv4L4Protocol>();
+
+  switch(type) {
+    case TYPE_ACK : 
+      icmp->SendAck(header);
+      break;
+    case TYPE_SOLICIT :
+      icmp->SendRequest(header);
+      break;
+  }
+}
+
+void
+GossipGenerator::SendPayload(Ptr<NetDevice> target)
+{
+  NS_LOG_FUNCTION (this << target );
+}
+
+void
 GossipGenerator::SetCurrentValue ( int val )
 {
   NS_LOG_FUNCTION (this << val);
   CurrentValue = val;
+  NS_LOG_INFO ("Value of first node set to " << CurrentValue);
 }
 
 int
@@ -172,27 +221,13 @@ GossipGenerator::StartApplication ( void )
 {
   NS_LOG_FUNCTION (this);
   // Create the socket if not already
-  /*if (!m_socket)
+  if (!m_socket)
     {
-      m_socket = Socket::CreateSocket (GetNode (), m_tid);
-      m_socket->Bind (m_local);
+      m_socket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
+      m_socket->Bind ();
       m_socket->Listen ();
-      m_socket->ShutdownSend ();
-      if (addressUtils::IsMulticast (m_local))
-        {
-          Ptr<UdpSocket> udpSocket = DynamicCast<UdpSocket> (m_socket);
-          if (udpSocket)
-            {
-              // equivalent to setsockopt (MCAST_JOIN_GROUP)
-              udpSocket->MulticastJoinGroup (0, m_local);
-            }
-          else
-            {
-              NS_FATAL_ERROR ("Error: joining multicast on a non-UDP socket");
-            }
-        }
     }
-
+/*
   m_socket->SetRecvCallback (MakeCallback (&PacketSink::HandleRead, this));
   m_socket->SetAcceptCallback (
     MakeNullCallback<bool, Ptr<Socket>, const Address &> (),

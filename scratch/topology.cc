@@ -28,6 +28,7 @@ NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
 int main (int argc, char *argv[])
 {
 	Time::SetResolution (Time::NS);
+        LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
 	LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
   	LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
         LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
@@ -92,27 +93,37 @@ int main (int argc, char *argv[])
 	clientApps.Stop (Seconds (10.0));
 
         /* */
-        uint8_t number_nodes_2 = 5;
+        int number_nodes_2 = 5;
         NS_LOG_INFO ("Create " << number_nodes_2 << " nodes to test GossipGenerator");
         NodeContainer nodes2;
         nodes2.Create(number_nodes_2);
 
-        NS_LOG_INFO ("Install Internet Stack to those nodes.");
+        NS_LOG_INFO ("Install Internet Stack and GossipGenerator to those nodes.");
         internet.Install (nodes2);
 
         GossipGeneratorHelper ggh ;
+        ApplicationContainer nodeApps = ggh.Install(nodes2);
+        nodeApps.Start(Seconds(0.0));
+        nodeApps.Stop(Seconds(10.0));
 
-        ApplicationContainer nodeApps = ggh.Install(nodes2.Get(0));
+        NS_LOG_INFO ("Assign Addresses to Nodes and Create Links Between Nodes.");
+	Ipv4InterfaceContainer interfaceA = ipv4_n.Assign (p2p.Install (NodeContainer (nodes2.Get (0), nodes2.Get(1))));
+	ipv4_n.NewNetwork ();
 
-        Ptr<Application> oneApplication = nodeApps.Get(0);
-        Ptr<Application> *testApplication =&oneApplication;
+	Ipv4InterfaceContainer interfaceB = ipv4_n.Assign (p2p.Install (NodeContainer (nodes2.Get (1), nodes2.Get(2))));
+	ipv4_n.NewNetwork ();
+
+  	NS_LOG_INFO ("Initialize Global Routing.");
+  	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
+
+        Ptr<Application> ApplicationOne = nodeApps.Get(0);
+        Ptr<Application> *testApplication =&ApplicationOne;
 
         Ptr<GossipGenerator>*  PtrOneGossipApp =(Ptr<GossipGenerator>*) testApplication;
         GossipGenerator OneGossipApp = PtrOneGossipApp->operator*();
         OneGossipApp.SetCurrentValue( 1 );
-        NS_LOG_INFO ("Value of first node set to " << OneGossipApp.GetCurrentValue( ));
 
-        OneGossipApp.SendMessage_public( Ipv4Address ("234.234.234.234"), Ipv4Address ("234.234.234.231"), TYPE_ACK );
+        OneGossipApp.SendMessage_public( interfaceA.GetAddress(0), interfaceA.GetAddress(1), TYPE_ACK );
         /* */
 
         Simulator::Run ();
