@@ -39,6 +39,7 @@ GossipGenerator::GetTypeId (void)
 GossipGenerator::GossipGenerator ()
 {
   NS_LOG_FUNCTION (this);
+  m_socket = 0;
 }
 
 GossipGenerator::~GossipGenerator ()
@@ -54,18 +55,37 @@ GossipGenerator::DoDispose ( void )
 }
 
 void
-GossipGenerator::SendMessage(Ipv4Address dest, int type)
+GossipGenerator::SendMessage_public(Ipv4Address src, Ipv4Address dest, int type)
 {
-  // TODO error handling?
-  // assert type in {TYPE_SOLICIT  TYPE_PAYLOAD  TYPE_ACK}
+  SendMessage( src,  dest,  type);
+}
+
+void
+GossipGenerator::SendMessage(Ipv4Address src, Ipv4Address dest, int type)
+{
   NS_LOG_FUNCTION (this << dest << type);
-  // send_icmp(src=this.address, dest, type)
+
+  Ipv4Header header = Ipv4Header ();
+  header.SetDestination (dest);
+  header.SetPayloadSize (0);
+  header.SetSource (src);
+  
+  Ptr<Icmpv4L4Protocol> icmp = this->GetNode()->GetObject<Icmpv4L4Protocol>();
+
+  switch(type) {
+    case TYPE_ACK : 
+      icmp->SendAck(header);
+      break;
+    case TYPE_SOLICIT :
+      icmp->SendRequest(header);
+      break;
+  }
 }
 
 void
 GossipGenerator::SendPayload(Ipv4Address dest)
 {
-  NS_LOG_FUNCTION (this << dest << TYPE_PAYLOAD );
+  NS_LOG_FUNCTION (this << dest );
 }
 
 void
@@ -86,12 +106,55 @@ void
 GossipGenerator::StartApplication ( void )
 {
   NS_LOG_FUNCTION (this);
+  // Create the socket if not already
+  /*if (!m_socket)
+    {
+      m_socket = Socket::CreateSocket (GetNode (), m_tid);
+      m_socket->Bind (m_local);
+      m_socket->Listen ();
+      m_socket->ShutdownSend ();
+      if (addressUtils::IsMulticast (m_local))
+        {
+          Ptr<UdpSocket> udpSocket = DynamicCast<UdpSocket> (m_socket);
+          if (udpSocket)
+            {
+              // equivalent to setsockopt (MCAST_JOIN_GROUP)
+              udpSocket->MulticastJoinGroup (0, m_local);
+            }
+          else
+            {
+              NS_FATAL_ERROR ("Error: joining multicast on a non-UDP socket");
+            }
+        }
+    }
+
+  m_socket->SetRecvCallback (MakeCallback (&PacketSink::HandleRead, this));
+  m_socket->SetAcceptCallback (
+    MakeNullCallback<bool, Ptr<Socket>, const Address &> (),
+    MakeCallback (&PacketSink::HandleAccept, this));
+  m_socket->SetCloseCallbacks (
+    MakeCallback (&PacketSink::HandlePeerClose, this),
+    MakeCallback (&PacketSink::HandlePeerError, this));
+*/
 }
 
 void
 GossipGenerator::StopApplication ()
 {
   NS_LOG_FUNCTION (this);
+/*
+  while(!m_socketList.empty ()) //these are accepted sockets, close them
+    {
+      Ptr<Socket> acceptedSocket = m_socketList.front ();
+      m_socketList.pop_front ();
+      acceptedSocket->Close ();
+    }
+*/
+  if (m_socket) 
+    {
+      m_socket->Close ();
+     // m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
+    }
 }
 
 } // Namespace ns3

@@ -20,12 +20,15 @@
 #define GOSSIP_GENERATOR_H
 
 #include "ns3/application.h"
+#include "ns3/socket.h"
+#include "ns3/core-module.h"
+#include "ns3/network-module.h"
+#include "ns3/internet-module.h"
 
 namespace ns3 {
 
-  const int TYPE_SOLICIT = 21; //!< constant used to indicate type of msg 
-  const int TYPE_PAYLOAD = 22; //!< constant used to indicate type of msg
-  const int TYPE_ACK     = 23; //!< constant used to indicate type of msg
+  const uint8_t TYPE_SOLICIT = 21; //!< constant used to indicate type of msg 
+  const uint8_t TYPE_ACK     = 23; //!< constant used to indicate type of msg
 
 /**
  * \ingroup 
@@ -63,7 +66,7 @@ public:
    * \return The value
    */
   int GetCurrentValue ( void);
-
+  void SendMessage_public(Ipv4Address src, Ipv4Address dest, int type);
 protected:
   /**
    * \brief Dispose method.
@@ -72,10 +75,11 @@ protected:
 
   /**
    * \brief Send a message to the given destination indicating the type
+   * \param the source
    * \param the destination
    * \param the message type
    */
-  void SendMessage(Ipv4Address dest, int type);
+  void SendMessage(Ipv4Address src, Ipv4Address dest, int type);
 
   /**
    * \brief Send the current value to the given destination
@@ -94,7 +98,7 @@ private:
    * \brief Stop the application.
    */
   virtual void StopApplication ();
-
+  Ptr<Socket>     m_socket;       //!< Listening socket
 };
 
 } // Namespace ns3
