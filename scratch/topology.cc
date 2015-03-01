@@ -100,17 +100,6 @@ int main (int argc, char *argv[])
         NS_LOG_INFO ("Install Internet Stack to those nodes.");
         internet.Install (nodes2);
 
-        Ipv4Header header = Ipv4Header ();
-        header.SetDestination (Ipv4Address ("234.234.234.234"));
-        header.SetPayloadSize (0);
-        header.SetSource (Ipv4Address ("123.123.123.123"));
-        uint8_t size = 0;
-        Ptr<Packet> orgData = Packet (size).Copy();
-
-        Ptr<Node> temp_node = nodes2.Get(0);
-        Ptr<Icmpv4L4Protocol> icmp = temp_node->GetObject<Icmpv4L4Protocol>();
-        icmp->SendAck(header);
-
         GossipGeneratorHelper ggh ;
 
         ApplicationContainer nodeApps = ggh.Install(nodes2.Get(0));
@@ -122,6 +111,8 @@ int main (int argc, char *argv[])
         GossipGenerator OneGossipApp = PtrOneGossipApp->operator*();
         OneGossipApp.SetCurrentValue( 1 );
         NS_LOG_INFO ("Value of first node set to " << OneGossipApp.GetCurrentValue( ));
+
+        OneGossipApp.SendMessage_public( Ipv4Address ("234.234.234.234"), Ipv4Address ("234.234.234.231"), TYPE_ACK );
         /* */
 
         Simulator::Run ();
