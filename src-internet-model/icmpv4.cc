@@ -500,7 +500,7 @@ Icmpv4TimeExceeded::Print (std::ostream &os) const
 /***************************************
 *        Icmpv4Ack
 ****************************************/
-
+// Modified from Icmpv4TimeExceeded
 NS_OBJECT_ENSURE_REGISTERED (Icmpv4Ack);
 
 TypeId
@@ -606,7 +606,7 @@ Icmpv4Ack::Print (std::ostream &os) const
 /***************************************
 *      Icmpv4Request
 ***************************************/
-
+// Modified from Icmpv4TimeExceeded
 NS_OBJECT_ENSURE_REGISTERED (Icmpv4Request);
 
 TypeId
@@ -712,7 +712,7 @@ Icmpv4Request::Print (std::ostream &os) const
 /***************************************
 *        Icmpv4Data
 ***************************************/
-
+// Modified from Icmpv4TimeExceeded
 NS_OBJECT_ENSURE_REGISTERED (Icmpv4Data);
 
 TypeId
