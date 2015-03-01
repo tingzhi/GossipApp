@@ -50,7 +50,7 @@ int main (int argc, char *argv[])
   	NS_LOG_INFO ("Install Internet Stack to Nodes.");
 
   	InternetStackHelper internet;
-  	internet.Install (NodeContainer::GetGlobal ());
+        internet.Install (nodes);
 
   	NS_LOG_INFO ("Assign Addresses to Nodes.");
 
@@ -92,15 +92,30 @@ int main (int argc, char *argv[])
 	clientApps.Stop (Seconds (10.0));
 
         /* */
-        NS_LOG_INFO ("Create another node to test GossipGenerator");
+        uint8_t number_nodes_2 = 5;
+        NS_LOG_INFO ("Create " << number_nodes_2 << " nodes to test GossipGenerator");
         NodeContainer nodes2;
-        nodes2.Create(1);
+        nodes2.Create(number_nodes_2);
+
+        NS_LOG_INFO ("Install Internet Stack to those nodes.");
+        internet.Install (nodes2);
+
+        Ipv4Header header = Ipv4Header ();
+        header.SetDestination (Ipv4Address ("234.234.234.234"));
+        header.SetPayloadSize (0);
+        header.SetSource (Ipv4Address ("123.123.123.123"));
+        uint8_t size = 0;
+        Ptr<Packet> orgData = Packet (size).Copy();
+
+        Ptr<Node> temp_node = nodes2.Get(0);
+        Ptr<Icmpv4L4Protocol> icmp = temp_node->GetObject<Icmpv4L4Protocol>();
+        icmp->SendAck(header);
 
         GossipGeneratorHelper ggh ;
 
-        ApplicationContainer nodeApp = ggh.Install(nodes2.Get(0));
+        ApplicationContainer nodeApps = ggh.Install(nodes2.Get(0));
 
-        Ptr<Application> oneApplication = nodeApp.Get(0);
+        Ptr<Application> oneApplication = nodeApps.Get(0);
         Ptr<Application> *testApplication =&oneApplication;
 
         Ptr<GossipGenerator>*  PtrOneGossipApp =(Ptr<GossipGenerator>*) testApplication;
