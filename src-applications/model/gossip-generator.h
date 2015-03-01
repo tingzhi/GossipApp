@@ -27,7 +27,7 @@
 
 namespace ns3 {
 
-  const uint8_t TYPE_SOLICIT = 21; //!< constant used to indicate type of msg 
+  const uint8_t TYPE_SOLICIT = 21; //!< constant used to indicate type of msg
   const uint8_t TYPE_ACK     = 23; //!< constant used to indicate type of msg
 
 /**
@@ -67,6 +67,12 @@ public:
    */
   int GetCurrentValue ( void);
   void SendMessage_public(Ipv4Address src, Ipv4Address dest, int type);
+
+  /**
+   * \brief Receive an icmp
+   * \param the socket
+   */
+  void Receive(Ptr< Socket > socket);
 protected:
   /**
    * \brief Dispose method.

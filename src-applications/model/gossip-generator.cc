@@ -55,6 +55,71 @@ GossipGenerator::DoDispose ( void )
 }
 
 void
+GossipGenerator::Receive (Ptr<Socket> socket)
+{
+  NS_LOG_FUNCTION (this << socket);
+  while (m_socket->GetRxAvailable () > 0)
+    {
+      Address from;
+      Ptr<Packet> p = m_socket->RecvFrom (0xffffffff, 0, from);
+      NS_LOG_DEBUG ("recv " << p->GetSize () << " bytes");
+      NS_ASSERT (InetSocketAddress::IsMatchingType (from));
+      InetSocketAddress realFrom = InetSocketAddress::ConvertFrom (from);
+      NS_ASSERT (realFrom.GetPort () == 1); // protocol should be icmp.
+      Ipv4Header ipv4;
+      p->RemoveHeader (ipv4);
+      // uint32_t recvSize = p->GetSize ();
+      NS_ASSERT (ipv4.GetProtocol () == 1); // protocol should be icmp.
+      Icmpv4Header icmp;
+      p->RemoveHeader (icmp);
+      /*
+      if (icmp.GetType () == Icmpv4Header::ECHO_REPLY)
+        {
+          Icmpv4Echo echo;
+          p->RemoveHeader (echo);
+          std::map<uint16_t, Time>::iterator i = m_sent.find (echo.GetSequenceNumber ());
+
+          if (i != m_sent.end () && echo.GetIdentifier () == 0)
+            {
+              uint32_t * buf = new uint32_t [m_size];
+              uint32_t dataSize = echo.GetDataSize ();
+              uint32_t nodeId;
+              uint32_t appId;
+              if (dataSize == m_size)
+                {
+                  echo.GetData ((uint8_t *)buf);
+                  Read32 ((const uint8_t *) &buf[0], nodeId);
+                  Read32 ((const uint8_t *) &buf[1], appId);
+
+                  if (nodeId == GetNode ()->GetId () &&
+                      appId == GetApplicationId ())
+                    {
+                      Time sendTime = i->second;
+                      NS_ASSERT (Simulator::Now () >= sendTime);
+                      Time delta = Simulator::Now () - sendTime;
+
+                      m_sent.erase (i);
+                      m_avgRtt.Update (delta.GetMilliSeconds ());
+                      m_recv++;
+                      m_traceRtt (delta);
+
+                      if (m_verbose)
+                        {
+                          std::cout << recvSize << " bytes from " << realFrom.GetIpv4 () << ":"
+                                    << " icmp_seq=" << echo.GetSequenceNumber ()
+                                    << " ttl=" << (unsigned)ipv4.GetTtl ()
+                                    << " time=" << delta.GetMilliSeconds () << " ms\n";
+                        }
+                    }
+                }
+              delete[] buf;
+            }
+        }
+       */
+    }
+}
+
+void
 GossipGenerator::SendMessage_public(Ipv4Address src, Ipv4Address dest, int type)
 {
   SendMessage( src,  dest,  type);
