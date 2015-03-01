@@ -87,8 +87,8 @@ public:
   void SendDestUnreachPort (Ipv4Header header, Ptr<const Packet> orgData);
 
 /*****************************************************************************************************/
-  void SendAck (Ipv4Header header, Ptr<const Packet> orgData);
-  void SendRequest (Ipv4Header header, Ptr<const Packet> orgData);
+  void SendAck (Ipv4Header header);
+  void SendRequest (Ipv4Header header);
   void SendData (Ipv4Header header, Ptr<const Packet> orgData);
 
 /*****************************************************************************************************/

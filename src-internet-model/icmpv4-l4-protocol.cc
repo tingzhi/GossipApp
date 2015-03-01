@@ -169,24 +169,24 @@ Icmpv4L4Protocol::SendTimeExceededTtl (Ipv4Header header, Ptr<const Packet> orgD
 
 /******************************************************************************************************/
 void
-Icmpv4L4Protocol::SendAck (Ipv4Header header, Ptr<const Packet> orgData)
+Icmpv4L4Protocol::SendAck (Ipv4Header header)
 {
-  NS_LOG_FUNCTION (this << header << *orgData);
+  NS_LOG_FUNCTION (this << header);
   Ptr<Packet> p = Create<Packet> ();
   Icmpv4Ack ack;
   ack.SetHeader (header);
-  ack.SetData (orgData);
+  //ack.SetData (orgData);
   p->AddHeader (ack);
   SendMessage (p, header.GetSource (), Icmpv4Header::ACK, 0);
 }
 void
-Icmpv4L4Protocol::SendRequest (Ipv4Header header, Ptr<const Packet> orgData)
+Icmpv4L4Protocol::SendRequest (Ipv4Header header)
 {
-  NS_LOG_FUNCTION (this << header << *orgData);
+  NS_LOG_FUNCTION (this << header);
   Ptr<Packet> p = Create<Packet> ();
   Icmpv4Request request;
   request.SetHeader (header);
-  request.SetData (orgData);
+  //request.SetData (orgData);
   p->AddHeader (request);
   SendMessage (p, header.GetSource (), Icmpv4Header::REQUEST, 0);
 }
