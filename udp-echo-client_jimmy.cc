@@ -5,20 +5,27 @@ idea_temp{
 	time = local_time
 	switch(message):
 		case x:
-			if ((local_time - time)% 1 milsecond) == 0):
-				find random neighbor 
+			if (((local_time - time)% 1 milsecond) == 0):
+				find random neighbor (findOneNeighbor) 
 				send x to neighbor
-				listen ports for every 0.5 milsecond:
-					if receive == ACK:
-						while(1):
-							listen ports:
-								if listen == solic:
+				timeTemp = local_time()
+				Ptr<Packet> packet;
+				Address from;
+				while ((packet = socket->RecvFrom (from))):
+					if(local_time - timeTemp = 0.5 milsecond):
+				 		break
+				
+					if packet == ACK:
+						while ((packet = socket->RecvFrom (from))):
+								if packet == solic:
 									send X
-								if listen == data and mesaage == x:
+								if packet == data and mesaage == x:
 									send ack
 		case null:
-			listen ports:
-				if listen == data:
+			Ptr<Packet> packet;
+			Address from;
+			while ((packet = socket->RecvFrom (from))):
+				if packet == data:
 					message = x
 					continue
 				every 5 second:
