@@ -149,7 +149,7 @@ private:
    */
 
 /*****************************************************************************************************/
-void HandleAck (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination);
+void HandleAck (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination,Ptr<Ipv4Interface> incomingInterface);
 void HandleRequest (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination);
 void HandleData (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination);
 
