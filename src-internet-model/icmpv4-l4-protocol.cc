@@ -5,12 +5,9 @@
 #include "ns3/assert.h"
 #include "ns3/log.h"
 #include "ns3/node.h"
-#include "ns3/application.h"
 #include "ns3/packet.h"
 #include "ns3/boolean.h"
 #include "ns3/ipv4-route.h"
-
-#include "ns3/gossip-generator.h"
 
 namespace ns3 {
 
@@ -176,7 +173,7 @@ void
 Icmpv4L4Protocol::SendAck (Ipv4Header header)
 {
   NS_LOG_FUNCTION (this << header);
-  NS_LOG_INFO("Send ACK");
+  NS_LOG_INFO("Icmpv4L4Protocol::SendAck");
   Ptr<Packet> p = Create<Packet> ();
   Icmpv4Ack ack;
   ack.SetHeader (header);
@@ -270,51 +267,49 @@ Icmpv4L4Protocol::HandleTimeExceeded (Ptr<Packet> p,
 }
 
 /******************************************************************************************************/
-//Modified from HandleTimeExceeded
-void
-Icmpv4L4Protocol::HandleAck (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination, Ptr<Ipv4Interface> incomingInterface)
+GossipGenerator
+Icmpv4L4Protocol::GetGossipApp(Ptr<Ipv4Interface> incomingInterface)
 {
-  NS_LOG_FUNCTION (this << p << icmp << source << destination);
-  NS_LOG_INFO ("Handle Ack");
   Ptr <Node> node = incomingInterface->GetDevice()->GetNode ();
-  NS_LOG_INFO ("applications on node: " << ((int)node->GetNApplications ()) );
   Ptr< Application > gossipApp = node->GetApplication (0) ;
   Ptr<Application> *tempApplication =&gossipApp;
 
   Ptr<GossipGenerator>*  PtrOneGossipApp =(Ptr<GossipGenerator>*) tempApplication;
   GossipGenerator GossipApp = PtrOneGossipApp->operator*();
-
+  return GossipApp;
+}
+//Modified from HandleTimeExceeded
+void
+Icmpv4L4Protocol::HandleAck (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination, Ptr<Ipv4Interface> incomingInterface)
+{
+  NS_LOG_FUNCTION (this << p << icmp << source << destination);
+  NS_LOG_INFO ("Icmpv4L4Protocol::HandleAck");
+  GossipGenerator GossipApp = GetGossipApp(incomingInterface);
   GossipApp.HandleAck();
-  Icmpv4Ack ack;
-  p->PeekHeader (ack);
-  uint8_t payload[8];
-  ack.GetData (payload);
-  Ipv4Header ipHeader = ack.GetHeader ();
-  Forward (source, icmp, 0, ipHeader, payload);
 }
 //Modified from HandleTimeExceeded
 void
-Icmpv4L4Protocol::HandleRequest (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination)
+Icmpv4L4Protocol::HandleRequest (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination, Ptr<Ipv4Interface> incomingInterface)
 {
   NS_LOG_FUNCTION (this << p << icmp << source << destination);
-  Icmpv4Request request;
-  p->PeekHeader (request);
-  uint8_t payload[8];
-  request.GetData (payload);
-  Ipv4Header ipHeader = request.GetHeader ();
-  Forward (source, icmp, 0, ipHeader, payload);
+  NS_LOG_INFO ("Icmpv4L4Protocol::HandleRequest");
+  GossipGenerator GossipApp = GetGossipApp(incomingInterface);
+  GossipApp.HandleSolicit(source, destination);
 }
 //Modified from HandleTimeExceeded
 void
-Icmpv4L4Protocol::HandleData (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination)
+Icmpv4L4Protocol::HandleData (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination, Ptr<Ipv4Interface> incomingInterface)
 {
   NS_LOG_FUNCTION (this << p << icmp << source << destination);
+  NS_LOG_INFO ("Icmpv4L4Protocol::HandleData");
+  GossipGenerator GossipApp = GetGossipApp(incomingInterface);
+
   Icmpv4Data data;
   p->PeekHeader (data);
   uint8_t payload[8];
   data.GetData (payload);
-  Ipv4Header ipHeader = data.GetHeader ();
-  Forward (source, icmp, 0, ipHeader, payload);
+  int payload_ = (int) payload[0]; //TODO
+  GossipApp.HandlePayload(source, destination,payload_);  
 }
 /******************************************************************************************************/
 
@@ -342,10 +337,10 @@ Icmpv4L4Protocol::Receive (Ptr<Packet> p,
       HandleAck (p, icmp, header.GetSource (), header.GetDestination (), incomingInterface);
       break;
     case Icmpv4Header::REQUEST:
-      HandleRequest (p, icmp, header.GetSource (), header.GetDestination ());
+      HandleRequest (p, icmp, header.GetSource (), header.GetDestination (),  incomingInterface);
       break;
     case Icmpv4Header::DATA:
-      HandleData (p, icmp, header.GetSource (), header.GetDestination ());
+      HandleData (p, icmp, header.GetSource (), header.GetDestination (),  incomingInterface);
       break;
 /*****************************************************************************************************/
     default:

@@ -4,12 +4,14 @@
 #include "ip-l4-protocol.h"
 #include "icmpv4.h"
 #include "ns3/ipv4-address.h"
+#include "ns3/gossip-generator.h"
 
 namespace ns3 {
 
 class Node;
 class Ipv4Interface;
 class Ipv4Route;
+class GossipGenerator;
 
 class Icmpv4L4Protocol : public IpL4Protocol
 {
@@ -107,6 +109,11 @@ protected:
   virtual void NotifyNewAggregate ();
 private:
   /**
+   * \brief Get the gossip app
+   * \param the interface
+   */
+  GossipGenerator GetGossipApp(Ptr<Ipv4Interface> incomingInterface);
+  /**
    * \brief Handles an incoming ICMP Echo packet
    * \param p the packet
    * \param header the IP header
@@ -150,8 +157,8 @@ private:
 
 /*****************************************************************************************************/
 void HandleAck (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination,Ptr<Ipv4Interface> incomingInterface);
-void HandleRequest (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination);
-void HandleData (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination);
+void HandleRequest (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination, Ptr<Ipv4Interface> incomingInterface);
+void HandleData (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address source, Ipv4Address destination, Ptr<Ipv4Interface> incomingInterface);
 
 /*****************************************************************************************************/
 
