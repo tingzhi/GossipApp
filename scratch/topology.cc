@@ -32,6 +32,7 @@ int main (int argc, char *argv[])
 	LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
   	LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
         LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
+        LogComponentEnable ("Icmpv4L4Protocol"       , LOG_LEVEL_INFO);
 
 	std::string LinkRate ("100Mbps");
   	std::string LinkDelay ("2ms");
@@ -113,8 +114,8 @@ int main (int argc, char *argv[])
 	Ipv4InterfaceContainer interfaceB = ipv4_n.Assign (p2p.Install (NodeContainer (nodes2.Get (1), nodes2.Get(2))));
 	ipv4_n.NewNetwork ();
 
-  	NS_LOG_INFO ("Initialize Global Routing.");
-  	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
+//  	NS_LOG_INFO ("Initialize Global Routing.");
+//  	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
         Ptr<Application> ApplicationOne = nodeApps.Get(0);
         Ptr<Application> *testApplication =&ApplicationOne;

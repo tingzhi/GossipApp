@@ -67,6 +67,16 @@ public:
    */
   int GetCurrentValue ( void);
   void SendMessage_public(Ipv4Address src, Ipv4Address dest, int type);
+  void HandleAck(void);
+  void HandleSolicit(Ipv4Address src,Ipv4Address dest);
+
+  /**
+   * \brief Handle payload
+   * \param the source address
+   * \param the destination address
+   * \param the payload
+   */
+  void HandlePayload(Ipv4Address src,Ipv4Address dest,int payload);
 
   /**
    * \brief Receive an icmp
@@ -88,10 +98,17 @@ protected:
   void SendMessage(Ipv4Address src, Ipv4Address dest, int type);
 
   /**
+   * \brief Send a message
+   * \param the message type
+   */
+  void SendStatus (uint8_t type);
+
+  /**
    * \brief Send the current value to the given destination
+   * \param the source
    * \param the destination
    */
-  void SendPayload(Ipv4Address dest);
+  void SendPayload(Ipv4Address src, Ipv4Address dest);
 
   /**
    * \brief Send a message to the given destination indicating the type
@@ -111,8 +128,19 @@ protected:
    */
   Ptr< NetDevice > ChooseRandomNeighbor();
   int CurrentValue; //!< The current Value
+  bool halt; //!< If the gossip is paused
 
 private:
+  /**
+   * \brief Start the GossipProcess
+   */
+  void GossipProcess();
+
+  /**
+   * \brief Start the SolicitProcess
+   */
+  void Solicit(void);
+
   /**
    * \brief Start the application.
    */

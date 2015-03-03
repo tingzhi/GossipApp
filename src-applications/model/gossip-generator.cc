@@ -17,6 +17,7 @@
  */
 
 #include <string>
+// #include <thread>
 
 #include "ns3/log.h"
 
@@ -39,6 +40,7 @@ GossipGenerator::GetTypeId (void)
 GossipGenerator::GossipGenerator ()
 {
   NS_LOG_FUNCTION (this);
+  CurrentValue = 0;
   m_socket = 0;
 }
 
@@ -126,6 +128,50 @@ GossipGenerator::SendMessage_public(Ipv4Address src, Ipv4Address dest, int type)
   SendMessage( src,  dest,  type);
 }
 
+void
+GossipGenerator::HandleAck(void)
+{
+  NS_LOG_INFO("HANDLE ACK GOSSIP");
+  halt = true;
+}
+
+void
+GossipGenerator::HandleSolicit(Ipv4Address src,Ipv4Address dest)
+{
+  NS_LOG_INFO("HANDLE Solicit GOSSIP");
+  // sendPayload(dest,src);
+}
+
+void
+GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,int payload)
+{
+  NS_LOG_INFO("HANDLE payload GOSSIP");
+  if( payload == CurrentValue)
+  {
+    SendMessage(dest, src, TYPE_ACK);
+  }
+  else
+  {
+    CurrentValue = payload;
+  }
+}
+
+void 
+GossipGenerator::SendStatus (uint8_t type)
+{
+  NS_LOG_FUNCTION (this);
+  NS_LOG_INFO (type);
+
+  Ptr<Packet> p;
+  int size = 0;
+  p = Create<Packet> (size);
+
+  // call to the trace sinks before the packet is actually sent,
+  // so that tags added to the packet can be sent as well
+  // m_txTrace (p);
+  m_socket->Send (p);
+}
+
 Ptr< NetDevice >
 GossipGenerator::ChooseRandomNeighbor(){
   Ptr< Node > node = this->GetNode();
@@ -161,7 +207,7 @@ GossipGenerator::SendMessage(Ipv4Address src, Ipv4Address dest, int type)
 }
 
 void
-GossipGenerator::SendPayload(Ipv4Address dest)
+GossipGenerator::SendPayload(Ipv4Address src, Ipv4Address dest)
 {
   NS_LOG_FUNCTION (this << dest );
 }
@@ -217,6 +263,33 @@ GossipGenerator::GetCurrentValue ( void )
 }
 
 void
+GossipGenerator::GossipProcess(void)
+{
+  //int delta_t = 1;//millisecond
+  while(!halt)
+  {
+    //sleep(delta_t);
+    if (  CurrentValue != 0 )
+    {
+      //n=chooseRandomNeighbor();
+      //SendPayload(n);
+    }
+  }
+}
+
+void
+GossipGenerator::Solicit(void)
+{
+  //int delta_t = 5000;//millisecond
+  while(CurrentValue != 0)
+  {
+    //sleep(delta_t);
+    //n=chooseRandomNeighbor();
+    //SendMessage(src, n, TYPE_SOLICIT);
+  }
+}
+
+void
 GossipGenerator::StartApplication ( void )
 {
   NS_LOG_FUNCTION (this);
@@ -227,6 +300,8 @@ GossipGenerator::StartApplication ( void )
       m_socket->Bind ();
       m_socket->Listen ();
     }
+  // std::thread t1(GossipProcess);
+  // std::thread t2(Solicit);
 /*
   m_socket->SetRecvCallback (MakeCallback (&PacketSink::HandleRead, this));
   m_socket->SetAcceptCallback (
@@ -236,6 +311,7 @@ GossipGenerator::StartApplication ( void )
     MakeCallback (&PacketSink::HandlePeerClose, this),
     MakeCallback (&PacketSink::HandlePeerError, this));
 */
+  SendStatus(1);
 }
 
 void
