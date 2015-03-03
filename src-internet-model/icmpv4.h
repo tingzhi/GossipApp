@@ -360,7 +360,7 @@ public:
    * \brief Set the ICMP carried data
    * \param data the data
    */
-  void SetData (Ptr<const Packet> data);
+  void SetData (uint8_t payload[8]);
   /**
    * \brief Set the ICMP carried IPv4 header
    * \param header the header

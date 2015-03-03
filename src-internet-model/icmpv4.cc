@@ -734,10 +734,10 @@ Icmpv4Data::Icmpv4Data ()
 }
 
 void 
-Icmpv4Data::SetData (Ptr<const Packet> data)
+Icmpv4Data::SetData (uint8_t data[])
 {
   NS_LOG_FUNCTION (this << *data);
-  data->CopyData (m_data, 8);
+  memcpy (m_data, data, 8);
 }
 void 
 Icmpv4Data::SetHeader (Ipv4Header header)

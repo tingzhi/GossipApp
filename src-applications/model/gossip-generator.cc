@@ -79,7 +79,7 @@ void
 GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,uint8_t payload_in[])
 {
   int payload = (int) payload_in[0];
-  NS_LOG_INFO("GossipGenerator::HandlePayload");
+  NS_LOG_INFO("GossipGenerator::HandlePayload " << src << " -> " << dest << " Value:" << payload);
   if( payload == CurrentValue)
   {
     SendMessage(dest, src, TYPE_ACK);
