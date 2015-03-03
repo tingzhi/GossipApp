@@ -66,7 +66,7 @@ public:
    * \return The value
    */
   int GetCurrentValue ( void);
-  void SendMessage_public(Ipv4Address src, Ipv4Address dest, int type);
+  void SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type);
   void HandleAck(void);
   void HandleSolicit(Ipv4Address src,Ipv4Address dest);
 
@@ -76,13 +76,8 @@ public:
    * \param the destination address
    * \param the payload
    */
-  void HandlePayload(Ipv4Address src,Ipv4Address dest,int payload);
+  void HandlePayload(Ipv4Address src,Ipv4Address dest,uint8_t payload[]);
 
-  /**
-   * \brief Receive an icmp
-   * \param the socket
-   */
-  void Receive(Ptr< Socket > socket);
 protected:
   /**
    * \brief Dispose method.
@@ -98,30 +93,11 @@ protected:
   void SendMessage(Ipv4Address src, Ipv4Address dest, int type);
 
   /**
-   * \brief Send a message
-   * \param the message type
-   */
-  void SendStatus (uint8_t type);
-
-  /**
    * \brief Send the current value to the given destination
    * \param the source
    * \param the destination
    */
   void SendPayload(Ipv4Address src, Ipv4Address dest);
-
-  /**
-   * \brief Send a message to the given destination indicating the type
-   * \param the device to use
-   * \param the message type
-   */
-  void SendMessage(Ptr<NetDevice> device, int type);
-
-  /**
-   * \brief Send the current value to the given destination
-   * \param the device to use
-   */
-  void SendPayload(Ptr<NetDevice> device);
 
   /**
    * \brief Find a random neigbor
@@ -150,7 +126,6 @@ private:
    * \brief Stop the application.
    */
   virtual void StopApplication ();
-  Ptr<Socket>     m_socket;       //!< Listening socket
 };
 
 } // Namespace ns3

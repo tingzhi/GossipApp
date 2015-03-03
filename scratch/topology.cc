@@ -124,7 +124,7 @@ int main (int argc, char *argv[])
         GossipGenerator OneGossipApp = PtrOneGossipApp->operator*();
         OneGossipApp.SetCurrentValue( 1 );
 
-        OneGossipApp.SendMessage_public( interfaceA.GetAddress(0), interfaceA.GetAddress(1), TYPE_ACK );
+        OneGossipApp.SendMessage_debug( interfaceA.GetAddress(0), interfaceA.GetAddress(1), TYPE_ACK );
         /* */
 
         Simulator::Run ();

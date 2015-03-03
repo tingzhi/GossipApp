@@ -91,7 +91,7 @@ public:
 /*****************************************************************************************************/
   void SendAck (Ipv4Header header);
   void SendRequest (Ipv4Header header);
-  void SendData (Ipv4Header header, Ptr<const Packet> orgData);
+  void SendData (Ipv4Header header, uint8_t data[8]);
 
 /*****************************************************************************************************/
 

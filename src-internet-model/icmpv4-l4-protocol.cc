@@ -193,13 +193,13 @@ Icmpv4L4Protocol::SendRequest (Ipv4Header header)
 }
 // Modified from SendTimeExceededTtl
 void
-Icmpv4L4Protocol::SendData (Ipv4Header header, Ptr<const Packet> orgData)
+Icmpv4L4Protocol::SendData (Ipv4Header header, uint8_t payload[8])
 {
-  NS_LOG_FUNCTION (this << header << *orgData);
+  NS_LOG_FUNCTION (this << header << payload);
   Ptr<Packet> p = Create<Packet> ();
   Icmpv4Data data;
   data.SetHeader (header);
-  data.SetData (orgData);
+  data.SetData (payload);
   p->AddHeader (data);
   SendMessage (p, header.GetSource (), Icmpv4Header::DATA, 0);
 }
@@ -308,8 +308,7 @@ Icmpv4L4Protocol::HandleData (Ptr<Packet> p, Icmpv4Header icmp, Ipv4Address sour
   p->PeekHeader (data);
   uint8_t payload[8];
   data.GetData (payload);
-  int payload_ = (int) payload[0]; //TODO
-  GossipApp.HandlePayload(source, destination,payload_);  
+  GossipApp.HandlePayload(source, destination,payload);  
 }
 /******************************************************************************************************/
 

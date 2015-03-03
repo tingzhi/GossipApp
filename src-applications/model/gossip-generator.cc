@@ -41,7 +41,6 @@ GossipGenerator::GossipGenerator ()
 {
   NS_LOG_FUNCTION (this);
   CurrentValue = 0;
-  m_socket = 0;
 }
 
 GossipGenerator::~GossipGenerator ()
@@ -57,73 +56,7 @@ GossipGenerator::DoDispose ( void )
 }
 
 void
-GossipGenerator::Receive (Ptr<Socket> socket)
-{
-  NS_LOG_INFO ("Packet received");
-  NS_LOG_FUNCTION (this << socket);
-  while (m_socket->GetRxAvailable () > 0)
-    {
-      Address from;
-      Ptr<Packet> p = m_socket->RecvFrom (0xffffffff, 0, from);
-      NS_LOG_DEBUG ("recv " << p->GetSize () << " bytes");
-      NS_ASSERT (InetSocketAddress::IsMatchingType (from));
-      InetSocketAddress realFrom = InetSocketAddress::ConvertFrom (from);
-      NS_ASSERT (realFrom.GetPort () == 1); // protocol should be icmp.
-      Ipv4Header ipv4;
-      p->RemoveHeader (ipv4);
-      // uint32_t recvSize = p->GetSize ();
-      NS_ASSERT (ipv4.GetProtocol () == 1); // protocol should be icmp.
-      Icmpv4Header icmp;
-      p->RemoveHeader (icmp);
-      /*
-      if (icmp.GetType () == Icmpv4Header::ECHO_REPLY)
-        {
-          Icmpv4Echo echo;
-          p->RemoveHeader (echo);
-          std::map<uint16_t, Time>::iterator i = m_sent.find (echo.GetSequenceNumber ());
-
-          if (i != m_sent.end () && echo.GetIdentifier () == 0)
-            {
-              uint32_t * buf = new uint32_t [m_size];
-              uint32_t dataSize = echo.GetDataSize ();
-              uint32_t nodeId;
-              uint32_t appId;
-              if (dataSize == m_size)
-                {
-                  echo.GetData ((uint8_t *)buf);
-                  Read32 ((const uint8_t *) &buf[0], nodeId);
-                  Read32 ((const uint8_t *) &buf[1], appId);
-
-                  if (nodeId == GetNode ()->GetId () &&
-                      appId == GetApplicationId ())
-                    {
-                      Time sendTime = i->second;
-                      NS_ASSERT (Simulator::Now () >= sendTime);
-                      Time delta = Simulator::Now () - sendTime;
-
-                      m_sent.erase (i);
-                      m_avgRtt.Update (delta.GetMilliSeconds ());
-                      m_recv++;
-                      m_traceRtt (delta);
-
-                      if (m_verbose)
-                        {
-                          std::cout << recvSize << " bytes from " << realFrom.GetIpv4 () << ":"
-                                    << " icmp_seq=" << echo.GetSequenceNumber ()
-                                    << " ttl=" << (unsigned)ipv4.GetTtl ()
-                                    << " time=" << delta.GetMilliSeconds () << " ms\n";
-                        }
-                    }
-                }
-              delete[] buf;
-            }
-        }
-       */
-    }
-}
-
-void
-GossipGenerator::SendMessage_public(Ipv4Address src, Ipv4Address dest, int type)
+GossipGenerator::SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type)
 {
   SendMessage( src,  dest,  type);
 }
@@ -131,21 +64,22 @@ GossipGenerator::SendMessage_public(Ipv4Address src, Ipv4Address dest, int type)
 void
 GossipGenerator::HandleAck(void)
 {
-  NS_LOG_INFO("HANDLE ACK GOSSIP");
+  NS_LOG_INFO("GossipGenerator::HandleAck");
   halt = true;
 }
 
 void
 GossipGenerator::HandleSolicit(Ipv4Address src,Ipv4Address dest)
 {
-  NS_LOG_INFO("HANDLE Solicit GOSSIP");
-  // sendPayload(dest,src);
+  NS_LOG_INFO("GossipGenerator::HandleSolicit " << src << " -> " << dest);
+  SendPayload(dest,src);
 }
 
 void
-GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,int payload)
+GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,uint8_t payload_in[])
 {
-  NS_LOG_INFO("HANDLE payload GOSSIP");
+  int payload = (int) payload_in[0];
+  NS_LOG_INFO("GossipGenerator::HandlePayload");
   if( payload == CurrentValue)
   {
     SendMessage(dest, src, TYPE_ACK);
@@ -154,22 +88,6 @@ GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,int payload)
   {
     CurrentValue = payload;
   }
-}
-
-void 
-GossipGenerator::SendStatus (uint8_t type)
-{
-  NS_LOG_FUNCTION (this);
-  NS_LOG_INFO (type);
-
-  Ptr<Packet> p;
-  int size = 0;
-  p = Create<Packet> (size);
-
-  // call to the trace sinks before the packet is actually sent,
-  // so that tags added to the packet can be sent as well
-  // m_txTrace (p);
-  m_socket->Send (p);
 }
 
 Ptr< NetDevice >
@@ -187,7 +105,8 @@ GossipGenerator::ChooseRandomNeighbor(){
 void
 GossipGenerator::SendMessage(Ipv4Address src, Ipv4Address dest, int type)
 {
-  NS_LOG_FUNCTION (this << dest << type);
+  NS_LOG_FUNCTION (this << src << dest << type);
+  NS_LOG_INFO("GossipGenerator::SendMessage " << src << " -> " << dest << " Type:" << type);
 
   Ipv4Header header = Ipv4Header ();
   header.SetDestination (dest);
@@ -210,41 +129,22 @@ void
 GossipGenerator::SendPayload(Ipv4Address src, Ipv4Address dest)
 {
   NS_LOG_FUNCTION (this << dest );
-}
-
-void
-GossipGenerator::SendMessage(Ptr<NetDevice> target, int type)
-{
-  NS_LOG_FUNCTION (this << target << type);
-
-  Ptr<NetDevice> source;
-  if (target != target->GetChannel()->GetDevice(0)){
-    source = target->GetChannel()->GetDevice(0);
-  }else{
-    source = target->GetChannel()->GetDevice(1);
-  }
+  NS_LOG_INFO("GossipGenerator::SendPayload " << src << " -> " << dest << " Value:" << CurrentValue );
 
   Ipv4Header header = Ipv4Header ();
-  // header.SetDestination (target->GetAddress()); //TODO
+  header.SetDestination (dest);
   header.SetPayloadSize (0);
-  // header.SetSource (source->GetAddress()); //TODO
-  
-  Ptr<Icmpv4L4Protocol> icmp = this->GetNode()->GetObject<Icmpv4L4Protocol>();
+  header.SetSource (src);
 
-  switch(type) {
-    case TYPE_ACK : 
-      icmp->SendAck(header);
-      break;
-    case TYPE_SOLICIT :
-      icmp->SendRequest(header);
-      break;
+  uint8_t data[8];
+  for (uint8_t j = 0; j < 8; j++)
+  {
+  data[j] = 0;
   }
-}
+  data[0] = (uint8_t) CurrentValue; // ONLY use first 8 bits to store data. May be extended...  
 
-void
-GossipGenerator::SendPayload(Ptr<NetDevice> target)
-{
-  NS_LOG_FUNCTION (this << target );
+  Ptr<Icmpv4L4Protocol> icmp = this->GetNode()->GetObject<Icmpv4L4Protocol>(); 
+  icmp->SendData(header, data);
 }
 
 void
@@ -272,7 +172,7 @@ GossipGenerator::GossipProcess(void)
     if (  CurrentValue != 0 )
     {
       //n=chooseRandomNeighbor();
-      //SendPayload(n);
+      //SendPayload(n); // TODO
     }
   }
 }
@@ -285,7 +185,7 @@ GossipGenerator::Solicit(void)
   {
     //sleep(delta_t);
     //n=chooseRandomNeighbor();
-    //SendMessage(src, n, TYPE_SOLICIT);
+    //SendMessage(src, n, TYPE_SOLICIT); // TODO
   }
 }
 
@@ -293,44 +193,16 @@ void
 GossipGenerator::StartApplication ( void )
 {
   NS_LOG_FUNCTION (this);
-  // Create the socket if not already
-  if (!m_socket)
-    {
-      m_socket = Socket::CreateSocket (GetNode (), UdpSocketFactory::GetTypeId ());
-      m_socket->Bind ();
-      m_socket->Listen ();
-    }
-  // std::thread t1(GossipProcess);
+
+  // std::thread t1(GossipProcess); // TODO
   // std::thread t2(Solicit);
-/*
-  m_socket->SetRecvCallback (MakeCallback (&PacketSink::HandleRead, this));
-  m_socket->SetAcceptCallback (
-    MakeNullCallback<bool, Ptr<Socket>, const Address &> (),
-    MakeCallback (&PacketSink::HandleAccept, this));
-  m_socket->SetCloseCallbacks (
-    MakeCallback (&PacketSink::HandlePeerClose, this),
-    MakeCallback (&PacketSink::HandlePeerError, this));
-*/
-  SendStatus(1);
+
 }
 
 void
 GossipGenerator::StopApplication ()
 {
   NS_LOG_FUNCTION (this);
-/*
-  while(!m_socketList.empty ()) //these are accepted sockets, close them
-    {
-      Ptr<Socket> acceptedSocket = m_socketList.front ();
-      m_socketList.pop_front ();
-      acceptedSocket->Close ();
-    }
-*/
-  if (m_socket) 
-    {
-      m_socket->Close ();
-     // m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
-    }
 }
 
 } // Namespace ns3
