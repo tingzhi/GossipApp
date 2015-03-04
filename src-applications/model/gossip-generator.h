@@ -19,6 +19,8 @@
 #ifndef GOSSIP_GENERATOR_H
 #define GOSSIP_GENERATOR_H
 
+#include <vector>
+
 #include "ns3/application.h"
 #include "ns3/socket.h"
 #include "ns3/core-module.h"
@@ -54,6 +56,17 @@ public:
    * \brief Constructor.
    */
   virtual ~GossipGenerator ();
+
+  /**
+   * \brief add a neighbor
+   * \param ip of the neighbor
+   */
+  void AddNeighbor( Ipv4Address newN );
+
+  /**
+   * \brief Find a random neigbor
+   */
+  Ipv4Address ChooseRandomNeighbor();
 
   /**
    * \brief Seed the internal value of a node to initiate the gossip.
@@ -99,12 +112,9 @@ protected:
    */
   void SendPayload(Ipv4Address src, Ipv4Address dest);
 
-  /**
-   * \brief Find a random neigbor
-   */
-  Ptr< NetDevice > ChooseRandomNeighbor();
   int CurrentValue; //!< The current Value
   bool halt; //!< If the gossip is paused
+  std::vector<Ipv4Address> neighbours; //!< The neighbors of this node
 
 private:
   /**
