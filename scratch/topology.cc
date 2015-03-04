@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <typeinfo>
 
+#include "ns3/object.h"
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/internet-module.h"
@@ -24,6 +25,12 @@ using namespace std;
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
+
+Ptr<GossipGenerator> GetGossipApp(Ptr <Node> node)
+{
+  Ptr< Application > gossipApp = node->GetApplication (0) ;
+  return DynamicCast<GossipGenerator>(gossipApp);
+}
 
 int main (int argc, char *argv[])
 {
@@ -94,10 +101,26 @@ int main (int argc, char *argv[])
 	clientApps.Stop (Seconds (10.0));
 
         /* */
-        int number_nodes_2 = 5;
-        NS_LOG_INFO ("Create " << number_nodes_2 << " nodes to test GossipGenerator");
         NodeContainer nodes2;
-        nodes2.Create(number_nodes_2);
+        int NodeNumber, Edge1, Edge2;
+        bool ParseNodes = false;
+        bool ParseEdges = false;
+        string Line;
+        string NodePrefix = "#Nodes";
+        string EdgePrefix = "#Edges";
+	ifstream Topology;
+	Topology.open ("scratch/TopologyFile");
+        while(getline(Topology,Line))
+        {
+        if (!Line.compare(0, NodePrefix.size(), NodePrefix)){
+            ParseNodes = true;
+            continue;
+        }
+        if (!Line.compare(0, EdgePrefix.size(), EdgePrefix)){
+            ParseNodes = false;
+        NS_LOG_INFO ("Create " << NodeNumber << " nodes to test GossipGenerator");
+
+        nodes2.Create(NodeNumber);
 
         NS_LOG_INFO ("Install Internet Stack and GossipGenerator to those nodes.");
         internet.Install (nodes2);
@@ -108,23 +131,32 @@ int main (int argc, char *argv[])
         nodeApps.Stop(Seconds(10.0));
 
         NS_LOG_INFO ("Assign Addresses to Nodes and Create Links Between Nodes.");
-	Ipv4InterfaceContainer interfaceA = ipv4_n.Assign (p2p.Install (NodeContainer (nodes2.Get (0), nodes2.Get(1))));
-	ipv4_n.NewNetwork ();
+            ParseEdges = true;
+            continue;
+        }
+        if (ParseNodes){
+            istringstream(Line) >> NodeNumber; // Just update til end
+            NodeNumber++; // convert index -> length
+        }
+        if (ParseEdges){ // Format: (12, 14)
+            istringstream(Line.substr(1)) >> Edge1;
+            istringstream(Line.substr(1+Line.find(","))) >> Edge2;
 
-	Ipv4InterfaceContainer interfaceB = ipv4_n.Assign (p2p.Install (NodeContainer (nodes2.Get (1), nodes2.Get(2))));
+        NS_LOG_INFO("Parsed Edge: (" << Edge1 << ", " << Edge2 << ")");
+
+	Ipv4InterfaceContainer InterfaceCont = ipv4_n.Assign (p2p.Install (NodeContainer (nodes2.Get (Edge1), nodes2.Get(Edge2))));
 	ipv4_n.NewNetwork ();
+        GetGossipApp(nodes2.Get(Edge1))->AddNeighbor(InterfaceCont.GetAddress(1)); //TODO save getaddress(0) as well as own!
+        GetGossipApp(nodes2.Get(Edge2))->AddNeighbor(InterfaceCont.GetAddress(0));
 
 //  	NS_LOG_INFO ("Initialize Global Routing.");
 //  	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
-        Ptr<Application> ApplicationOne = nodeApps.Get(0);
-        Ptr<Application> *testApplication =&ApplicationOne;
-
-        Ptr<GossipGenerator>*  PtrOneGossipApp =(Ptr<GossipGenerator>*) testApplication;
-        GossipGenerator OneGossipApp = PtrOneGossipApp->operator*();
-        OneGossipApp.SetCurrentValue( 1 );
-
-        OneGossipApp.SendMessage_debug( interfaceA.GetAddress(0), interfaceA.GetAddress(1), TYPE_ACK );
+        }}
+	Topology.close();
+        Ptr<GossipGenerator> a = GetGossipApp(nodes2.Get(0));
+        a->SetCurrentValue( 1 );
+        //a->SendMessage_debug( src,dest, TYPE_ACK );
         /* */
 
         Simulator::Run ();

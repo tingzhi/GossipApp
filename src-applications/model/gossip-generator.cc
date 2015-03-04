@@ -58,7 +58,14 @@ GossipGenerator::DoDispose ( void )
 void
 GossipGenerator::SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type)
 {
-  SendMessage( src,  dest,  type);
+  SendPayload( src,  dest);
+}
+
+void
+GossipGenerator::AddNeighbor(Ipv4Address newN)
+{
+  neighbours.push_back(newN); //TODO duplicates?
+  NS_LOG_INFO("Added to neighbors; New size: " << neighbours.size());
 }
 
 void
@@ -90,16 +97,10 @@ GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,uint8_t payload_
   }
 }
 
-Ptr< NetDevice >
+Ipv4Address
 GossipGenerator::ChooseRandomNeighbor(){
-  Ptr< Node > node = this->GetNode();
-  Ptr< NetDevice >device = node->GetDevice(rand() % node->GetNDevices());
-  if (device != device->GetChannel()->GetDevice(0)){
-    return device->GetChannel()->GetDevice(0);
-  }else{
-    return device->GetChannel()->GetDevice(1);
-  }
-  //need to find who connect the device
+  NS_LOG_INFO("ChooseRandomNeighbor from " << neighbours.size());
+  return neighbours.at(rand() % neighbours.size());
 }
 
 void
