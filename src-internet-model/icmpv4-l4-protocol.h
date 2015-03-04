@@ -112,7 +112,7 @@ private:
    * \brief Get the gossip app
    * \param the interface
    */
-  GossipGenerator GetGossipApp(Ptr<Ipv4Interface> incomingInterface);
+  Ptr<GossipGenerator> GetGossipApp(Ptr<Ipv4Interface> incomingInterface);
   /**
    * \brief Handles an incoming ICMP Echo packet
    * \param p the packet
