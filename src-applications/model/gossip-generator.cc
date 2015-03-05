@@ -62,10 +62,11 @@ GossipGenerator::SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type)
 }
 
 void
-GossipGenerator::AddNeighbor(Ipv4Address newN)
-{
-  neighbours.push_back(newN); //TODO duplicates?
-  NS_LOG_INFO("Added to neighbors; New size: " << neighbours.size());
+GossipGenerator::AddNeighbor(Ipv4Address own,Ipv4Address neighbor)
+{ //TODO duplicates?
+  neighbours[0].push_back(own);
+  neighbours[1].push_back(neighbor);
+  NS_LOG_INFO("Added to neighbors; New size: " << neighbours[0].size());
 }
 
 void
@@ -97,10 +98,12 @@ GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,uint8_t payload_
   }
 }
 
-Ipv4Address
-GossipGenerator::ChooseRandomNeighbor(){
-  NS_LOG_INFO("ChooseRandomNeighbor from " << neighbours.size());
-  return neighbours.at(rand() % neighbours.size());
+void
+GossipGenerator::ChooseRandomNeighbor(Ipv4Address ipv4array[2]){
+  NS_LOG_INFO("ChooseRandomNeighbor from " << neighbours[0].size());
+  int temp_rnd = rand() % neighbours[0].size();
+  ipv4array[0] = neighbours[0].at(temp_rnd);
+  ipv4array[1] = neighbours[1].at(temp_rnd);
 }
 
 void
@@ -172,8 +175,9 @@ GossipGenerator::GossipProcess(void)
     //sleep(delta_t);
     if (  CurrentValue != 0 )
     {
-      //n=chooseRandomNeighbor();
-      //SendPayload(n); // TODO
+      Ipv4Address ipv4array[2];
+      ChooseRandomNeighbor(ipv4array);
+      SendPayload(ipv4array[0],ipv4array[1]);
     }
   }
 }
@@ -185,8 +189,9 @@ GossipGenerator::Solicit(void)
   while(CurrentValue != 0)
   {
     //sleep(delta_t);
-    //n=chooseRandomNeighbor();
-    //SendMessage(src, n, TYPE_SOLICIT); // TODO
+    Ipv4Address ipv4array[2];
+    ChooseRandomNeighbor(ipv4array);
+    SendMessage(ipv4array[0],ipv4array[1], TYPE_SOLICIT);
   }
 }
 
@@ -195,8 +200,8 @@ GossipGenerator::StartApplication ( void )
 {
   NS_LOG_FUNCTION (this);
 
-  // std::thread t1(GossipProcess); // TODO
-  // std::thread t2(Solicit);
+  // Schedule... t1(GossipProcess); // TODO
+  // Schedule... t2(Solicit);
 
 }
 

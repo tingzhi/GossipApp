@@ -146,8 +146,8 @@ int main (int argc, char *argv[])
 
 	Ipv4InterfaceContainer InterfaceCont = ipv4_n.Assign (p2p.Install (NodeContainer (nodes2.Get (Edge1), nodes2.Get(Edge2))));
 	ipv4_n.NewNetwork ();
-        GetGossipApp(nodes2.Get(Edge1))->AddNeighbor(InterfaceCont.GetAddress(1)); //TODO save getaddress(0) as well as own!
-        GetGossipApp(nodes2.Get(Edge2))->AddNeighbor(InterfaceCont.GetAddress(0));
+        GetGossipApp(nodes2.Get(Edge1))->AddNeighbor(InterfaceCont.GetAddress(0),InterfaceCont.GetAddress(1));
+        GetGossipApp(nodes2.Get(Edge2))->AddNeighbor(InterfaceCont.GetAddress(1),InterfaceCont.GetAddress(0));
 
 //  	NS_LOG_INFO ("Initialize Global Routing.");
 //  	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();

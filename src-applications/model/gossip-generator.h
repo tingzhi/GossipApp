@@ -61,12 +61,13 @@ public:
    * \brief add a neighbor
    * \param ip of the neighbor
    */
-  void AddNeighbor( Ipv4Address newN );
+  void AddNeighbor( Ipv4Address own,Ipv4Address neighbor );
 
   /**
    * \brief Find a random neigbor
+   * \param Store a random source and neighbor address in this array
    */
-  Ipv4Address ChooseRandomNeighbor();
+  void ChooseRandomNeighbor(Ipv4Address neighbor[2]);
 
   /**
    * \brief Seed the internal value of a node to initiate the gossip.
@@ -114,7 +115,7 @@ protected:
 
   int CurrentValue; //!< The current Value
   bool halt; //!< If the gossip is paused
-  std::vector<Ipv4Address> neighbours; //!< The neighbors of this node
+  std::vector<Ipv4Address> neighbours[2]; //!< The own addresses and corresponding neighbors of this node
 
 private:
   /**
