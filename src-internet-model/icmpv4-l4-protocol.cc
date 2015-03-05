@@ -178,7 +178,7 @@ Icmpv4L4Protocol::SendAck (Ipv4Header header)
   Icmpv4Ack ack;
   ack.SetHeader (header);
   p->AddHeader (ack);
-  SendMessage (p, header.GetSource (), Icmpv4Header::ACK, 0);
+  SendMessage (p, header.GetDestination (), Icmpv4Header::ACK, 0);
 }
 // Modified from SendTimeExceededTtl
 void
@@ -190,7 +190,7 @@ Icmpv4L4Protocol::SendRequest (Ipv4Header header)
   Icmpv4Request request;
   request.SetHeader (header);
   p->AddHeader (request);
-  SendMessage (p, header.GetSource (), Icmpv4Header::REQUEST, 0);
+  SendMessage (p, header.GetDestination (), Icmpv4Header::REQUEST, 0);
 }
 // Modified from SendTimeExceededTtl
 void
@@ -203,7 +203,7 @@ Icmpv4L4Protocol::SendData (Ipv4Header header, uint8_t payload[8])
   data.SetHeader (header);
   data.SetData (payload);
   p->AddHeader (data);
-  SendMessage (p, header.GetSource (), Icmpv4Header::DATA, 0);
+  SendMessage (p, header.GetDestination (), Icmpv4Header::DATA, 0);
 }
 /******************************************************************************************************/
 
