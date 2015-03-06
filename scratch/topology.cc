@@ -36,9 +36,9 @@ int main (int argc, char *argv[])
 {
   LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
   LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
-  LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
+  // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
 
-  std::string LinkRate ("100Mbps");
+  std::string LinkRate ("100Mbps"); // 10kbps
   std::string LinkDelay ("2ms");
   PointToPointHelper p2p;
   p2p.SetDeviceAttribute ("DataRate", StringValue (LinkRate));
@@ -52,6 +52,8 @@ int main (int argc, char *argv[])
   NodeContainer nodes2;
 
   GossipGeneratorHelper ggh ;
+  Time GossipInterval = Seconds(.005); // Must be larger than the round-trip-time! (c.f. LinkDelay)
+  Time SolicitInterval = Seconds(5); // Should be larger than the GossipInterval!
   ApplicationContainer nodeApps; // TODO unused
 
   /* Parser Code - Begin */
@@ -101,13 +103,40 @@ int main (int argc, char *argv[])
   Topology.close();
   /* Parser Code - End */
 
+  for ( int i=0; i<NodeNumber;++i)
+  { //TODO use attributes
+    Ptr<GossipGenerator> ii = GetGossipApp(nodes2.Get(i));
+    ii->SetGossipInterval(GossipInterval);
+    ii->SetSolicitInterval(SolicitInterval);
+  }
+
   Ptr<GossipGenerator> a = GetGossipApp(nodes2.Get(0));
   a->SetCurrentValue( 2 );
   //a->SendMessage_debug( src,dest, TYPE_ACK );
 
   Simulator::Run ();
-  Simulator::Destroy ();
 
+  NS_LOG_INFO(endl << " ---- Print results ---" << endl);
+  int MaxHops = 0;
+  Time MaxTime = Seconds(0);
+  for ( int i=0; i<NodeNumber;++i)
+  { //TODO use attributes
+    Ptr<GossipGenerator> ii = GetGossipApp(nodes2.Get(i));
+    if (MaxHops < ii->GetPacketHops()){
+      MaxHops = ii->GetPacketHops();
+    }
+    if (MaxTime.Compare(ii->GetReceivedDataTime()) == -1){
+      MaxTime = ii->GetReceivedDataTime();
+    }
+    NS_LOG_INFO("Node " << i << ": ");
+    NS_LOG_INFO(" * Sent icmp messages   : " << ii->GetSentMessages());
+    NS_LOG_INFO(" * Hops of data message : " << ii->GetPacketHops());
+    NS_LOG_INFO(" * Time of data received: " << ii->GetReceivedDataTime().GetSeconds() << "s");
+  }
+  NS_LOG_INFO(endl << "Simulation terminated after " << Simulator::Now().GetSeconds() << "s");
+  NS_LOG_INFO("Max hops: " << MaxHops);
+  NS_LOG_INFO("Time until information was spread: " << MaxTime.GetSeconds() << "s" << endl); 
+  Simulator::Destroy ();
   return 0;
 }
 
