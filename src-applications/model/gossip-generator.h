@@ -26,6 +26,8 @@
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/internet-module.h"
+#include "ns3/nstime.h"
+#include "ns3/simulator.h"
 
 namespace ns3 {
 
@@ -76,10 +78,41 @@ public:
   void SetCurrentValue (int val);
 
   /**
+   * \brief Set the time between two sent messages.
+   * \param The time.
+   */
+  void SetGossipInterval ( Time val );
+
+  /**
+   * \brief Set the time between two requests.
+   * \param The time.
+   */
+  void SetSolicitInterval ( Time val );
+
+  /**
    * \brief Return the current internal value.
    * \return The value
    */
   int GetCurrentValue ( void);
+
+  /**
+   * \brief Return the amount of icmp Messages sent.
+   * \return The value
+   */
+  int GetSentMessages ( void);
+
+  /**
+   * \brief Return the number of hops used.
+   * \return The value
+   */
+  int GetPacketHops ( void);
+
+  /**
+   * \brief Return the time used until the data was received.
+   * \return The value
+   */
+  Time GetReceivedDataTime ( void);
+
   void SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type);
   void HandleAck(void);
   void HandleSolicit(Ipv4Address src,Ipv4Address dest);
@@ -115,6 +148,11 @@ protected:
 
   int CurrentValue; //!< The current Value
   bool halt; //!< If the gossip is paused
+  Time gossip_delta_t; //!< Time between sending data to the other nodes
+  Time solicit_delta_t; //!< Time between requests of data from the other nodes
+  Time ReceivedData; //!< Time when data was first received
+  int SentMessages; //!< Amount of messages sent out
+  int PacketHops; //!< How many hops the data packet experienced
   std::vector<Ipv4Address> neighbours[2]; //!< The own addresses and corresponding neighbors of this node
 
 private:
