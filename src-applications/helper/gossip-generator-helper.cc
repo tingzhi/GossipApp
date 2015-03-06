@@ -56,29 +56,4 @@ GossipGeneratorHelper::GetGenerator (void)
   return m_generator;
 }
 
-/*
-GossipGeneratorHelper::GossipGeneratorHelper (Address address, uint16_t port)
-{
-  m_factory.SetTypeId (GossipGenerator::GetTypeId ());
-  SetAttribute ("RemoteAddress", AddressValue (address));
-  SetAttribute ("RemotePort", UintegerValue (port));
-}
-*/
-
-GossipGeneratorHelper::GossipGeneratorHelper (Ipv4Address address, uint16_t port)
-{
-  m_factory.SetTypeId (GossipGenerator::GetTypeId ());
-  SetAttribute ("RemoteAddress", AddressValue (Address(address)));
-  SetAttribute ("RemotePort", UintegerValue (port));
-}
-
-/*
-GossipGeneratorHelper::GossipGeneratorHelper (Ipv6Address address, uint16_t port)
-{
-  m_factory.SetTypeId (GossipGenerator::GetTypeId ());
-  SetAttribute ("RemoteAddress", AddressValue (Address(address)));
-  SetAttribute ("RemotePort", UintegerValue (port));
-}
-*/
-
 } // namespace ns3

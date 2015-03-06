@@ -44,14 +44,6 @@ public:
   GossipGeneratorHelper ();
 
   /**
-   * \brief constructor
-   *
-   * \param address The address the generator will be assigned
-   * \param port The port the generator will wait on for incoming packets
-   */
-  GossipGeneratorHelper (Ipv4Address address, uint16_t port);
-
-  /**
    * \brief Record an attribute to be set in each Application after it is is created.
    *
    * \param name the name of the attribute to set
