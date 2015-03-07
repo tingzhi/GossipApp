@@ -1,4 +1,25 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+ /*
+ * Copyright (c) 2015 Marco Falke, Jinming Mu, and Tingzhi Li
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation;
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * Author: Marco Falke
+           Jinming Mu
+           Tingzhi Li <vincentltz at gmail dot com>
+ */
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -27,15 +48,15 @@ using namespace std;
 using namespace ns3;
 
 class simstats {
-    float time;
+    double time;
     int hops;
   public:
-    simstats(float, int);
+    simstats(double, int);
     int getHops(void);
-    float getTime(void);
+    double getTime(void);
 }; 
 
-simstats::simstats (float t, int h) {
+simstats::simstats (double t, int h) {
   time = t;
   hops = h;
 }
@@ -44,7 +65,7 @@ int simstats::getHops(void){
   return hops;
 }
 
-float simstats::getTime(void){
+double simstats::getTime(void){
   return time;
 }
 
@@ -62,7 +83,7 @@ simstats simulation (void)
   LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
   // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
   
-  srand(time(NULL));
+  //srand(time(NULL));
 
   std::string LinkRate ("100Mbps"); // 10kbps
   std::string LinkDelay ("2ms");
@@ -172,8 +193,8 @@ int main(int argc, char *argv[]) {
 
   FILE *timefile;
   FILE *hopfile;
-  timefile = fopen("maxtime.txt", "w+");
-  hopfile = fopen("maxhops.txt", "w+");
+  timefile = fopen("scratch/maxtime.txt", "w+");
+  hopfile = fopen("scratch/maxhops.txt", "w+");
 
   if (timefile != NULL && hopfile != NULL){
     for (int i = 0; i < 25; i++){
