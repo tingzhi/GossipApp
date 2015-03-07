@@ -30,12 +30,12 @@ class simstats {
     double time;
     int hops;
   public:
-    simstats(float, int);
+    simstats(double, int);
     int getHops(void);
-    float getTime(void);
+    double getTime(void);
 }; 
 
-simstats::simstats (float t, int h) {
+simstats::simstats (double t, int h) {
   time = t;
   hops = h;
 }
@@ -44,7 +44,7 @@ int simstats::getHops(void){
   return hops;
 }
 
-float simstats::getTime(void){
+double simstats::getTime(void){
   return time;
 }
 
