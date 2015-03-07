@@ -1,3 +1,24 @@
+'''
+ *
+ * Copyright (c) 2015 Tingzhi Li
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation;
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * Author: Tingzhi Li <vincentltz at gmail dot com>
+ *
+'''
+
 import statsUtility
 import sys
 import numpy
@@ -18,6 +39,7 @@ class result:
 		print "Average = {:.3f}{:s}".format(self.expectation,units) 
 		print "Median = {:.3f}{:s}".format(self.median,units) 
 		print "Standard Dev = {:.3f}{:s}".format(self.stdev,units)
+		print "Variance = {:.3f}".format(self.var)
 		print "Minimum = {:.3f}{:s}".format(self.mini,units) 
 		print "Maximum = {:.3f}{:s}".format(self.maxi,units) 
 
@@ -47,10 +69,15 @@ def runStats(ls):
 	return ret
 
 def main():
+<<<<<<< HEAD:analysis/analysis.py
 	statsUtility.CheckArgs(3,"<time in file> <hops in file> <outfile>")
+=======
+	statsUtility.CheckArgs(2,"<time in file> <hops in file>")
 
+>>>>>>> origin/master:analysis.py
 	templs = statsUtility.ReadFileLines(sys.argv[1])
 	spreadtime = []
+	
 	for el in templs:
 		spreadtime.append(float(el))
 	
@@ -65,11 +92,12 @@ def main():
 	print "Max Time Analysis Result"
 	timeResult.printResult("s")
 	print ""
+	
 	print "Max Hops Analysis Result"
 	hopResult.printResult("")
 
-	hopResult.plotHistogram(hopResult.maxi, "Max Hops")
 	timeResult.plotHistogram(int(timeResult.maxi/5)+1, "Max Time")
+	hopResult.plotHistogram(hopResult.maxi, "Max Hops")
 
 if __name__ == '__main__':
 	main()
