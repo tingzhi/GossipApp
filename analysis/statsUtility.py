@@ -14,8 +14,12 @@
    limitations under the License.
 
 '''
+
+'''
+	Modified by Tingzhi Li
+'''
+
 import sys
-import json
 
 def ReadFileLines(filename):
 	try:
@@ -62,33 +66,4 @@ def AppendToFile(filename, data):
 	except UnicodeEncodeError as e:
 		print "Unicode Encode Error: Couldn't write --" +  data + "-- to file"
 		sys.exit(2)
-
-#@deprecated
-def OverwriteJsonListToFile(filename, ls):
-	OverwriteFile(filename, "")
-	for e in ls:
-		AppendToFile(filename, e.encode("ascii", "ignore") + "\n")
-
-#@deprecated
-def AppendJsonListToFile(filename, ls):
-	for e in ls:
-		AppendToFile(filename, e.encode("ascii", "ignore") + "\n")
-
-def AppendStrListToFile(filename, ls):
-	AppendJsonListToFile(filename, ls)
-
-def OverwriteStrListToFile(filename, ls):
-	OverwriteJsonListToFile(filename, ls)
-
-def myObjsOverwriteFile(filename, objls):
-	strls =[]
-	for el in objls:
-		try:
-			strls.append(el.toJsonStr())
-		except Exception as err:
-			print "myUtility.myObjToLs() - Problem with " + str(el)
-			raise err
-	OverwriteJsonListToFile(filename, strls)
-	return
-
 
