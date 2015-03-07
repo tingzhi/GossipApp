@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <typeinfo>
+#include <time.h>
 
 #include "ns3/object.h"
 #include "ns3/core-module.h"
@@ -37,6 +38,8 @@ int main (int argc, char *argv[])
   LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
   LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
   // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
+
+  srand(time(NULL));
 
   std::string LinkRate ("100Mbps"); // 10kbps
   std::string LinkDelay ("2ms");
