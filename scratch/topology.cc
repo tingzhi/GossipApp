@@ -27,7 +27,7 @@ using namespace std;
 using namespace ns3;
 
 class simstats {
-    float time;
+    double time;
     int hops;
   public:
     simstats(float, int);
