@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <typeinfo>
 #include <time.h>
+#include <unistd.h>
 
 #include "ns3/object.h"
 #include "ns3/core-module.h"
@@ -25,6 +26,28 @@
 using namespace std;
 using namespace ns3;
 
+class simstats {
+    float time;
+    int hops;
+  public:
+    simstats(float, int);
+    int getHops(void);
+    float getTime(void);
+}; 
+
+simstats::simstats (float t, int h) {
+  time = t;
+  hops = h;
+}
+
+int simstats::getHops(void){
+  return hops;
+}
+
+float simstats::getTime(void){
+  return time;
+}
+
 NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
 
 Ptr<GossipGenerator> GetGossipApp(Ptr <Node> node)
@@ -33,12 +56,12 @@ Ptr<GossipGenerator> GetGossipApp(Ptr <Node> node)
   return DynamicCast<GossipGenerator>(gossipApp);
 }
 
-int main (int argc, char *argv[])
+simstats simulation (void)
 {
   LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
   LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
   // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
-
+  
   srand(time(NULL));
 
   std::string LinkRate ("100Mbps"); // 10kbps
@@ -138,8 +161,24 @@ int main (int argc, char *argv[])
   }
   NS_LOG_INFO(endl << "Simulation terminated after " << Simulator::Now().GetSeconds() << "s");
   NS_LOG_INFO("Max hops: " << MaxHops);
-  NS_LOG_INFO("Time until information was spread: " << MaxTime.GetSeconds() << "s" << endl); 
+  NS_LOG_INFO("Time until information was spread: " << MaxTime.GetSeconds() << "s" << endl);
+  simstats ret(MaxTime.GetSeconds(),MaxHops);
   Simulator::Destroy ();
+  return ret;
+}
+
+int main(int argc, char *argv[]) {
+  srand(time(NULL));
+  FILE *pfile;
+  pfile = fopen("maxtime.txt", "w+");
+  if (pfile != NULL){
+    for (int i = 0; i < 50; i++){
+      simstats results = simulation();
+      fprintf(pfile,"%f\n", results.getTime());
+      sleep(1);
+    }
+  }
+  fclose(pfile);
   return 0;
 }
 
