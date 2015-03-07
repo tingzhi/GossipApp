@@ -51,12 +51,24 @@ class simstats {
     double time;
     int hops;
   public:
+    simstats(void);
     simstats(double, int);
     int getHops(void);
     double getTime(void);
+    void setVars(double, int);
 }; 
 
+simstats::simstats (void) {
+  time = 0;
+  hops = 0;
+}
+
 simstats::simstats (double t, int h) {
+  time = t;
+  hops = h;
+}
+
+void simstats::setVars (double t, int h) {
   time = t;
   hops = h;
 }
@@ -183,7 +195,9 @@ simstats simulation (void)
   NS_LOG_INFO(endl << "Simulation terminated after " << Simulator::Now().GetSeconds() << "s");
   NS_LOG_INFO("Max hops: " << MaxHops);
   NS_LOG_INFO("Time until information was spread: " << MaxTime.GetSeconds() << "s" << endl);
-  simstats ret(MaxTime.GetSeconds(),MaxHops);
+  simstats ret;  
+  ret.setVars(MaxTime.GetSeconds(), MaxHops); 
+  //simstats ret(MaxTime.GetSeconds(),MaxHops); //direct instantiation
   Simulator::Destroy ();
   return ret;
 }
