@@ -172,8 +172,8 @@ int main(int argc, char *argv[]) {
 
   FILE *timefile;
   FILE *hopfile;
-  timefile = fopen("maxtime.txt", "w+");
-  hopfile = fopen("maxhops.txt", "w+");
+  timefile = fopen("scratch/maxtime.txt", "w+");
+  hopfile = fopen("scratch/maxhops.txt", "w+");
 
   if (timefile != NULL && hopfile != NULL){
     for (int i = 0; i < 25; i++){
