@@ -1,0 +1,4 @@
+1. add own to the packet
+2. define a new ack msg 
+3. send the ACK in all cases
+if 
