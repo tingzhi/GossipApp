@@ -169,16 +169,22 @@ simstats simulation (void)
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
-  FILE *pfile;
-  pfile = fopen("maxtime.txt", "w+");
-  if (pfile != NULL){
-    for (int i = 0; i < 50; i++){
+
+  FILE *timefile;
+  FILE *hopfile;
+  timefile = fopen("maxtime.txt", "w+");
+  hopfile = fopen("maxhops.txt", "w+");
+
+  if (timefile != NULL && hopfile != NULL){
+    for (int i = 0; i < 25; i++){
       simstats results = simulation();
-      fprintf(pfile,"%f\n", results.getTime());
+      fprintf(timefile,"%f\n", results.getTime());
+      fprintf(hopfile,"%d\n", results.getHops());
       sleep(1);
     }
   }
-  fclose(pfile);
+  fclose(timefile);
+  fclose(hopfile);
   return 0;
 }
 
