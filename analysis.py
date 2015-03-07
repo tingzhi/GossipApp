@@ -47,7 +47,7 @@ def runStats(ls):
 	return ret
 
 def main():
-	statsUtility.CheckArgs(3,"<time in file> <hops in file> <outfile>")
+	statsUtility.CheckArgs(2,"<time in file> <hops in file>")
 
 	templs = statsUtility.ReadFileLines(sys.argv[1])
 	spreadtime = []
