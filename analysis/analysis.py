@@ -20,11 +20,12 @@
  *
 '''
 
-import statsUtility
 import sys
-import numpy
+import numpy as np
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt 
+import matplotlib.patches as patches
+import statsUtility
 
 class result:
 	def __init__ (self):
@@ -45,14 +46,22 @@ class result:
 		print "Maximum = {:.3f}{:s}".format(self.maxi,units) 
 
 	def plotHistogram(self, numBin, xlab):
+		fig, ax = plt.subplots()
 		n, bins, patches = plt.hist(self.data, numBin, normed=0, facecolor='green', alpha=0.5)
+		
+		# get the corners of the histogram
+		left = np.array(bins[:-1])
+		right = np.array(bins[1:])
+		bottom = np.zeros(len(left))
+		top = bottom + n
 
-		#histfit(self.data)
-		#y = mlab.normpdf(bins)
+		ax.set_xlim(left[0], right[-1])
+		ax.set_ylim(bottom.min(), top.max()*1.2)
+
 		plt.plot(bins)
 		plt.xlabel(xlab)
 		plt.ylabel('Frequency')
-		plt.title(r'Distribution of ' + xlab)
+		plt.title('Distribution of ' + xlab)
 
 		# Tweak spacing to prevent clipping of ylabel
 		plt.subplots_adjust(left=0.15)
@@ -62,10 +71,10 @@ def runStats(ls):
 	ret = result()
 	ret.mini = min(ls)
 	ret.maxi = max(ls)
-	ret.expectation = numpy.mean(ls)
-	ret.var = numpy.var(ls)
-	ret.median = numpy.median(ls)
-	ret.stdev = numpy.std(ls)
+	ret.expectation = np.mean(ls)
+	ret.var = np.var(ls)
+	ret.median = np.median(ls)
+	ret.stdev = np.std(ls)
 	ret.data = ls
 	return ret
 
@@ -73,7 +82,6 @@ def main():
 	statsUtility.CheckArgs(2,"<time in file> <hops in file>")
 	templs = statsUtility.ReadFileLines(sys.argv[1])
 	spreadtime = []
-	
 	for el in templs:
 		spreadtime.append(float(el))
 	
@@ -92,8 +100,8 @@ def main():
 	print "Max Hops Analysis Result"
 	hopResult.printResult("")
 
-	timeResult.plotHistogram(int(timeResult.maxi/5)+1, "Max Time")
-	hopResult.plotHistogram(hopResult.maxi, "Max Hops")
+	timeResult.plotHistogram(int(timeResult.maxi/2)+1, "Max Time")
+	hopResult.plotHistogram(hopResult.maxi+1, "Max Hops")
 
 if __name__ == '__main__':
 	main()
