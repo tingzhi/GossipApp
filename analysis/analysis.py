@@ -1,6 +1,6 @@
 '''
  *
- * Copyright (c) 2015 Tingzhi Li
+ * Copyright (c) 2015 Tingzhi Li, and Marco Falke
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author: Tingzhi Li <vincentltz at gmail dot com>
+ *	   Marco Falke
  *
 '''
 
