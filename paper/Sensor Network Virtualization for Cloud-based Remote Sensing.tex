@@ -117,7 +117,7 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+   \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
   % \graphicspath{{../pdf/}{../jpeg/}}
   % and their extensions so you won't have to specify these with
@@ -127,7 +127,7 @@
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % will default to the driver specified in the system graphics.cfg if no
   % driver is specified.
-  % \usepackage[dvips]{graphicx}
+   \usepackage[dvips]{graphicx}
   % declare the path(s) where your graphic files are
   % \graphicspath{{../eps/}}
   % and their extensions so you won't have to specify these with
@@ -611,8 +611,17 @@ In this section, we introduced the topic of Virtual Networks formed using a subs
 \subsection{Virtual Networks}
 The following sections will present an overview over Virtual Sensor Networks, as well as network virtualization using the existing internet.
 \subsubsection{Virtual Sensor Networks}
-The ongoing technological progress further and further improves the computation, connectivity and sensing capabilities of various devices, sometimes mobile ones. \cite{Jayasumana} This enables a huge variety of opportunities in sensor networks. For example, devices in a sensor network could be assigned tasks based on their constraints in computation, power usage or networking potential. In contrast to dedicated sensor networks, where the participating nodes serve a single application, Virtual Sensor Networks (VSN) take advantage of the node’s technological progress. When a VSN is formed on top of a Wireless Sensor Network, only a subset of all available nodes is part in the VSN. Furthermore, several VSNs can exist simultaneously in on Wireless Sensor Network. \cite{Jayasumana} That is, one subset of the nodes forms a VSN and relies on the remaining nodes to communicate between its nodes. In some cases, physical nodes of one VSN even could be completely cut off from communication due to their spatial distribution and must rely on the other nodes. Usually the different VSNs pursue completely unrelated sensing tasks and the nodes in each VSN behave like they are on their independent Sensor Network. Figure 1 based on \cite{Jayasumana} depicts a visualization of twoVSNs formed on top of an Wireless Sensor Network. This logical separation helps to simplify the implementation of applications significantly. \cite{Jayasumana} Further advantages of VSNs are enhanced performance and better scalability.
+The ongoing technological progress further and further improves the computation, connectivity and sensing capabilities of various devices, sometimes mobile ones. \cite{Jayasumana} This enables a huge variety of opportunities in sensor networks. For example, devices in a sensor network could be assigned tasks based on their constraints in computation, power usage or networking potential. In contrast to dedicated sensor networks, where the participating nodes serve a single application, Virtual Sensor Networks (VSN) take advantage of the node’s technological progress. When a VSN is formed on top of a Wireless Sensor Network, only a subset of all available nodes is part in the VSN. Furthermore, several VSNs can exist simultaneously in on Wireless Sensor Network. \cite{Jayasumana} That is, one subset of the nodes forms a VSN and relies on the remaining nodes to communicate between its nodes. In some cases, physical nodes of one VSN even could be completely cut off from communication due to their spatial distribution and must rely on the other nodes. Usually the different VSNs pursue completely unrelated sensing tasks and the nodes in each VSN behave like they are on their independent Sensor Network. Figure~\ref{vsnfig} based on \cite{Jayasumana} depicts a visualization of twoVSNs formed on top of an Wireless Sensor Network. This logical separation helps to simplify the implementation of applications significantly. \cite{Jayasumana} Further advantages of VSNs are enhanced performance and better scalability.
+
 The development of algorithms and protocols to support the grouping of VSNs on top of Sensor Networks, is still an ongoing research topic. Those need to consider how the available time and frequencies should be fairly distributed for intra network communication. Moreover, it should be possible for nodes to change their membership in VSNs.
+
+\begin{figure}
+ \centering
+ \includegraphics[width=2.5in]{figs/VirtualSensorNetwork.pdf}
+ \caption{Broadcast path from a node (S) in VSN2.}
+ \label{vsnfig}
+\end{figure}
+
 
 \subsubsection{Virtual Networks on Top of the Internet}
 It is important to realize that the Internet, due to so many different participants with sometimes opposing interests, is hard to modify and only possible small and slow steps, if at all. Therefore, Virtual Networks are often the only way to realize innovation. To implement a Virtual Network using the existing Internet, several things need to be considered. First, the characteristics of the networking technology determine the attributes of the Virtual Network. For instance, a wired network yields a more scalable and bandwidth flexible Virtual Network than a wireless network would do. \cite{Chowdhury} Second, the layer of virtualization (referring to the OSI layer model) impacts the flexibility of the Virtual Network. That is, the lower the layer of virtualization, the more flexibility will be possible. Specifically, so called overlay networks, mostly realized in the application layer, are limited in their ability to support fundamentally different architectures. \cite{Chowdhury} Moreover, virtualization on top of IP is fixed to the network layer protocol and can not deploy IP independent mechanisms.  \cite{Chowdhury} Lastly, an important consideration in the non comprehensive list is also about security and privacy in virtual networks. Thus, attack vectors such as denial-of-service or distributed denial-of-service against the underlying physical network will have impact on all simultaneously virtualized networks.
