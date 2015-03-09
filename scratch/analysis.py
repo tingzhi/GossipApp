@@ -70,14 +70,14 @@ class result:
 		plt.subplots_adjust(left=0.15)
 		plt.show()
 
-def printCombinedResults(hopResults, timeResults):
-	print "{:.3f}".format(hopResults.expectation),
-	print ",",
-	print "{:.3f}".format(hopResults.stdev),
-	print ",",
+def printCombinedResults(timeResults, hopResults):
 	print "{:.3f}".format(timeResults.expectation),
 	print ",",
-        print "{:.3f}".format(timeResults.stdev)
+        print "{:.3f}".format(timeResults.stdev),
+	print ",",
+	print "{:.3f}".format(hopResults.expectation),
+	print ",",
+	print "{:.3f}".format(hopResults.stdev)
 
 #	print timeResults.printResultNoText()
 
@@ -114,7 +114,7 @@ def main():
 	
 #	print "Max Hops Analysis Result"
 #	hopResult.printResult("")
-	printCombinedResults(hopResult, timeResult)
+	printCombinedResults(timeResult, hopResult)
 #	timeResult.plotHistogram(int(timeResult.maxi/2)+1, "Max Time")
 #	hopResult.plotHistogram(hopResult.maxi+1, "Max Hops")
 
