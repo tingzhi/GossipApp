@@ -81,10 +81,6 @@ simstats simulation (char *filename)
 {
   NS_LOG_INFO ("Filename : " << filename << " to read from for  GossipGenerator");
 
-  LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
-  LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
-  // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
-
   std::string LinkRate ("100Mbps"); // 10kbps. Need to change to wifi channel
   std::string LinkDelay ("2ms");
   PointToPointHelper p2p;
@@ -94,7 +90,7 @@ simstats simulation (char *filename)
   InternetStackHelper internet;
 
   Ipv4AddressHelper ipv4_n;
-  ipv4_n.SetBase ("10.0.0.0", "255.255.255.252"); //Netmask setting?
+  ipv4_n.SetBase ("11.0.0.0", "255.255.0.0"); //Netmask setting?
 
   NodeContainer nodes2;
 
@@ -204,6 +200,10 @@ char* convertStrToChar(std::string str){
 }
 
 int main(int argc, char *argv[]) {
+  LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
+  LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
+  // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
+
   srand(time(NULL));
 
   //These are the default values for the command line
