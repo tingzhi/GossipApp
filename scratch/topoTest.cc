@@ -81,7 +81,6 @@ simstats simulation (char *filename)
 {
   NS_LOG_INFO ("Filename : " << filename << " to read from for  GossipGenerator");
 
-
   LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
   LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
   // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
@@ -112,8 +111,7 @@ simstats simulation (char *filename)
   string NodePrefix = "#Nodes";
   string EdgePrefix = "#Edges";
   ifstream Topology;
-/******************************************************/
-  //Topology.open ("scratch/" + filename);
+
   Topology.open (filename);
   while(getline(Topology,Line))
   {
@@ -152,8 +150,6 @@ simstats simulation (char *filename)
   }
   Topology.close();
   /* Parser Code - End */
-
-
 
   for ( int i=0; i<NodeNumber;++i)
   { //TODO use attributes
@@ -246,11 +242,10 @@ int main(int argc, char *argv[]) {
   //makes sure nothing weird happened in conversion. comment out or delete later
   std::cout << "Filenames chars *:" << newFile << " " << newHopsFile << " " << newTimeFile << endl;
 
-
   FILE *timefile;
   FILE *hopfile;
-  timefile = fopen(newTimeFile, "w+");
-  hopfile = fopen(newHopsFile, "w+");    
+  timefile = fopen(newTimeFile, "a+");
+  hopfile = fopen(newHopsFile, "a+");    
   
   if (timefile != NULL && hopfile != NULL){
     for (int i = 0; i < 5; i++){
