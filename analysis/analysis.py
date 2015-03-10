@@ -73,11 +73,22 @@ class result:
 def printCombinedResults(timeResults, hopResults):
 	print "{:.3f}".format(timeResults.expectation),
 	print ",",
-        print "{:.3f}".format(timeResults.stdev),
+	print "{:.3f}".format(timeResults.median),
+	print ",",
+	print "{:.3f}".format(timeResults.stdev),
+	print ",",
+	print "{:.3f}".format(timeResults.mini),
+	print ",",
+	print "{:.3f}".format(timeResults.maxi),
 	print ",",
 	print "{:.3f}".format(hopResults.expectation),
 	print ",",
-	print "{:.3f}".format(hopResults.stdev)
+	print "{:.3f}".format(hopResults.median),
+	print ",",
+	print "{:.3f}".format(hopResults.stdev),
+	print "{:.3f}".format(hopResults.mini),
+	print ",",
+	print "{:.3f}".format(hopResults.maxi)
 
 #	print timeResults.printResultNoText()
 
