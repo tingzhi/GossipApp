@@ -6,7 +6,7 @@ python analysis.py maxtimecmd_400.txt maxhopscmd_250.txt > output_400.txt
 python analysis.py maxtimecmd_550.txt maxhopscmd_250.txt > output_550.txt
 python analysis.py maxtimecmd_700.txt maxhopscmd_250.txt > output_700.txt
 python analysis.py maxtimecmd_850.txt maxhopscmd_250.txt > output_850.txt
-#python analysis.py maxtimecmd_1000.txt maxhopscmd_250.txt > output_1000.txt
+python analysis.py maxtimecmd_1000.txt maxhopscmd_250.txt > output_1000.txt
 #python analysis.py maxtimecmd_1150.txt maxhopscmd_250.txt > output_1150.txt
 #python analysis.py maxtimecmd_1300.txt maxhopscmd_250.txt > output_1300.txt
 #python analysis.py maxtimecmd_1450.txt maxhopscmd_250.txt > output_1450.txt
@@ -28,7 +28,7 @@ python analysis.py maxtimecmd_700.txt maxhopscmd_700.txt >> outputInOne.txt
 python analysis.py maxtimecmd_850.txt maxhopscmd_850.txt >> outputInOne.txt
 
 #echo "For 1000 nodes" >> outputInOne.txt
-#python analysis.py maxtimecmd_1000.txt maxhopscmd_1000.txt >> outputInOne.txt
+python analysis.py maxtimecmd_1000.txt maxhopscmd_1000.txt >> outputInOne.txt
 #echo "For 1150 nodes" >> outputInOne.txt
 #python analysis.py maxtimecmd_1150.txt maxhopscmd_1150.txt >> outputInOne.txt
 #echo "For 1300 nodes" >> outputInOne.txt

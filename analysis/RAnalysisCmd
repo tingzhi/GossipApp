@@ -1,7 +1,7 @@
 
 > dat = read.csv("~/Documents/GossipApp/analysis/rawTimeData.csv")
 > attach(dat)
-> plot(nodes,time, main="Spread Time vs. Nodes",xlab="Number of Nodes",ylab="Message Spread Time (s)",las=1,xlim=c(0,860),ylim=c(0,85),cex=1.1,pch=5)
+> plot(nodes,ts, main="Spread Time vs. Nodes",xlab="Number of Nodes",ylab="Message Spread Time (s)",las=1,xlim=c(0,860),ylim=c(0,85),cex=1.1,pch=5)
 > boxplot(st~nodes,las=1,main="Message Spread Time by Different Number of Nodes",xlab="Number of Nodes",ylab="Spread Time (s)",ylim=c(10,80))
 > detach(dat)
 >
@@ -9,5 +9,5 @@
 > dat = read.csv("~/Documents/GossipApp/analysis/rawHopsData.csv")
 > attach(dat)
 > plot(nodes,hops, main="Maximum Hops vs. Nodes",xlab="Number of Nodes",ylab="Maximum Hops",las=1,xlim=c(50,900),ylim=c(6,31),cex=1.1,pch=5)
-> boxplot(st~nodes,las=1,main="Message Spread Time by Different Number of Nodes",xlab="Number of Nodes",ylab="Spread Time (s)",ylim=c(10,80))
+> bboxplot(hops~nodes,las=1,main="Maximum Hops by Different Number of Nodes",xlab="Number of Nodes",ylab="Maximum Hops",ylim=c(8,30))
 > datach(dat)
