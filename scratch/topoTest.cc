@@ -47,6 +47,8 @@
 using namespace std;
 using namespace ns3;
 
+NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
+
 class simstats {
     double time;
     int hops;
@@ -69,8 +71,6 @@ double simstats::getTime(void){
   return time;
 }
 
-NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
-
 Ptr<GossipGenerator> GetGossipApp(Ptr <Node> node)
 {
   Ptr< Application > gossipApp = node->GetApplication (0) ;
@@ -90,7 +90,7 @@ simstats simulation (char *filename)
   InternetStackHelper internet;
 
   Ipv4AddressHelper ipv4_n;
-  ipv4_n.SetBase ("11.0.0.0", "255.255.0.0"); //Netmask setting?
+  ipv4_n.SetBase ("10.0.0.0", "255.255.255.252"); //Netmask setting?
 
   NodeContainer nodes2;
 
@@ -164,7 +164,7 @@ simstats simulation (char *filename)
   int MaxHops = 0;
   Time MaxTime = Seconds(0);
   for ( int i=0; i<NodeNumber;++i)
-  { //TODO use attributes
+  {
     Ptr<GossipGenerator> ii = GetGossipApp(nodes2.Get(i));
     if (MaxHops < ii->GetPacketHops()){
       MaxHops = ii->GetPacketHops();
@@ -200,7 +200,7 @@ char* convertStrToChar(std::string str){
 }
 
 int main(int argc, char *argv[]) {
-  LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
+  // LogComponentEnable ("GossipGeneratorApplication", LOG_LEVEL_INFO);
   LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
   // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
 
@@ -208,7 +208,7 @@ int main(int argc, char *argv[]) {
 
   //These are the default values for the command line
   // if you do not override them via n3 command lines, this is what will run
-  std::string fn = "scratch/TopologyFile"; //default filenames
+  std::string inTopologyFile = "scratch/TopologyFile"; //default filenames
   std::string outHopsFile = "scratch/maxhops.txt";
   std::string outTimeFile = "scratch/maxtime.txt";
 
@@ -223,24 +223,24 @@ int main(int argc, char *argv[]) {
   // changing the file names to what you want them to be
   // be sure to include the path!
   CommandLine cmd;
-  cmd.AddValue("infile", "Topology file read in", fn);
+  cmd.AddValue("infile", "Topology file read in", inTopologyFile);
   cmd.AddValue("outHopsFile", "Filename that max hops are written out to", outHopsFile);
   cmd.AddValue("outTimeFile", "Filename that max hops are written out to", outTimeFile);
   cmd.Parse (argc, argv);
 
   //just a test to makes sure you know what filenames are being used. Probably commment out in the future
-  std::cout << "Filenname string :" << fn << endl;
+  std::cout << "Filenname string :" << inTopologyFile << endl;
   std::cout << "Max Hops string :" << outHopsFile << endl;
   std::cout << "Max Time string :" << outTimeFile << endl;
 
   //All of the functions take char * not strings
   //but n3 doesnt have command line entries for char * so they need to be converted from string to char *
-  char *newFile = convertStrToChar(fn);
+  char *newTopoFile = convertStrToChar(inTopologyFile);
   char *newHopsFile = convertStrToChar(outHopsFile);
   char *newTimeFile = convertStrToChar(outTimeFile);
 
   //makes sure nothing weird happened in conversion. comment out or delete later
-  std::cout << "Filenames chars *:" << newFile << " " << newHopsFile << " " << newTimeFile << endl;
+  std::cout << "Filenames chars *:" << newTopoFile << " " << newHopsFile << " " << newTimeFile << endl;
 
   FILE *timefile;
   FILE *hopfile;
@@ -249,7 +249,7 @@ int main(int argc, char *argv[]) {
   
   if (timefile != NULL && hopfile != NULL){
     for (int i = 0; i < 5; i++){
-      simstats results = simulation(newFile);
+      simstats results = simulation(newTopoFile);
       fprintf(timefile,"%f\n", results.getTime());
       fprintf(hopfile,"%d\n", results.getHops());
       sleep(1);
