@@ -22,4 +22,4 @@ Flase topologies are 100_30, 100_44, 100_53, 100_71, 100_79, 100_80
 
 ===
 
-Copyright(c)2015 Marco Falke, Jinming Mu, and Tingzhi Li
+Copyright (c) 2015 Marco Falke, Jinming Mu, and Tingzhi Li
