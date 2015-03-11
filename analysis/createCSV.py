@@ -41,13 +41,14 @@ def main():
 
 	prefix = sys.argv[1] + "_"
 	suffix = ".txt"
+	# print header
 	print "nodes," + prefix[:len(prefix)-4]
 	for arg in sys.argv:
-		# print "   debug " + arg
 		if prefix in arg:
 			numOfNodes = arg[arg.index(prefix) + len(prefix): arg.index(suffix)]
 			lines = ReadFileLines(arg)
 			for line in lines:
+				# print data
 				print numOfNodes + "," + line[:len(line)-1]
 
 if __name__ == '__main__':
