@@ -1,6 +1,6 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright 2015 Oregon State University
+ * Copyright 2015 Marco Falke
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -113,8 +113,18 @@ public:
    */
   Time GetReceivedDataTime ( void);
 
-  void SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type);
+  //void SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type);
+
+  /**
+   * \brief Accept and process a received Ack.
+   */
   void HandleAck(void);
+
+  /**
+   * \brief Accept and process a request message.
+   * \param the source address
+   * \param the destination address
+   */
   void HandleSolicit(Ipv4Address src,Ipv4Address dest);
 
   /**
