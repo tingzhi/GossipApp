@@ -259,7 +259,7 @@ int main(int argc, char *argv[]) {
   avgfile = fopen(newAvgMsgFile, "a+");
 
   if (timefile != NULL && hopfile != NULL && avgfile != NULL){
-    for (int i = 0; i < 5; i++){
+    for (int i = 0; i < 1; i++){
       simstats results = simulation(newTopoFile);
       fprintf(timefile,"%f\n", results.getTime());
       fprintf(hopfile,"%d\n", results.getHops());
