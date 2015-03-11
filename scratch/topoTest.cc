@@ -253,6 +253,7 @@ int main(int argc, char *argv[]) {
 
   FILE *timefile;
   FILE *hopfile;
+  FILE *avgfile;
   timefile = fopen(newTimeFile, "a+");
   hopfile = fopen(newHopsFile, "a+");
   avgfile = fopen(newAvgMsgFile, "a+");
