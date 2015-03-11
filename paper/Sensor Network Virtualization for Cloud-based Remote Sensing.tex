@@ -110,7 +110,7 @@
 % The documentation is contained in the cite.sty file itself.
 
 
-
+\usepackage{color}
 
 
 
@@ -440,7 +440,7 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-In real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to performan remote sensing task regardless of physicial network changes. For a given network, if we tried to perform any task, the first crucial step is be able to spread the task requirement in the network in an effecient manner. In short, task message need to be broadcasted quickly. In this paper, we used ns-3 to implement gossip protocol.  
+In real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to performan remote sensing task regardless of physicial network changes. For a given network, if we tried to perform any task, the first crucial step is be able to spread the task requirement in the network in an effecient manner. In short, task message need to be broadcasted quickly. In this paper, we use ns-3 to implement gossip protocol.  
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -488,7 +488,11 @@ Remote sensing is one of the possible services of IoT. Remote sensing involves t
 
 However, the main challenge here is that IoT devices are often resource limited meaning they have limited bandwidth and power, and restricted by their mobility. Due to the characteristics of IoT devices, topology of physical network formed from IoT is dynamic. The distributed network protocol which virtualizing the physical network has to deal with this dynamic nature of IoT networks.
 
-Therefore, it is important to evaluate the distributed network protocol's performance under various power models and different MAC protocols in ns-3.
+% OUTDATED
+%Therefore, it is important to evaluate the distributed network protocol's performance under various power models and different MAC protocols in ns-3.
+
+% REPLACED BY
+Those dynamic networks require a robust way to spread information across the whole network while minimizing the burden placed on the network. An efficient protocol is the gossip protocol \cite{gossip}, which spreads information similar to how an infection spreads in a population.
 
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
@@ -597,16 +601,34 @@ Therefore, it is important to evaluate the distributed network protocol's perfor
 % footnotes above bottom floats. This can be corrected via the
 % \fnbelowfloat command of the stfloats package.
 
-\section{Problem Statement}
-Our project goal is to evaluate the performance of a virtual network protocol consisting of IoT devices in ns-3. The major step here is that we will first simulate a wired mesh network with a given topology file. Then we will replace the wired Ethernet mesh network with wireless mesh network. Based on the new wireless mesh network, we will plug in models representing IoT device’s characters and implementing protocol to evaluate its performance.
+\section{Problem Statement}\label{sec:problem}
+%OUTDATED
+%Our project goal is to evaluate the performance of a virtual network protocol consisting of IoT devices in ns-3. The major step here is that we will first simulate a wired mesh network with a given topology file. Then we will replace the wired Ethernet mesh network with wireless mesh network. Based on the new wireless mesh network, we will plug in models representing IoT device’s characters and implementing protocol to evaluate its performance.
 
-\subsection{Network scenario 1: Wired Network}
-In this network scenario, we will try to simulate a wired mesh network with a given topology file. But first, a simple peer-to-peer network formed of nodes connected by a 100~Mbit/s Ethernet connections is looked onto. And then we will elaborate this peer-to-peer network to a wired mesh network with a certain topology. That topology is defined by a file that contains the information about the nodes and edges of the network.
-\subsection{Network scenario 2: Wireless Network}
-Based on the wired mesh network, now we could replace that with a wireless mesh network. The topology is the same as the wired mesh network. Depending on different wireless technologies, we could define different connection rate. For example, zigbee and 6lowpan has the same maximum speed of 250~Kbps. But WiFi Direct connection speed could be up to 250~Mbps. Then we could plug in random variables representing random locations of devices, random packet drops of the network and power consumption of devices. Finally, we could implement the protocol to evaluate its performance.
+%REPLACED BY:
+Our project goal is to evaluate the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices in the network simulator ns-3. More specifically, we focus on \textcolor{red}{\textbf{three?}} performance measurements.
+\begin{itemize}
+ \item \textcolor{red}{ Average number of messages sent per node}
+ \item Maximum amount of hops needed to spread the message
+ \item Maximum amount of time needed until the message is spread
+\end{itemize}
+
+We plan to run the simulation for different numbers of nodes to verify that the time complexity of the gossip protocol is $O(\log N)$, where $N$ is the number of nodes.
+
+To implement the gossip protocol, we need to come up with solutions to the following problems.
+\begin{itemize}
+ \item A message format used by the nodes to communicate with each other.
+ \item Implementation of the gossip protocol in ns-3
+\end{itemize}
+
+
+%\subsection{Network scenario 1: Wired Network}
+%In this network scenario, we will try to simulate a wired mesh network with a given topology file. But first, a simple peer-to-peer network formed of nodes connected by a 100~Mbit/s Ethernet connections is looked onto. And then we will elaborate this peer-to-peer network to a wired mesh network with a certain topology. That topology is defined by a file that contains the information about the nodes and edges of the network.
+%\subsection{Network scenario 2: Wireless Network}
+%Based on the wired mesh network, now we could replace that with a wireless mesh network. The topology is the same as the wired mesh network. Depending on different wireless technologies, we could define different connection rate. For example, zigbee and 6lowpan has the same maximum speed of 250~Kbps. But WiFi Direct connection speed could be up to 250~Mbps. Then we could plug in random variables representing random locations of devices, random packet drops of the network and power consumption of devices. Finally, we could implement the protocol to evaluate its performance.
 
 \section{Related Work}
-In this section, we introduced the topic of Virtual Networks formed using a subset of a large group of IoT devices. Relevant papers covering the topic of Virtual Networks are summarized. In addition, one paper about WiFi Direct technology is summarized as well.
+In this section, we introduce the topic of Virtual Networks formed using a subset of a large group of IoT devices. Relevant papers covering the topic of Virtual Networks are summarized. In addition, one paper about WiFi Direct technology is summarized as well.
 
 \subsection{Virtual Networks}
 The following sections will present an overview over Virtual Sensor Networks, as well as network virtualization using the existing internet.
@@ -634,7 +656,19 @@ This virtualization algorithm will search and select appropriate sensors from th
 WiFi Direct is a technology that its goal is to improve direct device to device communications in Wi-Fi [5]. The main strength of this technology is that it doesn’t require the presence of an Access Point [5]. Actually direct device to device connection was already possible by the ad-hoc mode. But it is not popular because the ad-hoc mode is not power efficient [5]. Instead WiFi Direct uses WiFi infrastructure mode [5]. It let devices negotiate who will be the AP in this network [5]. By doing so, it obtains all the enhanced QoS, power saving, and security mechanisms originally developed for the WiFi infrastructure mode [5]. After first establish the network, new devices could connect to this network just like connecting to an AP [5].
 
 \section{Solution}
+To solve the goals outlined in section~\ref{sec:problem} and implement them in ns-3, we take a three step approach.
 
+\begin{itemize}
+ \item Extend the Internet Control Message Protocol (ICMP) to support transmitting three simple messages used by our protocol.
+ \item Write a new application to be installed on network nodes. This application implements the gossip protocol.
+ \item Import node information from a given topology file and export simulation results to be used in the evaluation.
+\end{itemize}
+
+\subsection{ICMP extension}
+\textcolor{red}{TODO: Explain changes made to code and summarize bulletpoints from presentation}
+
+\subsection{Gossip protocol implementation}
+\textcolor{red}{TODO: Make sure gossip protocol is introduced and pseudo code is given and explained}
 
 \section{Performance evaluation}
 
@@ -710,6 +744,9 @@ We would like to thank Dr. Bechir Hamdaoui for his advising. We also would like 
 % (used to reserve space for the reference number labels box)
 \begin{thebibliography}{1}
 
+\bibitem{gossip}
+K.~Jenkins, K.~Hopkinson, and K.~Birman. \textit{A Gossip Protocol for Subgroup Multicast.} In International Workshop on Applied Reliable Group Communication,
+Apr. 2001
 \bibitem{Atzori}
 L.~Atzori, A.~Iera, G.~Morabito, \emph{The Internet of Things: a survey},
 Comput. Netw. 54 (15) (2010) 2787--2805.
