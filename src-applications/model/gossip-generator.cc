@@ -1,6 +1,6 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright 2015 Oregon State University
+ * Copyright 2015 Marco Falke
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -59,11 +59,13 @@ GossipGenerator::DoDispose ( void )
   Application::DoDispose ();
 }
 
+/*
 void
 GossipGenerator::SendMessage_debug(Ipv4Address src, Ipv4Address dest, int type)
 {
   SendPayload( src,  dest);
 }
+*/
 
 void
 GossipGenerator::AddNeighbor(Ipv4Address own,Ipv4Address neighbor)
@@ -121,7 +123,7 @@ GossipGenerator::HandlePayload(Ipv4Address src,Ipv4Address dest,uint8_t payload_
 void
 GossipGenerator::ChooseRandomNeighbor(Ipv4Address ipv4array[2]){
   NS_LOG_INFO("ChooseRandomNeighbor from " << neighbours[0].size());
-  int temp_rnd = rand() % neighbours[0].size(); // TODO may not be random enough, not seeded etc.
+  int temp_rnd = rand() % neighbours[0].size(); // Note: Seed, if desired! // TODO may not be random enough.
   ipv4array[0] = neighbours[0].at(temp_rnd);
   ipv4array[1] = neighbours[1].at(temp_rnd);
 }
@@ -171,7 +173,7 @@ GossipGenerator::SendPayload(Ipv4Address src, Ipv4Address dest)
   {
     data[j] = 0;
   }
-  data[0] = (uint8_t) CurrentValue; // ONLY use first 8 bits to store data. May be extended...  
+  data[0] = (uint8_t) CurrentValue; // ONLY use first 8 bits to store data. // TODO May be extended...  
   data[1] = NewPacketHops;
 
   Ptr<Icmpv4L4Protocol> icmp = this->GetNode()->GetObject<Icmpv4L4Protocol>(); 

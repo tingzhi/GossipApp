@@ -52,15 +52,18 @@ NS_LOG_COMPONENT_DEFINE ("GenericTopologyCreation");
 class simstats {
     double time;
     int hops;
+    double avgMsg;
   public:
-    simstats(double, int);
+    simstats(double, int, double);
     int getHops(void);
     double getTime(void);
+    double getAvgMsgs(void);
 }; 
 
-simstats::simstats (double t, int h) {
+simstats::simstats (double t, int h, double a) {
   time = t;
   hops = h;
+  avgMsg = a;
 }
 
 int simstats::getHops(void){
@@ -69,6 +72,10 @@ int simstats::getHops(void){
 
 double simstats::getTime(void){
   return time;
+}
+
+double simstats::getAvgMsgs(void){
+  return avgMsg;
 }
 
 Ptr<GossipGenerator> GetGossipApp(Ptr <Node> node)
@@ -163,6 +170,7 @@ simstats simulation (char *filename)
   NS_LOG_INFO(endl << " ---- Print results ---" << endl);
   int MaxHops = 0;
   Time MaxTime = Seconds(0);
+  double AvgMessagesPerNode = 0;
   for ( int i=0; i<NodeNumber;++i)
   {
     Ptr<GossipGenerator> ii = GetGossipApp(nodes2.Get(i));
@@ -172,15 +180,18 @@ simstats simulation (char *filename)
     if (MaxTime.Compare(ii->GetReceivedDataTime()) == -1){
       MaxTime = ii->GetReceivedDataTime();
     }
+    AvgMessagesPerNode += ii->GetSentMessages();
     NS_LOG_INFO("Node " << i << ": ");
     NS_LOG_INFO(" * Sent icmp messages   : " << ii->GetSentMessages());
     NS_LOG_INFO(" * Hops of data message : " << ii->GetPacketHops());
     NS_LOG_INFO(" * Time of data received: " << ii->GetReceivedDataTime().GetSeconds() << "s");
   }
+  AvgMessagesPerNode /= NodeNumber;
   NS_LOG_INFO(endl << "Simulation terminated after " << Simulator::Now().GetSeconds() << "s");
   NS_LOG_INFO("Max hops: " << MaxHops);
+  NS_LOG_INFO("Average amount of sent messages per node: " << AvgMessagesPerNode);
   NS_LOG_INFO("Time until information was spread: " << MaxTime.GetSeconds() << "s" << endl);
-  simstats ret(MaxTime.GetSeconds(),MaxHops);
+  simstats ret(MaxTime.GetSeconds(),MaxHops,AvgMessagesPerNode);
   Simulator::Destroy ();
   return ret;
 }
@@ -204,13 +215,14 @@ int main(int argc, char *argv[]) {
   LogComponentEnable ("GenericTopologyCreation", LOG_LEVEL_INFO);
   // LogComponentEnable ("Icmpv4L4Protocol", LOG_LEVEL_INFO);
 
-  srand(time(NULL));
+  // srand(time(NULL));
 
   //These are the default values for the command line
   // if you do not override them via n3 command lines, this is what will run
   std::string inTopologyFile = "scratch/TopologyFile"; //default filenames
   std::string outHopsFile = "scratch/maxhops.txt";
   std::string outTimeFile = "scratch/maxtime.txt";
+  std::string outAvgMsgFile = "scratch/avgmsg.txt";
 
   //This lets you add command line arguments in n3 
   // to view all command line arguments when you run the program type:
@@ -219,44 +231,45 @@ int main(int argc, char *argv[]) {
   // it will run on the defaults provided above if no command line arguments are given
   //
   // otherwise type in :
-  // ./waf --run "topoTest --infile=scratch/TopologyFile --outHopsFile=scratch/maxhops.txt --outTimeFile=scratch/maxtime.txt"
+  // ./waf --run "topoTest --infile=scratch/TopologyFile --outHopsFile=scratch/maxhops.txt --outTimeFile=scratch/maxtime.txt --outAvgMsgFile=scratch/avgmsg.txt"
   // changing the file names to what you want them to be
   // be sure to include the path!
   CommandLine cmd;
   cmd.AddValue("infile", "Topology file read in", inTopologyFile);
   cmd.AddValue("outHopsFile", "Filename that max hops are written out to", outHopsFile);
   cmd.AddValue("outTimeFile", "Filename that max hops are written out to", outTimeFile);
+  cmd.AddValue("outAvgMsgFile", "Filename that avg number of messages per node are written out to", outAvgMsgFile);
   cmd.Parse (argc, argv);
-
-  //just a test to makes sure you know what filenames are being used. Probably commment out in the future
-  std::cout << "Filenname string :" << inTopologyFile << endl;
-  std::cout << "Max Hops string :" << outHopsFile << endl;
-  std::cout << "Max Time string :" << outTimeFile << endl;
 
   //All of the functions take char * not strings
   //but n3 doesnt have command line entries for char * so they need to be converted from string to char *
   char *newTopoFile = convertStrToChar(inTopologyFile);
   char *newHopsFile = convertStrToChar(outHopsFile);
   char *newTimeFile = convertStrToChar(outTimeFile);
+  char *newAvgMsgFile = convertStrToChar(outAvgMsgFile);
 
   //makes sure nothing weird happened in conversion. comment out or delete later
-  std::cout << "Filenames chars *:" << newTopoFile << " " << newHopsFile << " " << newTimeFile << endl;
+  std::cout << "Filenames chars *:" << newTopoFile << " " << newHopsFile << " " << newTimeFile << " " << newAvgMsgFile << endl;
 
   FILE *timefile;
   FILE *hopfile;
+  FILE *avgfile;
   timefile = fopen(newTimeFile, "a+");
-  hopfile = fopen(newHopsFile, "a+");    
-  
-  if (timefile != NULL && hopfile != NULL){
+  hopfile = fopen(newHopsFile, "a+");
+  avgfile = fopen(newAvgMsgFile, "a+");
+
+  if (timefile != NULL && hopfile != NULL && avgfile != NULL){
     for (int i = 0; i < 1; i++){
       simstats results = simulation(newTopoFile);
       fprintf(timefile,"%f\n", results.getTime());
       fprintf(hopfile,"%d\n", results.getHops());
+      fprintf(avgfile,"%f\n", results.getAvgMsgs());
       sleep(1);
     }
   }
   fclose(timefile);
   fclose(hopfile);
+  fclose(avgfile);
   return 0;
   
 } 
