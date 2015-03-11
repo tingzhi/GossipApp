@@ -6,5 +6,5 @@ do
 
 	echo $f
 	#./waf
-	./waf --run "topoTest --infile="$f" --outHopsFile=scratch/maxhopscmd_850.txt --outTimeFile=scratch/maxtimecmd_850.txt"
+	./waf --run "topoTest --infile="$f" --outHopsFile=scratch/maxhopscmd_850.txt --outTimeFile=scratch/maxtimecmd_850.txt --outAvgMsgFile=scratch/avgmsgcmd_850.txt"
 done
