@@ -671,7 +671,34 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 \textcolor{red}{TODO: Make sure gossip protocol is introduced and pseudo code is given and explained}
 
 \subsection{Gathering results}
-\textcolor{red}{TODO: Talk about topology file creation and workflow}
+
+To evaluate the performance of the gossip protocol, we use several randomly generated topology files with the number of nodes as variable. Those topology files are derived from a random geometric graph network, which was created by uniformly and randomly placing nodes into a space and then connect nodes whose distance is smaller than some given radius.
+
+\begin{figure}
+ \centering
+ \begin{verbatim*}#Nodes
+0
+1
+2
+#Edges
+(0, 1)
+(1, 2)\end{verbatim*}
+ \caption{A topology file of a linear topology with three nodes.}
+ \label{fig:topsimple}
+\end{figure}
+
+
+Each topology file contains the number of nodes as well as all the edges, which are connections between nodes. As an example, the content of a simple topology file is shown in figure~\ref{fig:topsimple}. We wrote a parser in C++ to create the given number of nodes in ns-3 and installed the gossip protocol application on them. Thereafter, all edges are parsed and created accordingly. Each node holds an ns3 Ipv4Interface for every connection and stores the address of his interface and the one of his neighbors interface.
+
+For our simulation, we set the link rate for all connections to 100~Mbps and the link delay to 2~ms. Also, all nodes are instructed to execute the gossip process of sending out data periodically every 5~ms. The interval of requesting new data is set to 5~s.
+
+To allow the performance analysis, all nodes count the number of icmp messages they sent. Also, they track how many hops the data message experienced before reaching them and they record the time when they received the data message.
+
+For the analysis, we collect the information from the nodes and determine the average amount of icmp messages sent. Moreover, the highest number of reported hops is saved, as well as how long it took for the message to reach the ``last'' node.
+
+This information is determined and stored for each of the several hundred topology files.
+
+Finally, we post-process the collected data to produce meaningful plots.
 
 \section{Performance evaluation}
 \textcolor{red}{TODO: Explain graphs based on used parameters, discuss and compare to expected result}
