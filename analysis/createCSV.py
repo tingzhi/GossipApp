@@ -42,12 +42,13 @@ def main():
 	prefix = sys.argv[1] + "_"
 	suffix = ".txt"
 	# print header
-	print "nodes," + prefix[:len(prefix)-4] + ",se"
+	print "#" + "nodes mean-of-" + prefix[:len(prefix)-4] + ",stdev"
 	for arg in sys.argv:
 		if prefix in arg:
 			numOfNodes = arg[arg.index(prefix) + len(prefix): arg.index(suffix)]
 			mean = 0
 			counter = 0
+			var = 0
 
 			lines = ReadFileLines(arg)
 			for line in lines:
@@ -56,8 +57,11 @@ def main():
 				mean = mean + float(line)
 			mean = mean / counter
 			for line in lines:
-				# print data
-				print numOfNodes + "," + line[:len(line)-1] + "," + str(abs(mean-float(line)))
+				var = var + pow(mean-float(line),2) #TODO numerically instable!
+			var = var / counter
+			stdev = pow(var,.5)
+			# print data
+			print numOfNodes + " " + str(mean) + " " + str(stdev)
 
 if __name__ == '__main__':
 	main()
