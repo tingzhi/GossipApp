@@ -673,10 +673,12 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 
 Gossip protocol is an computer comunication protocol which inspired by the social activity -- gossip. This protocol suit for the synchronize the message in the system which do not need the realtime synchronization. It provide O(logn) time to synchronize the message to the network, n means the number of nodes in the network. There are three packet type for the message protocol: data packet, ACK packet and request packet. The data packet contains the message from a certain source node who want to spread this message to the whole network. ACK packet is a packet to notice the node that the destination alread contain the mesaage. The request packet is the packet which request the message from destination node. There are two state for each node, running and stop.
 
-The pseudo code of gossip algorithm
+The pseudo code of gossip algorithm is given in figure~\ref{fig:pseudo}.
 
-Behaviour of the node:
-	switch(state):
+\begin{figure}
+ \centering
+ \begin{verbatim}
+ switch(state):
     	case running:
         	if message is not null:
             	every 1 millisecond:
@@ -703,6 +705,10 @@ Behaviour of the node:
                     	send data to the node who send the packet
                     if packet is data:
                     	send ACK to the node who send the packet
+\end{verbatim}
+ \caption{The pseudo code of the gossip algorithm.}
+ \label{fig:pseudo}
+\end{figure}
 
 The explaination of the pseudo code: 
 
@@ -714,13 +720,13 @@ To evaluate the performance of the gossip protocol, we use several randomly gene
 
 \begin{figure}
  \centering
- \begin{verbatim*}#Nodes
+ \begin{verbatim}#Nodes
 0
 1
 2
 #Edges
 (0, 1)
-(1, 2)\end{verbatim*}
+(1, 2)\end{verbatim}
  \caption{A topology file of a linear topology with three nodes.}
  \label{fig:topsimple}
 \end{figure}
