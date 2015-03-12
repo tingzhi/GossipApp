@@ -42,7 +42,7 @@ def main():
 	prefix = sys.argv[1] + "_"
 	suffix = ".txt"
 	# print header
-	print "#" + "nodes mean-of-" + prefix[:len(prefix)-4] + ",stdev"
+	print "#" + "nodes,mean,stderr"
 	for arg in sys.argv:
 		if prefix in arg:
 			numOfNodes = arg[arg.index(prefix) + len(prefix): arg.index(suffix)]
