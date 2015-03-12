@@ -46,17 +46,18 @@ def main():
 	for arg in sys.argv:
 		if prefix in arg:
 			numOfNodes = arg[arg.index(prefix) + len(prefix): arg.index(suffix)]
-			numOfNodes = int(numOfNodes)
 			mean = 0
+			counter = 0
 
 			lines = ReadFileLines(arg)
 			for line in lines:
 				# calc mean
+				counter = counter + 1
 				mean = mean + float(line)
-			mean = mean / numOfNodes
+			mean = mean / counter
 			for line in lines:
 				# print data
-				print str(numOfNodes) + "," + line[:len(line)-1] + "," + str(abs(mean-float(line)))
+				print numOfNodes + "," + line[:len(line)-1] + "," + str(abs(mean-float(line)))
 
 if __name__ == '__main__':
 	main()
