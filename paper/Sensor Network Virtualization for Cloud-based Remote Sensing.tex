@@ -688,7 +688,7 @@ To evaluate the performance of the gossip protocol, we use several randomly gene
 \end{figure}
 
 
-Each topology file contains the number of nodes as well as all the edges, which are connections between nodes. As an example, the content of a simple topology file is shown in figure~\ref{fig:topsimple}. We wrote a parser in C++ to create the given number of nodes in ns-3 and installed the gossip protocol application on them. Thereafter, all edges are parsed and created accordingly. Each node holds an ns3 Ipv4Interface for every connection and stores the address of his interface and the one of his neighbors interface.
+Each topology file contains the number of nodes as well as all the edges, which are connections between nodes. As an example, the content of a simple topology file is shown in figure~\ref{fig:topsimple}. We assumed in our work, that each nodes is connected at least once to the network. We wrote a parser in C++ to create the given number of nodes in ns-3 and installed the gossip protocol application on them. Thereafter, all edges are parsed and created accordingly. Each node holds an ns3 Ipv4Interface for every connection and stores the address of his interface and the one of his neighbors interface.
 
 For our simulation, we set the link rate for all connections to 100~Mbps and the link delay to 2~ms. Also, all nodes are instructed to execute the gossip process of sending out data periodically every 5~ms. The interval of requesting new data is set to 5~s.
 
@@ -696,18 +696,18 @@ To allow the performance analysis, all nodes count the number of icmp messages t
 
 For the analysis, we collect the information from the nodes and determine the average amount of icmp messages sent. Moreover, the highest number of reported hops is saved, as well as how long it took for the message to reach the ``last'' node.
 
-This information is determined and stored for each of the several hundred topology files.
+This information is determined and stored for each of the several hundred topology files. It should be noted that due to time limitations each topology file was only simulated once.
 
 Finally, we post-process the collected data to produce meaningful plots.
 
 \section{Performance evaluation}
 \textcolor{red}{TODO: Explain graphs based on used parameters, discuss and compare to expected result}
 
-%Time seems a bad indicator because it only depends on gossipInterval and random fluctuations.
-%Hops with 1 iteration. At least fluctuations of 2%
-%simulation, iteration, nodes
-%gathering
-%
+First, we will have a look at the average number of icmp messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases. \textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
+
+Second, the highest number of hops a message experiences is analysed. Figure~\ref{fig:maxhops} shows that with a growing number of nodes, also the maximum of the number of hops grows. Nonetheless, the overall impression, is that the number of hops is generally speaking, more or less constant and mostly is found to range from 15 to 20. \textcolor{red}{Boxplot more appropriate?}
+
+Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the message across the whole network. Again, the mean is found to be more or less constant and slightly less than 15~s. Due to the huge difference in the gossip-interval-time (5~ms) and solicit-interval-time (5~s), only the influence of the solicit-interval can be deduced from the results. One can see, that the time needed to spread the message is fluctuating due to the random nature of the gossip protocol, especially for the case of a number of nodes of 100...
 
 \begin{figure}
  \centering
@@ -730,6 +730,7 @@ Finally, we post-process the collected data to produce meaningful plots.
  \label{fig:maxtime}
 \end{figure}
 
+\textcolor{red}{Maybe write about further work... What can be improved or looked onto...}
 
 \section{Conclusion}
 
