@@ -111,6 +111,7 @@
 
 
 \usepackage{color}
+\usepackage{listings}
 
 
 
@@ -484,7 +485,7 @@ gossip protocol, internet of things, sensor networks, virtual sensor networks, d
 \IEEEPARstart
 {A}{long} with the development of the internet technology, the price of the broadband connectivity becomes affordable. Devices are trending to be  smaller and more powerful. People start to explore a way to connect devices to the network for better control and monitor the status of them. Devices such as smartphone, smartwatch, and smart thermostats are able to connect to a network and these devices could communicate with each other. If these devices are connected to the Internet, we call it the \textit{Internet of Things}. There is no doubt that IoT is an innovative paradigm \cite{Atzori} because this idea combined the Internet with our everyday gadgets. Either from the perspective of private user or from the perspective of business user, there are infinite possible ways to exploit IoT. As of today, research in the area of IoT is emerging rapidly and many open questions remain to be answered.
 
-Remote sensing is one of the possible services of IoT. Remote sensing involves the search and selection of IoT devices to form a virtual sensor network. Subsequently, the selected devices estimate the wanted property collaboratively and report the result to the remote cloud agent. IoT assigns a unique MAC address to physical object which do not have an identification, so people could track the specific object’s status and control it remotely. The advantage of remote control is that it requires less manpower needed to monitor and manage the object. And it could further increase devices usage rate.
+Remote sensing is one of the possible services of IoT. Remote sensing allows us to get the data from the device through the network instead of physically read the data. Remote sensing involves the search and selection of IoT devices to form a virtual sensor network. Subsequently, the selected devices estimate the wanted property collaboratively and report the result to the remote cloud agent. IoT assigns a unique MAC address to physical object which do not have an identification, so people could track the specific object’s status and control it remotely. The advantage of remote control is that it requires less manpower needed to monitor and manage the object. And it could further increase devices usage rate.
 
 However, the main challenge here is that IoT devices are often resource limited meaning they have limited bandwidth and power, and restricted by their mobility. Due to the characteristics of IoT devices, topology of physical network formed from IoT is dynamic. The distributed network protocol which virtualizing the physical network has to deal with this dynamic nature of IoT networks.
 
@@ -667,8 +668,45 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 \subsection{ICMP extension}
 \textcolor{red}{TODO: Explain changes made to code and summarize bulletpoints from presentation}
 
-\subsection{Gossip protocol implementation}
+\subsection{Gossip protocol }
 \textcolor{red}{TODO: Make sure gossip protocol is introduced and pseudo code is given and explained}
+
+Gossip protocol is an computer comunication protocol which inspired by the social activity -- gossip. This protocol suit for the synchronize the message in the system which do not need the realtime synchronization. It provide O(logn) time to synchronize the message to the network, n means the number of nodes in the network. There are three packet type for the message protocol: data packet, ACK packet and request packet. The data packet contains the message from a certain source node who want to spread this message to the whole network. ACK packet is a packet to notice the node that the destination alread contain the mesaage. The request packet is the packet which request the message from destination node. There are two state for each node, running and stop.
+
+The pseudo code of gossip algorithm
+
+Behaviour of the node:
+	switch(state):
+    	case running:
+        	if message is not null:
+            	every 1 millisecond:
+                	find a random neighbor
+                 	send data packet to random neightbor
+                  	if receive a packet:
+                      	if pakcet is ACK:
+                          	state <- stop
+         	else:
+           		if receive a packet:
+                	if packet is a data packet:
+                    	update the message to the content of data packet
+                every 5 second:
+                	find a random neighbor
+                    send a request packet to the neighbor
+                    if receive a packet:
+                    	if packet is a data packet:
+                        	update the message to the content of data packet 
+                    
+        
+        case stop:
+			if receive a packet:
+                	if pakcet is request:
+                    	send data to the node who send the packet
+                    if packet is data:
+                    	send ACK to the node who send the packet
+
+The explaination of the pseudo code: 
+
+All the node in network have same behaviour and they are all independent. When we want to spread a message x to the whole network, we assign the x to message and run this algorithm. node 1 start with running state, and node 1 has a message x, so it will find a random neighbor every one millisecond and send a data packet which contain message x to its random neighbor. If node 1 receive a ACK packet it will go to stop state, otherwise it will keep doing these steps. Other nodes which do not have the message x will wait for packet, if a node 1 send a data packet to the node 2 which do not have message x, node 2 will update the message in node 2 and not return anything to node 1. if node 2 do not have message 2, it will send a request packet to a random neighbor every 5 second. If node 2 receive a data packet after sedning the request packet, it will update its message to x. The nodes in stop state would always waiting for other node send message to it and it will send data packet or ACK packet back depends on what packet it receive.
 
 \subsection{Gathering results}
 
