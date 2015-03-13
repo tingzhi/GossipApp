@@ -618,10 +618,30 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 \subsection{ICMP extension}
 \textcolor{red}{TODO: Explain changes made to code and summarize bullet points from presentation}
 
-ICMP stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting~\cite{james}. ICMP message contains two parts: 8-byte header and data section. The first 4 btyes of the header have fixed format. However, the last 4 bytes various depend on the type or code of the ICMP packet~\cite{forouzan}. The first and second byte of the header is the type field and code field respectively. And the third and fourth byte is checksum field.
- 
- 
- ICMP messages have a type and a code field, and contain the header and the first 8 bytes of the IP datagram that caused the ICMP message to be generated in the first place (so that the sender can determine the datagram that caused the error). Selected ICMP message types are shown in Figure 4.23. Note that ICMP messages are used not only for signaling error conditions.
+ICMP stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting~\cite{james}. ICMP message contains two parts: 8-byte header and data section. The first 4 btyes of the header have fixed format. However, the last 4 bytes various depend on the type or code of the ICMP packet~\cite{forouzan}. The first and second byte of the header is the type field and code field respectively. And the third and fourth byte is checksum field. 
+
+\begin{table}[!hbp]￼
+\begin{tabular}{|p{1 cm}|p{1 cm}|p{1 cm}|p{1 cm}|p{1 cm}|}
+	\hline
+	Octet & 0 & 1 & 2 & 3 \\
+	\hline
+	& Type & Code & 
+	\multicolumn{2}{ |c| }{Checksum}  \\
+	\hline
+	Octet & 4 & 5 & 6 & 7 \\
+	\hline
+	& 
+	\multicolumn{4}{|c|}{Rest of Header}  \\
+	\hline
+\end{tabular}
+	\caption{caption text}
+\end{table} 
+
+
+
+
+
+ Selected ICMP message types are shown in Figure 4.23. Note that ICMP messages are used not only for signaling error conditions.
  The well-known ping program sends an ICMP type 8 code 0 message to the specified host. The destination host, seeing the echo request, sends back a type 0 code 0 ICMP echo reply. Most TCP/IP implementations support the ping server directly in the operating system; that is, the server is not a process. Chapter 11 of [Stevens 1990] provides the source code for the ping client program. Note that the client program needs to be able to instruct the operating system to generate an ICMP message of type 8 code 0.
  Another interesting ICMP message is the source quench message. This message is seldom used in practice. Its original purpose was to perform congestion control— to allow a congested router to send an ICMP source quench message to a host to force that host to reduce its transmission rate. We have seen in Chapter 3 that TCP has its own congestion-control mechanism that operates at the transport layer, with- out the use of network-layer feedback such as the ICMP source quench message.
  In Chapter 1 we introduced the Traceroute program, which allows us to trace a route from a host to any other host in the world. Interestingly, Traceroute is imple- mented with ICMP messages. To determine the names and addresses of the routers between source and destination, Traceroute in the source sends a series of ordinary IP datagrams to the destination. Each of these datagrams carries a UDP segment with an unlikely UDP port number. The first of these datagrams has a TTL of 1, the
