@@ -374,7 +374,7 @@
 % in the abstract or keywords.
 
 \begin{abstract}
-In real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to perform remote sensing task regardless of physical network changes. For a given network, if we tried to perform any task, the first crucial step is to spread the task requirement in the network in an efficient manner. In short, task message need to be broadcasted quickly. In this paper, we use ns-3 to implement gossip protocol.  
+In real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to perform remote sensing task regardless of physical network changes. For a given network, if we tried to perform any task, the first crucial step is to spread the task requirement in the network in an efficient manner. In short, task message need to be broadcasted quickly. One way to do so is using gossip protocol meaning for each node in the network, they randomly "gossip" task message to neighbors. In this paper, we extened the ICMP to support gossip protocol control message, developed gossip protocol inside ns-3, and measured the performance of gossip protocol using random generated topology files which can be classified as peer-to-peer mesh networks.  
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -526,11 +526,8 @@ However, the main challenge here is that IoT devices are often resource limited 
 % \fnbelowfloat command of the stfloats package.
 
 \section{Problem Statement}\label{sec:problem}
-describe and state the problem being addressed and your motivation for solving it (i.e., why it is important to solve such a problem). Describe your system/network setup - topologies, assumptions, configurations, network setup, etc (1 page)
 
-The goal of our project is to evaluating gossip protocol in the simulation tool -- ns3. 
-
-First, we customized gossip protocol control messages based on ICMP. Second, we developed the gossip protocol and implemented it in ns-3. Finanlly, we evaluated the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices by running simulations in ns-3. 
+The goal of our project is to evaluating gossip protocol in the simulation tool -- ns3. First, we customized gossip protocol control messages based on ICMP. Second, we developed the gossip protocol and implemented it in ns-3. Finanlly, we evaluated the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices by running simulations in ns-3. In the mesh network, each node usually has multiple edges and we assume that there is no isolated node in the network.
 
 There are three essential performance metrics we would like to measure. 
 
@@ -544,9 +541,7 @@ The average number of control messages send per node could help engineers to und
 
 The maximum amount of time needed to spread the message could be used to evaluate the time complexity of gossip protocol. The correlation between the maximum amount of hops and spread time is very important to characterize this protocol. If they are strongly correlated, then we probably would observe that as the maximum amount of hops increases, the spread time will increase proportionally. Under that circumstance, new mechanism need to be implemented to reduce the total number of hops for each node to get the message. 
 
-We plan to run the simulation for different numbers of nodes to verify that the time complexity of the gossip protocol is $O(\log N)$, where $N$ is the number of nodes.
-
-Since the gossip protocol was not embedded in the NS3 simulator, we need to implement the gossip protocol in NS3 and construct the structure of customized gossip packet in NS3.
+In order to obtain meaningful data, our performance testing plan is to run simulation under different number of nodes cases. And for each case, we would use 100 random generated topology files to further assure the randomness of the network topology. In this project, we hope to verify that the time complexity of the gossip protocol is $O(\log N)$, where $N$ is the number of nodes.
 
 %\subsection{Network scenario 1: Wired Network}
 %In this network scenario, we will try to simulate a wired mesh network with a given topology file. But first, a simple peer-to-peer network formed of nodes connected by a 100~Mbit/s Ethernet connections is looked onto. And then we will elaborate this peer-to-peer network to a wired mesh network with a certain topology. That topology is defined by a file that contains the information about the nodes and edges of the network.
@@ -582,15 +577,15 @@ This virtualization algorithm will search and select appropriate sensors from th
 The goal of WiFi Direct technology is to improve direct device to device communications in Wi-Fi \cite{Mur}. The main strength of this technology is that it doesn’t require the presence of an Access Point \cite{Mur}. Actually direct device to device connection was already possible by the ad-hoc mode. But due to the power consumption issue, it is not popular \cite{Mur}. Instead WiFi Direct uses WiFi infrastructure mode \cite{Mur}. It let devices negotiate who will be the Access Point in this network \cite{Mur}. By doing so, it obtains all the enhanced QoS, power saving, and security mechanisms originally developed for the WiFi infrastructure mode \cite{Mur}. After first establish the network, new devices could connect to this network just like connecting to an Access Point \cite{Mur}.
 
 \section{Solution}
-To solve the goals outlined in section~\ref{sec:problem} and implement them in ns-3, we took a three steps.
+To achieve the goals outlined in section~\ref{sec:problem} and implement them in ns-3, we took three vital steps.
 
 \begin{itemize}
- \item Extend the Internet Control Message Protocol (ICMP) to support transmitting three simple messages used by our protocol.
- \item Write a new application to be installed on network nodes. This application implements the gossip protocol.
- \item Import node information from a given topology file and export simulation results to be used in the evaluation.
+ \item Extend the Internet Control Message Protocol (ICMP) to support transmitting three simple control messages needed for our protocol.
+ \item Develop a new application to be installed on network nodes. This application implements the gossip protocol.
+ \item Import nodes information from a given topology file and export simulation results for performance evaluation.
 \end{itemize}
 
-\subsection{ICMP extension}
+\subsection{ICMP Extension}
 
 ICMP stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting~\cite{james}. ICMP message contains two parts: 8-byte header and data section. The first 4 btyes of the header have fixed format. However, the last 4 bytes various depend on the type or code of the ICMP packet~\cite{forouzan}. The first and second byte of the header is the type field and code field respectively. And the third and fourth byte are checksum field. The format of the header is shown in table \ref{table:1}.
 
@@ -655,7 +650,7 @@ As we could see in table \ref{table:2}, type 42 to 255 are reserved for further 
 
 Upon these new control message types, we could further develop gossip protocol in ns-3.
 
-\subsection{Gossip protocol }
+\subsection{Gossip Protocol }
 
 Gossip protocol is a computer communication protocol which inspired by the social activity -- gossip. This protocol accomplishes to synchronize a message in a system that does not need real-time synchronization. It provides $O(\log n)$ time to synchronize the message to the network, where $n$ means the number of nodes in the network. There are three packet types for the message protocol: Data packet, ACK packet and request packet. The data packet contains the message from a certain source node that wants to spread this message to the whole network. The ACK packet is a packet to notice the node that the destination already contains the message. The request packet is the packet that request the message from destination node. There are two states for each node, running and stop.
 
@@ -701,7 +696,7 @@ The explanation of the pseudo code:
 
 All the node in network have same behavior and they are all independent. When we want to spread a message x to the whole network, we assign the x to message and run this algorithm. Node 1 start with running state, and node 1 has a message x, so it will find a random neighbor every five milliseconds and send a data packet which contain message x to its random neighbor. If node 1 receive a ACK packet it will go to stop state, otherwise it will keep doing these steps. Other nodes which do not have the message x will wait for packet, if a node 1 send a data packet to the node 2 which do not have message x, node 2 will update the message in node 2 and not return anything to node 1. If node 2 do not have message 2, it will send a request packet to a random neighbor every 5 second. If node 2 receives a data packet after sending the request packet, it will update its message to x. The nodes in stop state would always waiting for other node send message to it and it will send data packet or ACK packet back depends on what packet it receive.
 
-\subsection{Gathering results}
+\subsection{Gathering Simulation Data}
 
 To evaluate the performance of the gossip protocol, we use several randomly generated topology files with the number of nodes as variable. Those topology files are derived from a random geometric graph network, which was created by uniformly and randomly placing nodes into a space and then connect nodes whose distance is smaller than some given radius.
 
@@ -725,15 +720,11 @@ Each topology file contains the number of nodes as well as all the edges, which 
 
 For our simulation, we set the link rate for all connections to 100~Mbps and the link delay to 2~ms. Also, all nodes are instructed to execute the gossip process of sending out data periodically every 5~ms. The interval of requesting new data is set to 5~s.
 
-To allow the performance analysis, all nodes count the number of ICMP messages they sent. Also, they track how many hops the data message experienced before reaching them and they record the time when they received the data message.
+To allow the performance analysis, all nodes count the number of ICMP messages they sent. Also, they track how many hops the data message experienced before reaching them and they record the time when they received the data message. For one single simulation, we collect the information from the nodes and determine the average amount of ICMP messages sent. Moreover, the highest number of reported hops is saved, as well as how long it took for the message to reach the ``last'' node.
 
-For the analysis, we collect the information from the nodes and determine the average amount of ICMP messages sent. Moreover, the highest number of reported hops is saved, as well as how long it took for the message to reach the ``last'' node.
+This information is determined and stored for each of the several hundred topology files. It should be noted that due to time limitations each topology file was only simulated once. Finally, we did statistical analysis upon those collected data in the hope of verifying the assumptions we made in section~\ref{sec:problem}.
 
-This information is determined and stored for each of the several hundred topology files. It should be noted that due to time limitations each topology file was only simulated once.
-
-Finally, we post-process the collected data to produce meaningful plots.
-
-\section{Performance evaluation}
+\section{Performance Evaluation}
 
 First, we will have a look at the average number of ICMP messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases.
 %\textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
@@ -796,7 +787,7 @@ Further, we see that the maximum number of hops is slightly increasing for an in
 
 Unfortunately, we could not verify that the time complexity of the algorithm is $O(\log n)$ as outlined in \cite{gossip}. Possible causes to consider are discussed in the next section.
 
-\section{Further work}\label{sec:further}
+\section{Further Work}\label{sec:further}
 In further work, various alterations to the gossip protocol can be covered and examined. For example, a node can improve routing (or decrease the number of hops) by notifying neighbors if there exists a shorter route to the owner of a message. To accomplish this, they need to keep track of the number of hops and then compare if the owner of a received message is one of their immediate neighbors. In case this is true and they will notify the source of the message, that the \textit{true} (or ideal) number of hops would be 1.
 
 Another option for further work, would be to change the parameters to create the topology file. As demonstrated in fig.~\ref{fig:density}, the number of edges per node is not a constant. We believe that making this value constant, will yield different results which possibly verify the logarithmic complexity suggested by \cite{gossip}.
