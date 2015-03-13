@@ -780,12 +780,9 @@ We assume that the reason behing the results being not a function of the number 
 Section~\ref{sec:further} proposes further work which can be done to gain a more thorough evaluation.
 
 \section{Conclusion}
-We have introduced the topics of Internet of things and sensor networks. The opportunities resulting by virtualization of those sensor networks have been elaborated. A distributed algorithm to spread data across a mesh-network has been implemented. We proposed several performance measures to evaluate this algorithm.
+We introduced the topics of Internet of things and sensor networks. The opportunities resulting by virtualization of those sensor networks have been elaborated. A distributed algorithm to spread data across a mesh-network has been implemented. We proposed several performance measures to evaluate this algorithm.
 
-We have implemented the gossip protocol and run the simulation in NS3. The result from NS3 shows that the number of messages a node expects to send is not a function of the total number of nodes in the network.
-Further, we see that the maximum number of hops is slightly increasing for an increasing number of nodes. And lastly, our results imply that the time until all nodes have the data, is mostly only depended on how the solicit-interval is chosen.
-
-Unfortunately, we could not verify that the time complexity of the algorithm is $O(\log n)$ as outlined in \cite{gossip}. Possible causes to consider are discussed in the next section.
+We have implemented the gossip protocol and run the simulation in ns-3. The result from ns-3 shows that the number of messages a node expects to send is not a function of the total number of nodes in the network. Further, we see that the maximum number of hops is slightly increasing for an increasing number of nodes. And lastly, our results imply that the time until all nodes have the data, is mostly only depended on how the solicit-interval is chosen.Unfortunately, we could not verify that the time complexity of the algorithm is $O(\log n)$ as outlined in \cite{gossip}. Possible causes to consider are discussed in the next section.
 
 \section{Further Work}\label{sec:further}
 In further work, various alterations to the gossip protocol can be covered and examined. For example, a node can improve routing (or decrease the number of hops) by notifying neighbors if there exists a shorter route to the owner of a message. To accomplish this, they need to keep track of the number of hops and then compare if the owner of a received message is one of their immediate neighbors. In case this is true and they will notify the source of the message, that the \textit{true} (or ideal) number of hops would be 1.
@@ -794,7 +791,7 @@ Another option for further work, would be to change the parameters to create the
 
 And lastly, the effect of reducing the solicit interval should be investigated. Clearly, having a faster rate to request new data will add an overhead to the network. Further work may determine an appropriate interval for the solicit interval.
 
-Due to time limitations we could not address the huge spectrum of possible analysis. Further work is needed to examine the effects when the wired peer-to-peer links between nodes are replaced by wireless ones. Power limitations and mobility of the nodes should be included in such a scenario. Thus, the list of neighbors for each node changes over time and a topology file is not needed anymore. In the wireless case, Wi-Fi Direct can be used to connect devices with each other.
+Due to time limitations we could not address the huge spectrum of possible analysis. Further work is needed to examine the effects when the wired peer-to-peer links between nodes are replaced by wireless ones. Power limitations and mobility of the nodes should be included in such a scenario. Thus, the list of neighbors for each node changes over time and a topology file is not needed anymore. In the wireless case, Wi-Fi Direct can be used to connect devices with each other as well.
 
 
 
