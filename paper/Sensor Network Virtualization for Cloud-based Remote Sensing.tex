@@ -671,7 +671,7 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 \subsection{Gossip protocol }
 \textcolor{red}{TODO: Make sure gossip protocol is introduced and pseudo code is given and explained}
 
-Gossip protocol is an computer comunication protocol which inspired by the social activity -- gossip. This protocol suit for the synchronize the message in the system which do not need the realtime synchronization. It provide O(logn) time to synchronize the message to the network, n means the number of nodes in the network. There are three packet type for the message protocol: data packet, ACK packet and request packet. The data packet contains the message from a certain source node who want to spread this message to the whole network. ACK packet is a packet to notice the node that the destination alread contain the mesaage. The request packet is the packet which request the message from destination node. There are two state for each node, running and stop.
+Gossip protocol is a computer comunication protocol which inspired by the social activity -- gossip. This protocol accomplishes to synchronize a message in a system which does not need realtime synchronization. It provides $O(\log n)$ time to synchronize the message to the network, where $n$ means the number of nodes in the network. There are three packet types for the message protocol: Data packet, ACK packet and request packet. The data packet contains the message from a certain source node who wants to spread this message to the whole network. The ACK packet is a packet to notice the node that the destination alread contains the mesaage. The request packet is the packet which request the message from destination node. There are two states for each node, running and stop.
 
 The pseudo code of gossip algorithm is given in figure~\ref{fig:pseudo}.
 
@@ -750,7 +750,7 @@ First, we will have a look at the average number of icmp messages each node sent
 
 Second, the highest number of hops a message experiences is analysed. Figure~\ref{fig:maxhops} shows that with a growing number of nodes, also the maximum of the number of hops grows. Nonetheless, the overall impression, is that the number of hops is generally speaking, more or less constant and mostly is found to range from 15 to 20. \textcolor{red}{Boxplot more appropriate?}
 
-Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the message across the whole network. Again, the mean is found to be more or less constant and slightly less than 15~s. Due to the huge difference in the gossip-interval-time (5~ms) and solicit-interval-time (5~s), only the influence of the solicit-interval can be deduced from the results. One can see, that the time needed to spread the message is fluctuating due to the random nature of the gossip protocol, especially for the case of a number of nodes of 100...
+Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the message across the whole network. Again, the mean is found to be more or less constant and slightly less than 15~s. Due to the huge difference in the gossip-interval-time (5~ms) and solicit-interval-time (5~s), only the influence of the solicit-interval can be deduced from the results. One can see, that the time needed to spread the message is fluctuating due to the random nature of the gossip protocol, especially for the case of a number of nodes of 100, where the standard error is the largest.
 
 \begin{figure}
  \centering
