@@ -372,26 +372,6 @@
 
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
-<<<<<<< Updated upstream
-\begin{table}[h]
-\begin{tabular}{|l|l|l|l|}
-\hline
-Type                        & Code & Status     & Description                                                            \\ \hline
-0– Echo Reply               & 0    &            & \begin{tabular}[c]{@{}l@{}}Echo reply (\\ used to ping)\end{tabular}   \\ \hline
-1and 2                      &      &            & Reserved                                                               \\ \hline
-3 – Destination Unreachable & 0-15 &            &                                                                        \\ \hline
-4 – Source Quench           & 0    & deprecated & Source quench                                                          \\ \hline
-5 – Redirect Message        & 0-3  &            & Redirect Datagram                                                      \\ \hline
-6                           &      & deprecated & \begin{tabular}[c]{@{}l@{}}Alternate Host \\ Address\end{tabular}      \\ \hline
-7                           &      &            & Reserved                                                               \\ \hline
-8 – Echo Request            &      &            & \begin{tabular}[c]{@{}l@{}}Echo request (\\ used to ping)\end{tabular} \\ \hline
-9 – Router Advertisement    & 0    &            & \begin{tabular}[c]{@{}l@{}}Router\\  Advertisement\end{tabular}        \\ \hline
-10 – Router Solicitation    & 0    &            & Router discovery                                                       \\ \hline
-\end{tabular}
-\end{table}
-=======
-
->>>>>>> Stashed changes
 
 \begin{abstract}
 In real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to perform remote sensing task regardless of physical network changes. For a given network, if we tried to perform any task, the first crucial step is to spread the task requirement in the network in an efficient manner. In short, task message need to be broadcasted quickly. In this paper, we use ns-3 to implement gossip protocol.  
@@ -620,13 +600,12 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 \end{itemize}
 
 \subsection{ICMP extension}
-\textcolor{red}{TODO: Explain changes made to code and summarize bullet points from presentation}
 
 ICMP stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting~\cite{james}. ICMP message contains two parts: 8-byte header and data section. The first 4 btyes of the header have fixed format. However, the last 4 bytes various depend on the type or code of the ICMP packet~\cite{forouzan}. The first and second byte of the header is the type field and code field respectively. And the third and fourth byte are checksum field. The format of the header is shown in table \ref{table:1}.
 
 \begin{table}[h!]￼
 	\centering
-	\caption{caption text}
+	\caption{ICMP Header Structure}
 	\label{table:1}
 \begin{tabular}{|p{1 cm}|p{1 cm}|p{1 cm}|p{1 cm}|p{1 cm}|}
 	\hline
@@ -643,28 +622,47 @@ ICMP stands for Internet Control Message Protocol. The most common use of ICMP i
 \end{tabular}
 \end{table} 
 
+Table \ref{table:2} here presented some selected ICMP message types. 
+
 \begin{table}[h]
-	\begin{tabular}{|l|l|l|l|}
+	\centering
+	\caption{Control Messages}
+	\label{table:2}
+	\begin{tabular}{|p{1.5cm}|p{0.8 cm}|p{4.5 cm}|}
 		\hline
-		Type                        & Code & Status     & Description                 \\ \hline
-		0– Echo Reply               & 0    &            & Echo reply (used to ping)   \\ \hline
-		1and 2                      &      &            & Reserved                    \\ \hline
-		3 – Destination Unreachable & 0-15 &            &                             \\ \hline
-		4 – Source Quench           & 0    & deprecated & Source quench               \\ \hline
-		5 – Redirect Message        & 0-3  &            & Redirect Datagram           \\ \hline
-		6                           &      & deprecated & Alternate Host Address      \\ \hline
-		7                           &      &            & Reserved                    \\ \hline
-		8 – Echo Request            & 0    &            & Echo request (used to ping) \\ \hline
-		9 – Router Advertisement    & 0    &            & Router Advertisement        \\ \hline
-		10 – Router Solicitation    & 0    &            & Router discovery            \\ \hline
+		Type & Code & Description \\                                                           
+		\hline
+		0  & 0   & Echo reply   \\ \hline
+		8  &  0 & Echo request \\ 
+		\hline
+		9 & 0 & Router Advertisement \\
+		\hline
+		10	& 0	&	Router discovery/selection/solicitation \\
+		\hline
+		42 to 255    &   & Reserved    \\ 
+		\hline
 	\end{tabular}
 \end{table}
 
+As we could see in table \ref{table:2}, type 42 to 255 are reserved for further development. So we decided to extend ICMP by defining type 42, 43, and 44 to represent ackownlegement, request, and data respectively. The detail is shown in table \ref{table:3}.
 
- Selected ICMP message types are shown in Figure 4.23. Note that ICMP messages are used not only for signaling error conditions.
- The well-known ping program sends an ICMP type 8 code 0 message to the specified host. The destination host, seeing the echo request, sends back a type 0 code 0 ICMP echo reply. Most TCP/IP implementations support the ping server directly in the operating system; that is, the server is not a process. Chapter 11 of [Stevens 1990] provides the source code for the ping client program. Note that the client program needs to be able to instruct the operating system to generate an ICMP message of type 8 code 0.
- Another interesting ICMP message is the source quench message. This message is seldom used in practice. Its original purpose was to perform congestion control— to allow a congested router to send an ICMP source quench message to a host to force that host to reduce its transmission rate. We have seen in Chapter 3 that TCP has its own congestion-control mechanism that operates at the transport layer, with- out the use of network-layer feedback such as the ICMP source quench message.
- In Chapter 1 we introduced the Traceroute program, which allows us to trace a route from a host to any other host in the world. Interestingly, Traceroute is imple- mented with ICMP messages. To determine the names and addresses of the routers between source and destination, Traceroute in the source sends a series of ordinary IP datagrams to the destination. Each of these datagrams carries a UDP segment with an unlikely UDP port number. The first of these datagrams has a TTL of 1, the
+\begin{table}[h]
+	\centering
+	\caption{Gossip Protocol Control Messages}
+	\label{table:3}
+	\begin{tabular}{|p{0.8cm}|p{0.5 cm}|p{3.5 cm}|}
+		\hline
+		Type & Code & Description \\                                                           
+		\hline
+		42  & 0   & Send Ackownlegement   \\ \hline
+		43  &  0 & Send Request \\ 
+		\hline
+		44 & 0 & Send Data \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Upon these new control message types, we could further develop gossip protocol in ns-3.
 
 \subsection{Gossip protocol }
 \textcolor{red}{TODO: Make sure gossip protocol is introduced and pseudo code is given and explained}
