@@ -538,21 +538,22 @@ Those dynamic networks require a robust way to spread information across the who
 %Our project goal is to evaluate the performance of a virtual network protocol consisting of IoT devices in ns-3. The major step here is that we will first simulate a wired mesh network with a given topology file. Then we will replace the wired Ethernet mesh network with wireless mesh network. Based on the new wireless mesh network, we will plug in models representing IoT device’s characters and implementing protocol to evaluate its performance.
 
 %REPLACED BY:
-Our project goal is to evaluate the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices in the network simulator ns-3. More specifically, we focus on \textcolor{red}{\textbf{three?}} performance measurements.
+The goal of our project is to add the gossip protocol to the simulation tool, ns3 and construct the customize packet to evaluate the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices in the network simulator ns-3. There are \textcolor{red}{\textbf{three?}} essencial aspects to evaluate the performance measurements.
 \begin{itemize}
  \item \textcolor{red}{ Average number of messages sent per node}
  \item Maximum amount of hops needed to spread the message
  \item Maximum amount of time needed until the message is spread
 \end{itemize}
 
+The average number of messages sent per node could help engineer to underestand the heavy load of the nodes. If the number of message sent per node is too large, then we may need to consider some mechanism to reduce the load in each node or use other protocol.
+
+The maximum amount of hops needed to spread the message is to evaluate whether the time to spreard one message to the whole network will affect by the number of hops. This could inspire engineers to deside whether they want to reduce the total number of hops of the network.
+
+The maximum amount of time needed until the message the spread could use to evalute the time complexity of gossip protocol and it could also see whether the inscrease of the number of hops and average number of meesage sent per node could affect the time to spread the message to network.
+
 We plan to run the simulation for different numbers of nodes to verify that the time complexity of the gossip protocol is $O(\log N)$, where $N$ is the number of nodes.
 
-To implement the gossip protocol, we need to come up with solutions to the following problems.
-\begin{itemize}
- \item A message format used by the nodes to communicate with each other.
- \item Implementation of the gossip protocol in ns-3
-\end{itemize}
-
+Since the gossip protocol was not embedded in the NS3 simulatior, we need to implement the gossip protocol in NS3 and construct the structure of customized gossip packet in NS3.
 
 %\subsection{Network scenario 1: Wired Network}
 %In this network scenario, we will try to simulate a wired mesh network with a given topology file. But first, a simple peer-to-peer network formed of nodes connected by a 100~Mbit/s Ethernet connections is looked onto. And then we will elaborate this peer-to-peer network to a wired mesh network with a certain topology. That topology is defined by a file that contains the information about the nodes and edges of the network.
