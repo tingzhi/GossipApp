@@ -776,9 +776,16 @@ Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the messa
 
 \begin{figure}
 	\centering
-	\includegraphics[width=3.5in]{figs/boxplotHopsNodes}
+	\includegraphics[width=3in]{figs/boxplotHopsNodes}
 	\caption{The maximum amount of hops the message experienced over the duration of a whole simulation.}
 	\label{fig:maxhops}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=3in]{figs/Rplot}
+	\caption{The spread time under different number of nodes cases}
+	\label{fig:bpTimeNodes}
 \end{figure}
 
 We assume that the reason behing the results being not a function of the number of the nodes but rather seem more or less constant, is due to the increasing edge density with higher numbers of nodes. As seen in fig.~\ref{fig:density}, the number of edges is strictly linear depending only on the number of nodes in the topology. We also consider this as the reason we could not verify the logarithmic complexity suggested by \cite{gossip}.
