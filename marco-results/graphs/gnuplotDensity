@@ -1,0 +1,15 @@
+# gnuplot
+# > load 'this.file'
+
+set terminal svg size 400,300
+set output 'density.svg'
+
+#set xrange [0:1700]
+#set yrange [2.5:]
+set xlabel "number of nodes"
+set ylabel "edge density"
+unset key
+
+plot "density.csv" using 1:4 with linespoint  linecolor rgb "black"
+
+set output

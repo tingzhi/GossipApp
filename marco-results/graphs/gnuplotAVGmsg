@@ -1,0 +1,15 @@
+# gnuplot
+# > load 'this.file'
+
+set terminal svg size 400,300
+set output 'avgmsg.svg'
+
+set xrange [0:1700]
+set yrange [2.5:]
+set xlabel "number of nodes"
+set ylabel "avg number of messages per node"
+unset key
+
+plot "avgmsgRAW.csv" using 1:2 with linespoint lt -1, "avgmsgRAW.csv"  using 1:2:3 with errorbars lt -1
+
+set output

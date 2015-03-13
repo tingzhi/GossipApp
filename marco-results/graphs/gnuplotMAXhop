@@ -1,0 +1,15 @@
+# gnuplot
+# > load 'this.file'
+
+set terminal pdfcairo
+set output 'maxhops.pdf'
+
+set xrange [0:]
+set yrange [0:]
+set xlabel "number of nodes"
+set ylabel "max number of hops"
+unset key
+
+plot "maxhopsRAW.csv" using 1:2 with linespoint linecolor rgb "black", "maxhopsRAW.csv"  using 1:2:3 with errorbars linecolor rgb "black"
+
+set output
