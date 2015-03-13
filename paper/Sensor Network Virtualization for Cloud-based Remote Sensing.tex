@@ -379,12 +379,8 @@ In real world, the actual network infrastructure can be dynamic. With the help o
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-gossip protocol, internet of things, sensor networks, virtual sensor networks, distributed protocol, mesh networks.
+gossip protocol, IoT, virtual sensor networks, distributed protocol, mesh networks.
 \end{IEEEkeywords}
-
-
-
-
 
 
 % For peer review papers, you can put extra information on the cover
@@ -583,10 +579,10 @@ This virtualization algorithm will search and select appropriate sensors from th
 
 
 \subsection{WiFi Direct}
-WiFi Direct is a technology that its goal is to improve direct device to device communications in Wi-Fi \cite{Mur}. The main strength of this technology is that it doesn’t require the presence of an Access Point \cite{Mur}. Actually direct device to device connection was already possible by the ad-hoc mode. But it is not popular because the ad-hoc mode is not power efficient \cite{Mur}. Instead WiFi Direct uses WiFi infrastructure mode \cite{Mur}. It let devices negotiate who will be the AP in this network \cite{Mur}. By doing so, it obtains all the enhanced QoS, power saving, and security mechanisms originally developed for the WiFi infrastructure mode \cite{Mur}. After first establish the network, new devices could connect to this network just like connecting to an AP \cite{Mur}.
+The goal of WiFi Direct technology is to improve direct device to device communications in Wi-Fi \cite{Mur}. The main strength of this technology is that it doesn’t require the presence of an Access Point \cite{Mur}. Actually direct device to device connection was already possible by the ad-hoc mode. But due to the power consumption issue, it is not popular \cite{Mur}. Instead WiFi Direct uses WiFi infrastructure mode \cite{Mur}. It let devices negotiate who will be the Access Point in this network \cite{Mur}. By doing so, it obtains all the enhanced QoS, power saving, and security mechanisms originally developed for the WiFi infrastructure mode \cite{Mur}. After first establish the network, new devices could connect to this network just like connecting to an Access Point \cite{Mur}.
 
 \section{Solution}
-To solve the goals outlined in section~\ref{sec:problem} and implement them in ns-3, we take a three step approach.
+To solve the goals outlined in section~\ref{sec:problem} and implement them in ns-3, we took a three steps.
 
 \begin{itemize}
  \item Extend the Internet Control Message Protocol (ICMP) to support transmitting three simple messages used by our protocol.
@@ -729,9 +725,9 @@ Each topology file contains the number of nodes as well as all the edges, which 
 
 For our simulation, we set the link rate for all connections to 100~Mbps and the link delay to 2~ms. Also, all nodes are instructed to execute the gossip process of sending out data periodically every 5~ms. The interval of requesting new data is set to 5~s.
 
-To allow the performance analysis, all nodes count the number of icmp messages they sent. Also, they track how many hops the data message experienced before reaching them and they record the time when they received the data message.
+To allow the performance analysis, all nodes count the number of ICMP messages they sent. Also, they track how many hops the data message experienced before reaching them and they record the time when they received the data message.
 
-For the analysis, we collect the information from the nodes and determine the average amount of icmp messages sent. Moreover, the highest number of reported hops is saved, as well as how long it took for the message to reach the ``last'' node.
+For the analysis, we collect the information from the nodes and determine the average amount of ICMP messages sent. Moreover, the highest number of reported hops is saved, as well as how long it took for the message to reach the ``last'' node.
 
 This information is determined and stored for each of the several hundred topology files. It should be noted that due to time limitations each topology file was only simulated once.
 
@@ -739,7 +735,7 @@ Finally, we post-process the collected data to produce meaningful plots.
 
 \section{Performance evaluation}
 
-First, we will have a look at the average number of icmp messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases.
+First, we will have a look at the average number of ICMP messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases.
 %\textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
 
 Second, the highest number of hops a message experiences is analyzed. Figure~\ref{fig:maxhops} shows that with a growing number of nodes, also the maximum of the number of hops grows. Nonetheless, the overall impression is that the number of hops is generally speaking, more or less constant and mostly is found to range from 15 to 20. \textcolor{red}{Boxplot more appropriate?}
@@ -829,7 +825,7 @@ Due to time limitations we could not address the huge spectrum of possible analy
 
 % use section* for acknowledgment
 \section*{Acknowledgment}
-We would like to thank Dr. Bechir Hamdaoui for his advising. We also would like to thank Sherif Abelwahab for providing useful information and answers to our questions in numerous discussions.
+We would like to thank Dr. Bechir Hamdaoui for his advising. We also would like to thank Sherif Abelwahab for providing useful information and answers to our questions in numerous discussions. In addition, our team would like to thank Kendall Bailey for her suggestion about automating simulation process.
 
 %The authors would like to thank...
 
@@ -865,6 +861,11 @@ We would like to thank Dr. Bechir Hamdaoui for his advising. We also would like 
 
 \bibliography{mybib}{}
 \bibliographystyle{ieeetr}
+
+\appendices
+\section{Division of Responsibilities}
+Appendix one text goes here.
+
 
 \end{document}
 
