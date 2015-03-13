@@ -663,7 +663,7 @@ switch(state):
 
 The explaination of the pseudo code: 
 
-All the node in network have same behaviour and they are all independent. When we want to spread a message x to the whole network, we assign the x to message and run this algorithm. node 1 start with running state, and node 1 has a message x, so it will find a random neighbor every one millisecond and send a data packet which contain message x to its random neighbor. If node 1 receive a ACK packet it will go to stop state, otherwise it will keep doing these steps. Other nodes which do not have the message x will wait for packet, if a node 1 send a data packet to the node 2 which do not have message x, node 2 will update the message in node 2 and not return anything to node 1. if node 2 do not have message 2, it will send a request packet to a random neighbor every 5 second. If node 2 receive a data packet after sedning the request packet, it will update its message to x. The nodes in stop state would always waiting for other node send message to it and it will send data packet or ACK packet back depends on what packet it receive.
+All the node in network have same behaviour and they are all independent. When we want to spread a message x to the whole network, we assign the x to message and run this algorithm. node 1 start with running state, and node 1 has a message x, so it will find a random neighbor every five milliseconds and send a data packet which contain message x to its random neighbor. If node 1 receive a ACK packet it will go to stop state, otherwise it will keep doing these steps. Other nodes which do not have the message x will wait for packet, if a node 1 send a data packet to the node 2 which do not have message x, node 2 will update the message in node 2 and not return anything to node 1. if node 2 do not have message 2, it will send a request packet to a random neighbor every 5 second. If node 2 receive a data packet after sedning the request packet, it will update its message to x. The nodes in stop state would always waiting for other node send message to it and it will send data packet or ACK packet back depends on what packet it receive.
 
 \subsection{Gathering results}
 
@@ -698,7 +698,7 @@ Finally, we post-process the collected data to produce meaningful plots.
 \section{Performance evaluation}
 \textcolor{red}{TODO: Explain graphs based on used parameters, discuss and compare to expected result}
 
-First, we will have a look at the average number of icmp messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases. \textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
+First, we will have a look at the average number of icmp messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases. \textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
 
 Second, the highest number of hops a message experiences is analysed. Figure~\ref{fig:maxhops} shows that with a growing number of nodes, also the maximum of the number of hops grows. Nonetheless, the overall impression, is that the number of hops is generally speaking, more or less constant and mostly is found to range from 15 to 20. \textcolor{red}{Boxplot more appropriate?}
 
@@ -730,10 +730,12 @@ Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the messa
 \section{Conclusion}
 We have introduced the topics of Internet of things and sensor networks. The opportunities resulting by virtualization of those sensor networks have been elaborated. A distributed algorithm to spread data accross a mesh-network has been implemented. We proposed several performance measures to evaluate this algorithm.
 
-Our results show ...
+Our results show the number of messages a node expects to send is not a function of the total number of nodes in the network. Further, we see that the maximum number of hops is slightly increasing for an increasing number of nodes. And lastly, our results imply that the time until all nodes have the data, is mostly only dependend on how the solicit-interval is chosen.
+
+Unfortunately, we could not verify that the time complexity of the algorithm is $O(\log n)$ as outlined in \cite{gossip}. Possible causes to consider are discussed in the next section.
 
 \section{Further work}
-In further work, various alterations to the gossip protocol can be covered and examined.
+In further work, various alterations to the gossip protocol can be covered and examined. For example, a node can improve routing (or decrease the number of hops). 
 
 
 Due to time limitations we could not address the huge spectrum of possible analysis. Further work is needed to examine the effects when the wired links between nodes are replaced by wireless ones. Power limitations and mobility of the nodes should be included in such a scenario. Thus, the list of neighbors for each node changes over time and a topology file is not needed anymore. In the wireless case, Wi-Fi Direct can be used to connect devices with each other.
