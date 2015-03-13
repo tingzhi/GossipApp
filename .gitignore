@@ -1,12 +1,8 @@
 *.pyc
-
-
+*.blg
+*.bbl
 *.aux
-
 *.log
-
 paper/Sensor Network Virtualization for Cloud-based Remote Sensing.pdf
-
 paper/Sensor Network Virtualization for Cloud-based Remote Sensing.synctex.gz
-
 analysis/stats.docx
