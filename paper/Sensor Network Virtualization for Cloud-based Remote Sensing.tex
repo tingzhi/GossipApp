@@ -375,7 +375,7 @@
 % in the abstract or keywords.
 
 \begin{abstract}
-In real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to perform remote sensing task regardless of physical network changes. For a given network, if we tried to perform any task, the first crucial step is to spread the task requirement in the network in an efficient manner. In short, task message need to be broadcasted quickly. One way to do so is using gossip protocol meaning for each node in the network, they randomly "gossip" task message to neighbors. In this paper, we extened the ICMP to support gossip protocol control message, developed gossip protocol inside ns-3, and measured the performance of gossip protocol using random generated topology files which can be classified as peer-to-peer mesh networks.  
+In the real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to perform a remote sensing task regardless of physical network changes. For a given network, if we tried to perform any task, the first crucial step is to spread the task requirement in the network in an efficient manner. In short, a task message needs to be broadcasted quickly. One way to do so is using gossip protocol; meaning for each node in the network, they randomly "gossip" the task message to neighbors. In this paper, we extened the ICMP to support gossip protocol control message, developed gossip protocol inside ns-3, and measured the performance of gossip protocol using random generated topology files which can be classified as peer-to-peer mesh networks.  
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -588,7 +588,7 @@ To achieve the goals outlined in section~\ref{sec:problem} and implement them in
 
 \subsection{ICMP Extension}
 
-ICMP stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting~\cite{james}. ICMP message contains two parts: 8-byte header and data section. The first 4 btyes of the header have fixed format. However, the last 4 bytes various depend on the type or code of the ICMP packet~\cite{forouzan}. The first and second byte of the header is the type field and code field respectively. And the third and fourth byte are checksum field. The format of the header is shown in table \ref{table:1}.
+ICMP stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting~\cite{james}. A ICMP message contains two parts: 8-byte header and data section. The first 4 btyes of the header have fixed format. However, the last 4 bytes vary and depend on the type or code of the ICMP packet~\cite{forouzan}. The first and second byte of the header is the type field and code field respectively. And the third and fourth byte are checksum field. The format of the header is shown in table \ref{table:1}.
 
 \begin{table}[h!]￼
 	\centering
