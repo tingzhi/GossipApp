@@ -599,18 +599,7 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 \subsection{ICMP extension}
 \textcolor{red}{TODO: Explain changes made to code and summarize bulletpoints from presentation}
 
-ICMP, which is specified in [RFC 792], stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting ~\cite{james}. ICMP message contains two parts: 8-byte header and data. The first 8 bits of the data portion of But there is a famous example of this protocol  other situations that ICMP would be used such as desICMP messages  
-
- All ICMP packets have an 8-byte header and variable-sized data section. The first 4 bytes of the header have fixed format, while the last 4 bytes depend on the type/code of that ICMP packet.[1]
- 
- ICMP messages are sent using the basic IP header.  The first octet of
- the data portion of the datagram is a ICMP type field; the value of
- this field determines the format of the remaining data.  Any field
- labeled "unused" is reserved for later extensions and must be zero
- when sent, but receivers should not use these fields (except to
- include them in the checksum).  Unless otherwise noted under the
- individual format descriptions, the values of the internet header
- fields are as follows:
+ICMP stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting~\cite{james}. ICMP message contains two parts: 8-byte header and data section. The first 4 btyes of the header have fixed format. However, the last 4 bytes various depend on the type or code of the ICMP packet~\cite{forouzan}. The first and second byte of the header is the type field and code field respectively. And the third and fourth byte is checksum field.
  
  
  ICMP messages have a type and a code field, and contain the header and the first 8 bytes of the IP datagram that caused the ICMP message to be generated in the first place (so that the sender can determine the datagram that caused the error). Selected ICMP message types are shown in Figure 4.23. Note that ICMP messages are used not only for signaling error conditions.
@@ -803,7 +792,7 @@ We would like to thank Dr. Bechir Hamdaoui for his advising. We also would like 
 % (used to reserve space for the reference number labels box)
 
 \bibliography{mybib}{}
-%\bibliographystyle{ieeetr}
+\bibliographystyle{ieeetr}
 
 \end{document}
 
