@@ -569,7 +569,7 @@ The development of algorithms and protocols to support the grouping of VSNs on t
 
 \begin{figure}
  \centering
-% \includegraphics[width=2.5in]{figs/VirtualSensorNetwork.pdf}
+ \includegraphics[width=2.5in]{figs/VirtualSensorNetwork.pdf}
  \caption{Broadcast path from a node (S) in VSN2.}
  \label{vsnfig}
 \end{figure}
@@ -649,7 +649,7 @@ As we could see in table \ref{table:2}, type 42 to 255 are reserved for further 
 		\hline
 		Type & Code & Description \\                                                           
 		\hline
-		42  & 0   & Send Ackownlegement   \\ \hline
+		42  & 0   & Send Acknowledgment   \\ \hline
 		43  &  0 & Send Request \\ 
 		\hline
 		44 & 0 & Send Data \\
@@ -660,7 +660,6 @@ As we could see in table \ref{table:2}, type 42 to 255 are reserved for further 
 Upon these new control message types, we could further develop gossip protocol in ns-3.
 
 \subsection{Gossip protocol }
-\textcolor{red}{TODO: Make sure gossip protocol is introduced and pseudo code is given and explained}
 
 Gossip protocol is a computer communication protocol which inspired by the social activity -- gossip. This protocol accomplishes to synchronize a message in a system that does not need real-time synchronization. It provides $O(\log n)$ time to synchronize the message to the network, where $n$ means the number of nodes in the network. There are three packet types for the message protocol: Data packet, ACK packet and request packet. The data packet contains the message from a certain source node that wants to spread this message to the whole network. The ACK packet is a packet to notice the node that the destination already contains the message. The request packet is the packet that request the message from destination node. There are two states for each node, running and stop.
 
@@ -712,13 +711,15 @@ To evaluate the performance of the gossip protocol, we use several randomly gene
 
 \begin{figure}
  \centering
- \begin{verbatim}#Nodes
+ \begin{Verbatim}[fontsize=\small]
+#Nodes
 0
 1
 2
 #Edges
 (0, 1)
-(1, 2)\end{verbatim}
+(1, 2)
+\end{Verbatim}
  \caption{A topology file of a linear topology with three nodes.}
  \label{fig:topsimple}
 \end{figure}
@@ -737,9 +738,9 @@ This information is determined and stored for each of the several hundred topolo
 Finally, we post-process the collected data to produce meaningful plots.
 
 \section{Performance evaluation}
-\textcolor{red}{TODO: Explain graphs based on used parameters, discuss and compare to expected result}
 
-First, we will have a look at the average number of icmp messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases. \textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
+First, we will have a look at the average number of icmp messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases.
+%\textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
 
 Second, the highest number of hops a message experiences is analyzed. Figure~\ref{fig:maxhops} shows that with a growing number of nodes, also the maximum of the number of hops grows. Nonetheless, the overall impression is that the number of hops is generally speaking, more or less constant and mostly is found to range from 15 to 20. \textcolor{red}{Boxplot more appropriate?}
 
@@ -747,7 +748,7 @@ Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the messa
 
 \begin{figure}
  \centering
-% \includegraphics[width=3in]{figs/avgmsg}
+ \includegraphics[width=3in]{figs/avgmsg}
  \caption{The average number of messages each node sent over the duration of a whole simulation.}
  \label{fig:avgmsg}
 \end{figure}
@@ -768,7 +769,7 @@ Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the messa
 
 \begin{figure}
  \centering
-% \includegraphics[width=2.5in]{figs/density}
+ \includegraphics[width=2.5in]{figs/density}
  \caption{The density of the nodes for each batch of topology files.}
  \label{fig:density}
 \end{figure}
@@ -801,8 +802,7 @@ And lastly, the effect of reducing the solicit interval should be investigated. 
 
 Due to time limitations we could not address the huge spectrum of possible analysis. Further work is needed to examine the effects when the wired peer-to-peer links between nodes are replaced by wireless ones. Power limitations and mobility of the nodes should be included in such a scenario. Thus, the list of neighbors for each node changes over time and a topology file is not needed anymore. In the wireless case, Wi-Fi Direct can be used to connect devices with each other.
 
-% Maybe the hop-update extension?
-% #links vs #nodes...
+
 
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
