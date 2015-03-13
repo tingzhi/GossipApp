@@ -678,33 +678,32 @@ The pseudo code of gossip algorithm is given in figure~\ref{fig:pseudo}.
 \begin{figure}
  \centering
  \begin{verbatim}
- switch(state):
-    	case running:
-        	if message is not null:
-            	every 1 millisecond:
-                	find a random neighbor
-                 	send data packet to random neightbor
-                  	if receive a packet:
-                      	if pakcet is ACK:
-                          	state <- stop
-         	else:
-           		if receive a packet:
-                	if packet is a data packet:
-                    	update the message to the content of data packet
-                every 5 second:
-                	find a random neighbor
-                    send a request packet to the neighbor
-                    if receive a packet:
-                    	if packet is a data packet:
-                        	update the message to the content of data packet 
+switch(state):
+  case running:
+    if message is not null:
+      in every 1 millisecond:
+        find a random neighbor R
+        send data packet to R
+        if receive a packet:
+          if pakcet is ACK:
+            state <- stop
+    else:
+      if receive a packet:
+        if packet is a data packet:
+          update the message data
+          in every 5 second:
+            find a random neighbor R
+            send a request packet to R
+            if receive a packet:
+              if packet is a data packet:
+                update the message to data
                     
-        
-        case stop:
-			if receive a packet:
-                	if pakcet is request:
-                    	send data to the node who send the packet
-                    if packet is data:
-                    	send ACK to the node who send the packet
+  case stop:
+    if receive a packet:
+      if pakcet is request:
+        send data to the source node
+      if packet is data:
+        send ACK to the source node
 \end{verbatim}
  \caption{The pseudo code of the gossip algorithm.}
  \label{fig:pseudo}
@@ -923,4 +922,5 @@ IEEE Wireless Communications Magazine
 
 % that's all folks
 \end{document}
+
 
