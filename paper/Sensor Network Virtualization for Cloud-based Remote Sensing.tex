@@ -372,6 +372,23 @@
 
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|}
+\hline
+Type                        & Code & Status     & Description                 \\ \hline
+0– Echo Reply               & 0    &            & Echo reply (used to ping)   \\ \hline
+1and 2                      &      &            & Reserved                    \\ \hline
+3 – Destination Unreachable & 0-15 &            &                             \\ \hline
+4 – Source Quench           & 0    & deprecated & Source quench               \\ \hline
+5 – Redirect Message        & 0-3  &            & Redirect Datagram           \\ \hline
+6                           &      & deprecated & Alternate Host Address      \\ \hline
+7                           &      &            & Reserved                    \\ \hline
+8 – Echo Request            & 0    &            & Echo request (used to ping) \\ \hline
+9 – Router Advertisement    & 0    &            & Router Advertisement        \\ \hline
+10 – Router Solicitation    & 0    &            & Router discovery            \\ \hline
+\end{tabular}
+\end{table}
+
 \begin{abstract}
 In real world, the actual network infrastructure can be dynamic. With the help of network virtualization, we are able to perform remote sensing task regardless of physical network changes. For a given network, if we tried to perform any task, the first crucial step is to spread the task requirement in the network in an efficient manner. In short, task message need to be broadcasted quickly. In this paper, we use ns-3 to implement gossip protocol.  
 \end{abstract}
