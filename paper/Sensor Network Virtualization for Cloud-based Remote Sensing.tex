@@ -779,7 +779,8 @@ Section~\ref{sec:further} proposes further work which can be done to gain a more
 \section{Conclusion}
 We have introduced the topics of Internet of things and sensor networks. The opportunities resulting by virtualization of those sensor networks have been elaborated. A distributed algorithm to spread data across a mesh-network has been implemented. We proposed several performance measures to evaluate this algorithm.
 
-Our results show the number of messages a node expects to send is not a function of the total number of nodes in the network. Further, we see that the maximum number of hops is slightly increasing for an increasing number of nodes. And lastly, our results imply that the time until all nodes have the data, is mostly only depended on how the solicit-interval is chosen.
+We have implemented the gossip protocol and run the simulation in NS3. The result from NS3 shows that the number of messages a node expects to send is not a function of the total number of nodes in the network.
+Further, we see that the maximum number of hops is slightly increasing for an increasing number of nodes. And lastly, our results imply that the time until all nodes have the data, is mostly only depended on how the solicit-interval is chosen.
 
 Unfortunately, we could not verify that the time complexity of the algorithm is $O(\log n)$ as outlined in \cite{gossip}. Possible causes to consider are discussed in the next section.
 
