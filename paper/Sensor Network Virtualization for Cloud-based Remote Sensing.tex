@@ -1,72 +1,8 @@
-
-%% bare_jrnl.tex
-%% V1.4a
-%% 2014/09/17
-%% by Michael Shell
-%% see http://www.michaelshell.org/
-%% for current contact information.
-%%
-%% This is a skeleton file demonstrating the use of IEEEtran.cls
-%% (requires IEEEtran.cls version 1.8a or later) with an IEEE
-%% journal paper.
-%%
-%% Support sites:
-%% http://www.michaelshell.org/tex/ieeetran/
-%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
-%% and
-%% http://www.ieee.org/
-
-%%*************************************************************************
-%% Legal Notice:
-%% This code is offered as-is without any warranty either expressed or
-%% implied; without even the implied warranty of MERCHANTABILITY or
-%% FITNESS FOR A PARTICULAR PURPOSE! 
-%% User assumes all risk.
-%% In no event shall IEEE or any contributor to this code be liable for
-%% any damages or losses, including, but not limited to, incidental,
-%% consequential, or any other damages, resulting from the use or misuse
-%% of any information contained here.
-%%
-%% All comments are the opinions of their respective authors and are not
-%% necessarily endorsed by the IEEE.
-%%
-%% This work is distributed under the LaTeX Project Public License (LPPL)
-%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
-%% distributed and modified. A copy of the LPPL, version 1.3, is included
-%% in the base LaTeX documentation of all distributions of LaTeX released
-%% 2003/12/01 or later.
-%% Retain all contribution notices and credits.
-%% ** Modified files should be clearly indicated as such, including  **
-%% ** renaming them and changing author support contact information. **
-%%
-%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
-%%                    bare_conf.tex, bare_jrnl.tex, bare_conf_compsoc.tex,
-%%                    bare_jrnl_compsoc.tex, bare_jrnl_transmag.tex
-%%*************************************************************************
-
-
-% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
-% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
-% *** with production work. IEEE's  choices and paper sizes can       ***
-% *** trigger bugs that do not appear when using other class files.       ***                          ***
-% The testflow support page is at:
-% http://www.michaelshell.org/tex/testflow/
-
-
-
 \documentclass[journal]{IEEEtran}
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
 % \documentclass[journal]{../sty/IEEEtran}
-
-
-
-
-
-% Some very useful LaTeX packages include:
-% (uncomment the ones you want to load)
-
 
 % *** MISC UTILITY PACKAGES ***
 %
@@ -85,11 +21,6 @@
 % \ifCLASSINFOpdf conditional that works the same way.
 % When switching from latex to pdflatex and vice-versa, the compiler may
 % have to be run twice to clear warning/error messages.
-
-
-
-
-
 
 % *** CITATION PACKAGES ***
 %
@@ -668,6 +599,25 @@ To solve the goals outlined in section~\ref{sec:problem} and implement them in n
 \subsection{ICMP extension}
 \textcolor{red}{TODO: Explain changes made to code and summarize bulletpoints from presentation}
 
+ICMP, which is specified in [RFC 792], stands for Internet Control Message Protocol. The most common use of ICMP is for error reporting ~\cite{james}. ICMP message contains two parts: 8-byte header and data. The first 8 bits of the data portion of But there is a famous example of this protocol  other situations that ICMP would be used such as desICMP messages  
+
+ All ICMP packets have an 8-byte header and variable-sized data section. The first 4 bytes of the header have fixed format, while the last 4 bytes depend on the type/code of that ICMP packet.[1]
+ 
+ ICMP messages are sent using the basic IP header.  The first octet of
+ the data portion of the datagram is a ICMP type field; the value of
+ this field determines the format of the remaining data.  Any field
+ labeled "unused" is reserved for later extensions and must be zero
+ when sent, but receivers should not use these fields (except to
+ include them in the checksum).  Unless otherwise noted under the
+ individual format descriptions, the values of the internet header
+ fields are as follows:
+ 
+ 
+ ICMP messages have a type and a code field, and contain the header and the first 8 bytes of the IP datagram that caused the ICMP message to be generated in the first place (so that the sender can determine the datagram that caused the error). Selected ICMP message types are shown in Figure 4.23. Note that ICMP messages are used not only for signaling error conditions.
+ The well-known ping program sends an ICMP type 8 code 0 message to the specified host. The destination host, seeing the echo request, sends back a type 0 code 0 ICMP echo reply. Most TCP/IP implementations support the ping server directly in the operating system; that is, the server is not a process. Chapter 11 of [Stevens 1990] provides the source code for the ping client program. Note that the client program needs to be able to instruct the operating system to generate an ICMP message of type 8 code 0.
+ Another interesting ICMP message is the source quench message. This message is seldom used in practice. Its original purpose was to perform congestion control— to allow a congested router to send an ICMP source quench message to a host to force that host to reduce its transmission rate. We have seen in Chapter 3 that TCP has its own congestion-control mechanism that operates at the transport layer, with- out the use of network-layer feedback such as the ICMP source quench message.
+ In Chapter 1 we introduced the Traceroute program, which allows us to trace a route from a host to any other host in the world. Interestingly, Traceroute is imple- mented with ICMP messages. To determine the names and addresses of the routers between source and destination, Traceroute in the source sends a series of ordinary IP datagrams to the destination. Each of these datagrams carries a UDP segment with an unlikely UDP port number. The first of these datagrams has a TTL of 1, the
+
 \subsection{Gossip protocol }
 \textcolor{red}{TODO: Make sure gossip protocol is introduced and pseudo code is given and explained}
 
@@ -829,8 +779,6 @@ We would like to thank Dr. Bechir Hamdaoui for his advising. We also would like 
   \newpage
 \fi
 
-
-
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page
 % adjust value as needed - may need to be readjusted if
@@ -846,83 +794,17 @@ We would like to thank Dr. Bechir Hamdaoui for his advising. We also would like 
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
+
 % argument is your BibTeX string definitions and bibliography database(s)
 %\bibliography{IEEEabrv,../bib/paper}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
 
-\bibitem{gossip}
-K.~Jenkins, K.~Hopkinson, and K.~Birman. \textit{A Gossip Protocol for Subgroup Multicast.} In International Workshop on Applied Reliable Group Communication,
-Apr. 2001
-\bibitem{Atzori}
-L.~Atzori, A.~Iera, G.~Morabito, \emph{The Internet of Things: a survey},
-Comput. Netw. 54 (15) (2010) 2787--2805.
-\bibitem{Jayasumana}
- A. P. Jayasumana, Q. Han, and T. H. Illangasekare, \textit{Virtual sensor networks - a resource effcient approach for concurrent applications,} in
-Proceedings of the International Conference on Information
-Technology (ITNG'07)
-. Washington, DC, USA: IEEE Computer Society, 2007, pp. 111--115.
-\bibitem{Chowdhury}
- N. M. Kabir Chowdhury and R. Boutaba, \textit{A Survey of Network
-Virtualization,} Tech. Rep. CS-2008-25, University of Waterloo, Oct.
-2008.
-\bibitem{Sherif}
-A.~Sherif, B.~Hamdaoui, and M.~Guizani. \textit{Cloud-Assisted Remote Sensor Network Virtualization for Distributed Consensus Estimation.} arXiv preprint arXiv:1501.03547 (2015).
-\bibitem{Mur}
- D. Camps-Mur, A. Garcia-Saavedra, and P. Serrano, \textit{Device to device communications with wifi direct: overview and
-experimentation,}
-IEEE Wireless Communications Magazine
-, vol.20, no.3, pp.96,104, June 2013.
+\bibliography{mybib}{}
+%\bibliographystyle{ieeetr}
 
-\end{thebibliography}
-
-% biography section
-% 
-% If you have an EPS/PDF photo (graphicx package needed) extra braces are
-% needed around the contents of the optional argument to biography to prevent
-% the LaTeX parser from getting confused when it sees the complicated
-% \includegraphics command within an optional argument. (You could create
-% your own custom macro containing the \includegraphics command to make things
-% simpler here.)
-%\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
-% or if you just want to reserve a space for a photo:
-
-%\begin{IEEEbiography}{Michael Shell}
-%Biography text here.
-%\end{IEEEbiography}
-
-% if you will not have a photo at all:
-%\begin{IEEEbiographynophoto}{John Doe}
-%Biography text here.
-%\end{IEEEbiographynophoto}
-
-% insert where needed to balance the two columns on the last page with
-% biographies
-%\newpage
-
-%\begin{IEEEbiographynophoto}{Jane Doe}
-%Biography text here.
-%\end{IEEEbiographynophoto}
-
-% You can push biographies down or up by placing
-% a \vfill before or after them. The appropriate
-% use of \vfill depends on what kind of text is
-% on the last page and whether or not the columns
-% are being equalized.
-
-%\vfill
-
-% Can be used to pull up biographies so that the bottom of the last one
-% is flush with the other column.
-%\enlargethispage{-5in}
-
-
-
-% that's all folks
 \end{document}
 
 
