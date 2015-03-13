@@ -4,7 +4,7 @@
 set terminal pdfcairo
 set output 'maxhops.pdf'
 
-set xrange [0:]
+set xrange [0:1700]
 set yrange [0:]
 set xlabel "number of nodes"
 set ylabel "max number of hops"
