@@ -725,23 +725,20 @@ To allow the performance analysis, all nodes count the number of ICMP messages t
 This information is determined and stored for each of the several hundred topology files. It should be noted that due to time limitations each topology file was only simulated once. Finally, we did statistical analysis upon those collected data in the hope of verifying the assumptions we made in section~\ref{sec:problem}.
 
 \section{Performance Evaluation}
+The random generated topology files are the input of our simulations. There are 11 different cases where the number of nodes vary from 100 to 1600 , increasing with 150 nodes step. And for each case, we u
+
 
 First, we will have a look at the average number of ICMP messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases.
 %\textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
 
-Second, the highest number of hops a message experiences is analyzed. Figure~\ref{fig:maxhops} shows that with a growing number of nodes, also the maximum of the number of hops grows. Nonetheless, the overall impression is that the number of hops is generally speaking, more or less constant and mostly is found to range from 15 to 20. 
-%\textcolor{red}{Boxplot more appropriate?}
-%TODO wite another sentence...?
-
-Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the message across the whole network. Again, the mean is found to be more or less constant and slightly less than 15~s. Due to the huge difference in the gossip-interval-time (5~ms) and solicit-interval-time (5~s), only the influence of the solicit-interval can be deduced from the results. One can see, that the time needed to spread the message is fluctuating due to the random nature of the gossip protocol, especially for the case of a number of nodes of 100, where the standard error is the largest.
-
 \begin{figure}
- \centering
- \includegraphics[width=3in]{figs/avgmsg}
- \caption{The average number of messages each node sent over the duration of a whole simulation.}
- \label{fig:avgmsg}
+	\centering
+	\includegraphics[width=3in]{figs/avgmsg}
+	\caption{The average number of messages each node sent over the duration of a whole simulation.}
+	\label{fig:avgmsg}
 \end{figure}
 
+<<<<<<< Updated upstream
 %\begin{figure}
 % \centering
 % \includegraphics[width=3in]{figs/maxhops}
@@ -755,6 +752,9 @@ Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the messa
 % \caption{The maximum time it took for the message to spread to all nodes for a simulation.}
 % \label{fig:maxtime}
 %\end{figure}
+=======
+Second, the maximum number of hops a message experiences is analyzed. Figure~\ref{fig:maxhops} shows that with a growing number of nodes, the average maximum hops slightly increases as well. But the standard deviation has the tendency to decrease which is a positive sign since we hope the gossip protocol performance metrics would converge as the network grows. Nonetheless, the overall impression is that the number of hops is generally speaking, more or less constant and mostly is found to range from 15 to 20. 
+>>>>>>> Stashed changes
 
 \begin{figure}
 	\centering
@@ -763,6 +763,8 @@ Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the messa
 	\label{fig:maxhops}
 \end{figure}
 
+Moreover, figure~\ref{fig:maxtime} illustrates the time needed to spread the message across the whole network. Again, the mean is found to be more or less constant and slightly less than 15~s. Due to the huge difference in the gossip-interval-time (5~ms) and solicit-interval-time (5~s), only the influence of the solicit-interval can be deduced from the results. One can see, that the time needed to spread the message is fluctuating due to the random nature of the gossip protocol, especially for the case of a number of nodes of 100, where the standard deviation is the largest.
+
 \begin{figure}
 	\centering
 	\includegraphics[width=3in]{figs/bpTimeNodes}
@@ -770,14 +772,16 @@ Lastly, figure~\ref{fig:maxtime} illustrates the time needed to spread the messa
 	\label{fig:maxtime}
 \end{figure}
 
+We assume that the reason that the results being not a function of the number of the nodes but rather seem more or less constant, is due to the increasing edge density with higher numbers of nodes. As seen in fig.~\ref{fig:density}, the number of edges is strictly linear depending only on the number of nodes in the topology. We also consider this as the reason we could not verify the logarithmic complexity suggested by \cite{gossip}.
+
 \begin{figure}
- \centering
- \includegraphics[width=3in]{figs/density}
- \caption{The density of the nodes for each batch of topology files.}
- \label{fig:density}
+	\centering
+	\includegraphics[width=3in]{figs/density}
+	\caption{The density of the nodes for each batch of topology files.}
+	\label{fig:density}
 \end{figure}
 
-We assume that the reason behing the results being not a function of the number of the nodes but rather seem more or less constant, is due to the increasing edge density with higher numbers of nodes. As seen in fig.~\ref{fig:density}, the number of edges is strictly linear depending only on the number of nodes in the topology. We also consider this as the reason we could not verify the logarithmic complexity suggested by \cite{gossip}.
+Another interesting observation is that accross these statistical analysis, the case of 100 nodes 
 
 Section~\ref{sec:further} proposes further work which can be done to gain a more thorough evaluation.
 
