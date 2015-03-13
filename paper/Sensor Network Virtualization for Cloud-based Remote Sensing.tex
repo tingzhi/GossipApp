@@ -527,17 +527,17 @@ However, the main challenge here is that IoT devices are often resource limited 
 
 \section{Problem Statement}\label{sec:problem}
 
-The goal of our project is to evaluating gossip protocol in the simulation tool -- ns3. First, we customized gossip protocol control messages based on ICMP. Second, we developed the gossip protocol and implemented it in ns-3. Finanlly, we evaluated the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices by running simulations in ns-3. In the mesh network, each node usually has multiple edges and we assume that there is no isolated node in the network.
+The goal of our project is to evaluate the gossip protocol in the simulation tool ns-3. First, we need to costumize the gossip protocol control messages based on ICMP. Second, we need to develop the gossip protocol and implement it in ns-3. Finanlly, we are supposed to evaluate the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices by running simulations in ns-3. In the mesh network, each node usually has multiple edges and we assume that there is no isolated node in the network.
 
 There are three essential performance metrics we would like to measure. 
 
 \begin{itemize}
- \item Average number of control messages send per node
+ \item Average number of control messages sent per node
  \item Maximum amount of hops needed to spread the message
  \item Maximum amount of time needed until the message is spread
 \end{itemize}
 
-The average number of control messages send per node could help engineers to understand the average load of the nodes. If the number of messages send per node is quite large, then further improvement of protocol need to be developed to reduce the load in each node.
+The average number of control messages sent per node could help engineers to understand the average load of the nodes. If the number of messages send per node is quite large, then further improvement of protocol need to be developed to reduce the load in each node.
 
 The maximum amount of time needed to spread the message could be used to evaluate the time complexity of gossip protocol. The correlation between the maximum amount of hops and spread time is very important to characterize this protocol. If they are strongly correlated, then we probably would observe that as the maximum amount of hops increases, the spread time will increase proportionally. Under that circumstance, new mechanism need to be implemented to reduce the total number of hops for each node to get the message. 
 
@@ -716,7 +716,7 @@ To evaluate the performance of the gossip protocol, we use several randomly gene
 \end{figure}
 
 
-Each topology file contains the number of nodes as well as all the edges, which are connections between nodes. As an example, the content of a simple topology file is shown in figure~\ref{fig:topsimple}. We assumed in our work, that each nodes is connected at least once to the network. We wrote a parser in C++ to create the given number of nodes in ns-3 and installed the gossip protocol application on them. Thereafter, all edges are parsed and created accordingly. Each node holds an ns3 Ipv4Interface for every connection and stores the address of his interface and the one of his neighbors interface.
+Each topology file contains the number of nodes as well as all the edges, which are connections between nodes. As an example, the content of a simple topology file is shown in figure~\ref{fig:topsimple}. We assumed in our work, that each nodes is connected at least once to the network. We wrote a parser in C++ to create the given number of nodes in ns-3 and installed the gossip protocol application on them. Thereafter, all edges are parsed and created accordingly. Each node holds an ns-3 Ipv4Interface for every connection and stores the address of his interface and the one of his neighbors interface.
 
 For our simulation, we set the link rate for all connections to 100~Mbps and the link delay to 2~ms. Also, all nodes are instructed to execute the gossip process of sending out data periodically every 5~ms. The interval of requesting new data is set to 5~s.
 
