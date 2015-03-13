@@ -297,7 +297,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Sensor Network Virtualization for Cloud-based Remote Sensing}
+\title{Performance Evaluation of Gossip Protocol in Peer-to-Peer Mesh Networks}
 %
 %
 % author names and IEEE memberships
@@ -530,22 +530,23 @@ However, the main challenge here is that IoT devices are often resource limited 
 % \fnbelowfloat command of the stfloats package.
 
 \section{Problem Statement}\label{sec:problem}
-%OUTDATED
-%Our project goal is to evaluate the performance of a virtual network protocol consisting of IoT devices in ns-3. The major step here is that we will first simulate a wired mesh network with a given topology file. Then we will replace the wired Ethernet mesh network with wireless mesh network. Based on the new wireless mesh network, we will plug in models representing IoT device’s characters and implementing protocol to evaluate its performance.
+describe and state the problem being addressed and your motivation for solving it (i.e., why it is important to solve such a problem). Describe your system/network setup - topologies, assumptions, configurations, network setup, etc (1 page)
 
-%REPLACED BY:
-The goal of our project is to develop the gossip protocol to the simulation tool, ns3 and construct the customize packet to evaluate the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices in the network simulator ns-3. There are \textcolor{red}{\textbf{three?}} essential aspects to evaluate the performance measurements.
+The goal of our project is to evaluating gossip protocol in the simulation tool -- ns3. 
+
+First, we customized gossip protocol control messages based on ICMP. Second, we developed the gossip protocol and implemented it in ns-3. Finanlly, we evaluated the performance of the gossip protocol in a mesh network of peer-to-peer connected IoT devices by running simulations in ns-3. 
+
+There are three essential performance metrics we would like to measure. 
+
 \begin{itemize}
- \item \textcolor{red}{ Average number of messages sent per node}
+ \item Average number of control messages send per node
  \item Maximum amount of hops needed to spread the message
  \item Maximum amount of time needed until the message is spread
 \end{itemize}
 
-The average number of messages sent per node could help engineer to understand the heavy load of the nodes. If the number of message sent per node is too large, then we may need to consider some mechanism to reduce the load in each node or use other protocol.
+The average number of control messages send per node could help engineers to understand the average load of the nodes. If the number of messages send per node is quite large, then further improvement of protocol need to be developed to reduce the load in each node.
 
-The maximum amount of hops needed to spread the message is to evaluate whether the time to spread one message to the whole network will affect by the number of hops. This could inspire engineers to decide whether they want to reduce the total number of hops of the network.
-
-The maximum amount of time needed until the message the spread could use to evaluate the time complexity of gossip protocol and it could also see whether the increase of the number of hops and average number of message sent per node could affect the time to spread the message to network.
+The maximum amount of time needed to spread the message could be used to evaluate the time complexity of gossip protocol. The correlation between the maximum amount of hops and spread time is very important to characterize this protocol. If they are strongly correlated, then we probably would observe that as the maximum amount of hops increases, the spread time will increase proportionally. Under that circumstance, new mechanism need to be implemented to reduce the total number of hops for each node to get the message. 
 
 We plan to run the simulation for different numbers of nodes to verify that the time complexity of the gossip protocol is $O(\log N)$, where $N$ is the number of nodes.
 
