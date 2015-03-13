@@ -726,8 +726,7 @@ To allow the performance analysis, all nodes count the number of ICMP messages t
 This information is determined and stored for each of the several hundred topology files. It should be noted that due to time limitations each topology file was only simulated once. Finally, we did statistical analysis upon those collected data in the hope of verifying the assumptions we made in section~\ref{sec:problem}.
 
 \section{Performance Evaluation}
-The random generated topology files are the input of our simulations. There are 11 different cases where the number of nodes vary from 100 to 1600 , increasing with 150 nodes step. And for each case, we u
-
+The random generated topology files are the input of our simulations. There are 11 different cases where the number of nodes vary from 100 to 1600 , increasing with 150 nodes step. And for each case, we sampled 100 topology files to run the simulations.
 
 First, we will have a look at the average number of ICMP messages each node sent, depicted in fig.~\ref{fig:avgmsg}. It is important to note that the the collected average number for one topology file was again averaged over all reported values produced by topology files with the same number of nodes. Thus, the error bar is an indicator how consistent the average number is. It can be deduced from fig.~\ref{fig:avgmsg} that this value is a constant roughly equal to 3.3. Only when a very litte number of nodes is observed, the mean and variance of the average amount of sent messages increases.
 %\textcolor{red}{Is this a fluctuation or can this be ``normalized'' by running the simulation for each topology file a lot more often?}
@@ -766,7 +765,21 @@ We assume that the reason that the results being not a function of the number of
 	\label{fig:density}
 \end{figure}
 
-Another interesting observation is that accross these statistical analysis, the case of 100 nodes 
+Another interesting observation is that accross these statistical analysis, the case of 100 nodes always has different behavior than other cases. We wondered if that has anything to do with not eough experiment trials. So we run each topology file of 100 nodes case one time, which is defalut in our performance evaluation setting, and 50 times just to see if the standard deviation would decrease as number of experiment trails increase. As we can see in fig.~\ref{fig:100time} and fig.~\ref{fig:100hops}. There is no sign that in this case, the standard deviation would decrease as the number of experiment trials increases.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=3in]{figs/100_time}
+	\caption{Spread Time Under 1 and 50 Run Times for 100 Node Cases}
+	\label{fig:100time}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=3in]{figs/100_hops}
+	\caption{Maximum Hops Under 1 and 50 Run Times for 100 Node Cases}
+	\label{fig:100hops}
+\end{figure}
 
 Section~\ref{sec:further} proposes further work which can be done to gain a more thorough evaluation.
 
